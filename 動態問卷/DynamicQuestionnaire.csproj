@@ -79,6 +79,7 @@
     <Compile Include="Helpers\ConfigHelper.cs" />
     <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Managers\QuestionnaireManager.cs" />
+    <Compile Include="Managers\QuestionsManager.cs" />
     <Compile Include="Models\QuestionModel.cs" />
     <Compile Include="Models\SummaryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

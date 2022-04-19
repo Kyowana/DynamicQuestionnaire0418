@@ -15,13 +15,22 @@ namespace 動態問卷.SystemAdmin
     {
 
         /// <summary>
-        /// page1 控制項。
+        /// form1 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder page1;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+
+        /// <summary>
+        /// page01 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder page01;
 
         /// <summary>
         /// txtCaption 控制項。
@@ -87,13 +96,13 @@ namespace 動態問卷.SystemAdmin
         protected global::System.Web.UI.WebControls.Button btnSubmit1;
 
         /// <summary>
-        /// page2 控制項。
+        /// page02 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder page2;
+        protected global::System.Web.UI.WebControls.PlaceHolder page02;
 
         /// <summary>
         /// txtQuestion 控制項。
@@ -123,6 +132,33 @@ namespace 動態問卷.SystemAdmin
         protected global::System.Web.UI.WebControls.CheckBox ckbRequired;
 
         /// <summary>
+        /// plcOptions 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder plcOptions;
+
+        /// <summary>
+        /// txtCtlNumber 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCtlNumber;
+
+        /// <summary>
+        /// btnAddOptions 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddOptions;
+
+        /// <summary>
         /// txtAnswer 控制項。
         /// </summary>
         /// <remarks>
@@ -141,13 +177,31 @@ namespace 動態問卷.SystemAdmin
         protected global::System.Web.UI.WebControls.Button btnAdd;
 
         /// <summary>
-        /// GridView1 控制項。
+        /// GridViewQuestionList 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView1;
+        protected global::System.Web.UI.WebControls.GridView GridViewQuestionList;
+
+        /// <summary>
+        /// plcNoQuestions 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder plcNoQuestions;
+
+        /// <summary>
+        /// Literal1 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal Literal1;
 
         /// <summary>
         /// btnCancel2 控制項。
@@ -168,21 +222,21 @@ namespace 動態問卷.SystemAdmin
         protected global::System.Web.UI.WebControls.Button btnSubmit2;
 
         /// <summary>
-        /// page3 控制項。
+        /// page03 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder page3;
+        protected global::System.Web.UI.WebControls.PlaceHolder page03;
 
         /// <summary>
-        /// page4 控制項。
+        /// page04 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder page4;
+        protected global::System.Web.UI.WebControls.PlaceHolder page04;
     }
 }

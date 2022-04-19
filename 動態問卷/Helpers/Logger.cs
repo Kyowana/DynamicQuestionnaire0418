@@ -8,7 +8,7 @@ namespace 動態問卷.Helpers
 {
     public class Logger
     {
-        private const string _savePath = "";
+        private const string _savePath = "D:\\CSharpClass\\log.log";
         public static void WriteLog(string moduleName, Exception ex)
         {
             string content = "";
