@@ -38,7 +38,7 @@
             回答<asp:TextBox ID="txtAnswer" runat="server"></asp:TextBox>
             <asp:Button ID="btnAdd" runat="server" Text="加入" OnClick="btnAdd_Click" /><br />
 
-            <asp:GridView ID="GridViewQuestionList" runat="server">
+            <asp:GridView ID="GridViewQuestionList" runat="server" AutoGenerateColumns="False">
                 <Columns>
                     <asp:BoundField DataField="QuestionNumber" HeaderText="#" />
                     <asp:BoundField DataField="Question" HeaderText="問題" />

@@ -125,14 +125,14 @@ namespace 動態問卷.Managers
                 throw;
             }
         }
-        public void CreateQuestion(List<QuestionModel> qList)
+        public void CreateQuestion(QuestionModel q)
         {
             string connStr = ConfigHelper.GetConnectionString();
             string commandText =
                 @"  INSERT INTO [Questions] 
-                        (QID, Question, QType, IsRequired, CreateDate)
+                        (QID, QuestionID, Question, QType, IsRequired, CreateDate)
                     VALUES  
-                        (@QID, @Question, @QType, @IsRequired, @CreateDate) ";
+                        (@QID, @QuestionID, @Question, @QType, @IsRequired, @CreateDate) ";
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
@@ -141,15 +141,16 @@ namespace 動態問卷.Managers
                     {
                         conn.Open();
 
-                        foreach (var item in qList)
-                        {
-                            command.Parameters.AddWithValue("@QID", item.QID);
-                            command.Parameters.AddWithValue("@Question", item.Question);
-                            command.Parameters.AddWithValue("@QType", item.QType);
-                            command.Parameters.AddWithValue("@IsRequired", item.IsRequired);
-                            command.Parameters.AddWithValue("@CreateDate", item.CreateDate);
+                        //foreach (var item in qList)
+                        //{
+                            command.Parameters.AddWithValue("@QuestionID", q.QuestionID);
+                            command.Parameters.AddWithValue("@QID", q.QID);
+                            command.Parameters.AddWithValue("@Question", q.Question);
+                            command.Parameters.AddWithValue("@QType", q.QType);
+                            command.Parameters.AddWithValue("@IsRequired", q.IsRequired);
+                            command.Parameters.AddWithValue("@CreateDate", q.CreateDate);
 
-                        }
+                        //}
 
                         command.ExecuteNonQuery();
                     }

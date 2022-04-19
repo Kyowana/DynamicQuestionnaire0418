@@ -13,7 +13,7 @@ namespace 動態問卷.SystemAdmin
     {
         private QuestionnaireManager _qMgr = new QuestionnaireManager();
         private Guid _QID;
-        private List<QuestionModel> _questionList;
+        private List<QuestionModel> _questionList = new List<QuestionModel>();
         private SummaryModel _qs;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -22,6 +22,11 @@ namespace 動態問卷.SystemAdmin
                 _QID = (Guid)HttpContext.Current.Session["ID"];
 
             _qs = HttpContext.Current.Session["Summary"] as SummaryModel;
+
+            if (HttpContext.Current.Session["AddList"] != null)
+                _questionList = HttpContext.Current.Session["AddList"] as List<QuestionModel>;
+            else
+                _questionList = new List<QuestionModel>();
 
             // !isPostback
             if (!this.IsPostBack)
@@ -46,21 +51,25 @@ namespace 動態問卷.SystemAdmin
                     // Create mode
                     Guid newquestionnaireID = Guid.NewGuid();
                     HttpContext.Current.Session["ID"] = newquestionnaireID;
-                    
+
                 }
 
             }
 
             // Postback
             // 顯示在下方Grid (ajax)
-            _questionList = HttpContext.Current.Session["AddList"] as List<QuestionModel>;
+            //_questionList = HttpContext.Current.Session["AddList"] as List<QuestionModel>;
             if (_questionList != null)
             {
-                this.GridViewQuestionList.DataSource = _questionList;
-                this.GridViewQuestionList.DataBind();
-
+                InitQuestionsList();
             }
 
+        }
+
+        private void InitQuestionsList()
+        {
+            this.GridViewQuestionList.DataSource = _questionList;
+            this.GridViewQuestionList.DataBind();
         }
 
         protected void btnAdd_Click(object sender, EventArgs e)
@@ -68,10 +77,11 @@ namespace 動態問卷.SystemAdmin
             this.page01.Visible = false;
             this.page02.Visible = true;
 
-            _questionList = new List<QuestionModel>();
+            //_questionList = new List<QuestionModel>();
             QuestionModel q = new QuestionModel()
             {
                 QID = _QID,
+                QuestionID = Guid.NewGuid(),
                 Question = this.txtQuestion.Text,
                 QType = Convert.ToInt32(this.ddlQtype.SelectedValue),
                 IsRequired = this.ckbRequired.Checked,
@@ -81,7 +91,7 @@ namespace 動態問卷.SystemAdmin
             _questionList.Add(q);
             HttpContext.Current.Session["AddList"] = _questionList;
 
-            
+            InitQuestionsList();
 
 
 
@@ -108,7 +118,12 @@ namespace 動態問卷.SystemAdmin
         protected void btnSubmit2_Click(object sender, EventArgs e)
         {
             _qMgr.CreateQuestionnaire(_qs);
-            _qMgr.CreateQuestion(_questionList);
+
+            foreach (var item in _questionList)
+            {
+                _qMgr.CreateQuestion(item);
+
+            }
             this.page02.Visible = false;
             this.page03.Visible = true;
         }
