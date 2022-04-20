@@ -14,11 +14,12 @@ namespace 動態問卷.SystemAdmin
         private QuestionnaireManager _qMgr = new QuestionnaireManager();
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
 
             List<SummaryModel> qList = _qMgr.GetQList();
-            this.rptFormList.DataSource = qList;
-            this.rptFormList.DataBind();
+            this.GridQList.DataSource = qList;
+            this.GridQList.DataBind();
+
         }
 
         protected void rptFormList_ItemCommand(object source, RepeaterCommandEventArgs e)

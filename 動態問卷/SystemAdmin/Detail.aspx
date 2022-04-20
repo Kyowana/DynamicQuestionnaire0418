@@ -21,8 +21,9 @@
         </asp:PlaceHolder>
 
         <asp:PlaceHolder ID="page02" runat="server" Visible="false">
+            <asp:HiddenField ID="hfNowQuestionID" runat="server" Value="" />
             問題<asp:TextBox ID="txtQuestion" runat="server"></asp:TextBox>                
-            <asp:DropDownList ID="ddlQtype" runat="server" OnSelectedIndexChanged="ddlQtype_SelectedIndexChanged">
+            <asp:DropDownList ID="ddlQtype" runat="server">
                 <asp:ListItem Value="1">單選方塊</asp:ListItem>
                 <asp:ListItem Value="2">核取方塊</asp:ListItem>
                 <asp:ListItem Value="3">單行輸入</asp:ListItem>
@@ -31,14 +32,12 @@
                 <asp:ListItem Value="6">日期</asp:ListItem>
             </asp:DropDownList>
             <asp:CheckBox ID="ckbRequired" runat="server" Text="必填" /><br />
-            <asp:PlaceHolder ID="plcOptions" runat="server" Visible="true">
-                新增<asp:TextBox ID="txtCtlNumber" runat="server" TextMode="Number">3</asp:TextBox>個選項<br />
-                <asp:Button ID="btnAddOptions" runat="server" Text="確定新增" OnClick="btnAddOptions_Click" />
-            </asp:PlaceHolder><br />
-            回答<asp:TextBox ID="txtAnswer" runat="server"></asp:TextBox>
+            
+            回答<asp:TextBox ID="txtAnswer" runat="server"></asp:TextBox> (多個答案以;分隔) 
             <asp:Button ID="btnAdd" runat="server" Text="加入" OnClick="btnAdd_Click" /><br />
+            <asp:Label ID="lblMsg" runat="server" Text="請輸入回答選項" ForeColor="Red" Visible="false"></asp:Label><br />
 
-            <asp:GridView ID="GridViewQuestionList" runat="server" AutoGenerateColumns="False">
+            <asp:GridView ID="GridViewQuestionList" runat="server" AutoGenerateColumns="False" OnRowCommand="GridViewQuestionList_RowCommand">
                 <Columns>
                     <asp:BoundField DataField="QuestionNumber" HeaderText="#" />
                     <asp:BoundField DataField="Question" HeaderText="問題" />
@@ -47,8 +46,8 @@
                     <asp:TemplateField>
                         <ItemTemplate>
                             <div>
-                                <input type="hidden" class="hfID" value="<%# Eval("QuestionID") %>" />
-                                <button runat="server" id="btnEdit" type="button">編輯</button>
+                                <%--<button runat="server" id="btnEdit" type="button">編輯</button>--%>
+                                <asp:Button ID="btnEdit" runat="server" Text="編輯" CommandName="EditButton" CommandArgument='<%# Eval("QuestionID") %>' UseSubmitBehavior="False" />
                             </div>
                         </ItemTemplate>
                     </asp:TemplateField>

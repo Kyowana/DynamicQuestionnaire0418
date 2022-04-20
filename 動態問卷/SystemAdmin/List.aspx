@@ -18,33 +18,26 @@
         <asp:Button ID="btnDelete" runat="server" Text="刪除" />
         <asp:Button ID="btnCreate" runat="server" Text="新增" />
 
-        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSource1">
-            <Columns>
-                <asp:CommandField ShowSelectButton="True" />
-                <asp:BoundField DataField="SerialNumber" HeaderText="#" InsertVisible="False" ReadOnly="True" SortExpression="SerialNumber" />
-                <asp:BoundField DataField="Caption" HeaderText="問卷" SortExpression="Caption" />
-                <asp:CheckBoxField DataField="ViewLimit" HeaderText="狀態" SortExpression="ViewLimit" />
-                <asp:BoundField DataField="StartDate" HeaderText="開始時間" SortExpression="StartDate" />
-                <asp:BoundField DataField="EndDate" HeaderText="結束時間" SortExpression="EndDate" />
-            </Columns>
-        </asp:GridView>
+        <asp:GridView ID="GridQList" runat="server" AutoGenerateColumns="False">
+                <Columns>
+                    <asp:BoundField DataField="SerialNumber" HeaderText="#" />
+                    <asp:TemplateField HeaderText="問卷">
+                        <ItemTemplate>
+                            <a href="Detail.aspx?ID=<%# Eval("QID") %>"><%# Eval("Caption") %></a>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:BoundField DataField="ViewLimit" HeaderText="狀態" />
+                    <asp:BoundField DataField="StartDate" HeaderText="開始時間" DataFormatString="{0:d}" />
+                    <asp:BoundField DataField="EndDate" HeaderText="結束時間" DataFormatString="{0:d}" />
+                    <asp:TemplateField HeaderText="觀看統計">
+                        <ItemTemplate>
+                            <a href="Detail.aspx?ID=<%# Eval("QID") %>">前往</a>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+            </asp:GridView>
 
-        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:DynamicQuestionnaireConnectionString %>" SelectCommand="SELECT [Caption], [StartDate], [EndDate], [ViewLimit], [SerialNumber] FROM [QSummarys]"></asp:SqlDataSource>
-
-        <asp:Repeater ID="rptFormList" runat="server" OnItemCommand="rptFormList_ItemCommand">
-            <HeaderTemplate>
-                # \n
-            </HeaderTemplate>
-            <ItemTemplate>
-                <asp:CheckBox ID="chbDel" runat="server" />
-                <%# Eval("QID") %>
-                <%# Eval("ViewLimit") %>
-                <%# Eval("StartDate") %>
-                <%# Eval("EndDate") %>
-                <%# Eval("QID") %>
-
-            </ItemTemplate>
-        </asp:Repeater>
+        
     </div>
     </form>
 </body>

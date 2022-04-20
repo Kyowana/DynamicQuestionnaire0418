@@ -16,7 +16,7 @@ namespace 動態問卷.Managers
             string commandText =
                 $@"  SELECT *
                      FROM [QSummarys]
-                     ORDER BY CreateTime DESC";
+                     ORDER BY SerialNumber DESC ";
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
@@ -32,6 +32,7 @@ namespace 動態問卷.Managers
                             SummaryModel qSummary = new SummaryModel()
                             {
                                 QID = (Guid)reader["QID"],
+                                SerialNumber = (int)reader["SerialNumber"],
                                 ViewLimit = (bool)reader["ViewLimit"],
                                 Caption = reader["Caption"] as string,
                                 Description = reader["Description"] as string,
@@ -75,6 +76,7 @@ namespace 動態問卷.Managers
                                 QID = (Guid)reader["QID"],
                                 QuestionID = (Guid)reader["QuestionID"],
                                 Question = reader["Question"] as string,
+                                AnswerOption = reader["AnswerOption"] as string,
                                 QType = (int)reader["QType"],
                                 IsRequired = (bool)reader["IsRequired"],
                                 CreateDate = (DateTime)reader["CreateDate"]
@@ -108,12 +110,12 @@ namespace 動態問卷.Managers
                     {
                         conn.Open();
 
-                            command.Parameters.AddWithValue("@QID", qSummary.QID);
-                            command.Parameters.AddWithValue("@Caption", qSummary.Caption);
-                            command.Parameters.AddWithValue("@Description", qSummary.Description);
-                            command.Parameters.AddWithValue("@StartDate", qSummary.StartDate);
-                            command.Parameters.AddWithValue("@EndDate", qSummary.EndDate);
-                            command.Parameters.AddWithValue("@ViewLimit", qSummary.ViewLimit);
+                        command.Parameters.AddWithValue("@QID", qSummary.QID);
+                        command.Parameters.AddWithValue("@Caption", qSummary.Caption);
+                        command.Parameters.AddWithValue("@Description", qSummary.Description);
+                        command.Parameters.AddWithValue("@StartDate", qSummary.StartDate);
+                        command.Parameters.AddWithValue("@EndDate", qSummary.EndDate);
+                        command.Parameters.AddWithValue("@ViewLimit", qSummary.ViewLimit);
 
                         command.ExecuteNonQuery();
                     }
@@ -130,9 +132,9 @@ namespace 動態問卷.Managers
             string connStr = ConfigHelper.GetConnectionString();
             string commandText =
                 @"  INSERT INTO [Questions] 
-                        (QID, QuestionID, Question, QType, IsRequired, CreateDate)
+                        (QID, QuestionID, Question, AnswerOption, QType, IsRequired, CreateDate)
                     VALUES  
-                        (@QID, @QuestionID, @Question, @QType, @IsRequired, @CreateDate) ";
+                        (@QID, @QuestionID, @Question, @AnswerOption, @QType, @IsRequired, @CreateDate) ";
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
@@ -140,17 +142,13 @@ namespace 動態問卷.Managers
                     using (SqlCommand command = new SqlCommand(commandText, conn))
                     {
                         conn.Open();
-
-                        //foreach (var item in qList)
-                        //{
-                            command.Parameters.AddWithValue("@QuestionID", q.QuestionID);
-                            command.Parameters.AddWithValue("@QID", q.QID);
-                            command.Parameters.AddWithValue("@Question", q.Question);
-                            command.Parameters.AddWithValue("@QType", q.QType);
-                            command.Parameters.AddWithValue("@IsRequired", q.IsRequired);
-                            command.Parameters.AddWithValue("@CreateDate", q.CreateDate);
-
-                        //}
+                        command.Parameters.AddWithValue("@QuestionID", q.QuestionID);
+                        command.Parameters.AddWithValue("@QID", q.QID);
+                        command.Parameters.AddWithValue("@Question", q.Question);
+                        command.Parameters.AddWithValue("@AnswerOption", q.AnswerOption);
+                        command.Parameters.AddWithValue("@QType", q.QType);
+                        command.Parameters.AddWithValue("@IsRequired", q.IsRequired);
+                        command.Parameters.AddWithValue("@CreateDate", q.CreateDate);
 
                         command.ExecuteNonQuery();
                     }

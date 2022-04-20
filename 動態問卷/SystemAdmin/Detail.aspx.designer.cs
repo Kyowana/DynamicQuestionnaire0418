@@ -105,6 +105,15 @@ namespace 動態問卷.SystemAdmin
         protected global::System.Web.UI.WebControls.PlaceHolder page02;
 
         /// <summary>
+        /// hfNowQuestionID 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfNowQuestionID;
+
+        /// <summary>
         /// txtQuestion 控制項。
         /// </summary>
         /// <remarks>
@@ -132,33 +141,6 @@ namespace 動態問卷.SystemAdmin
         protected global::System.Web.UI.WebControls.CheckBox ckbRequired;
 
         /// <summary>
-        /// plcOptions 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder plcOptions;
-
-        /// <summary>
-        /// txtCtlNumber 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCtlNumber;
-
-        /// <summary>
-        /// btnAddOptions 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddOptions;
-
-        /// <summary>
         /// txtAnswer 控制項。
         /// </summary>
         /// <remarks>
@@ -175,6 +157,15 @@ namespace 動態問卷.SystemAdmin
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAdd;
+
+        /// <summary>
+        /// lblMsg 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMsg;
 
         /// <summary>
         /// GridViewQuestionList 控制項。

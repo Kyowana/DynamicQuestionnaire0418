@@ -58,7 +58,6 @@ namespace 動態問卷.SystemAdmin
 
             // Postback
             // 顯示在下方Grid (ajax)
-            //_questionList = HttpContext.Current.Session["AddList"] as List<QuestionModel>;
             if (_questionList != null)
             {
                 InitQuestionsList();
@@ -77,19 +76,65 @@ namespace 動態問卷.SystemAdmin
             this.page01.Visible = false;
             this.page02.Visible = true;
 
+            if (this.ddlQtype.SelectedValue == "1" || this.ddlQtype.SelectedValue == "2" || this.ddlQtype.SelectedValue == "5")
+            {
+                if (string.IsNullOrWhiteSpace(this.txtAnswer.Text))
+                {
+                    this.lblMsg.Visible = true;
+                    return;
+                }
+                else
+                    this.lblMsg.Visible = false;
+            }
+
             //_questionList = new List<QuestionModel>();
             QuestionModel q = new QuestionModel()
             {
                 QID = _QID,
                 QuestionID = Guid.NewGuid(),
                 Question = this.txtQuestion.Text,
+                AnswerOption = this.txtAnswer.Text,
                 QType = Convert.ToInt32(this.ddlQtype.SelectedValue),
                 IsRequired = this.ckbRequired.Checked,
                 CreateDate = DateTime.Now
             };
 
-            _questionList.Add(q);
+            // 放一個hf存現在編輯中的問題ID
+            // 檢查list內是否已有此ID
+            if (string.IsNullOrWhiteSpace(this.hfNowQuestionID.Value))
+            {
+                // 有: 編輯問題
+                if (_questionList.Exists(x => x.QuestionID.ToString() == this.hfNowQuestionID.Value))
+                {
+                    QuestionModel question = _questionList.Find(x => x.QuestionID.ToString().Contains(this.hfNowQuestionID.Value));
+                    if (Guid.TryParse(this.hfNowQuestionID.Value, out Guid nowQuestionID))
+                    {
+                        question = new QuestionModel()
+                        {
+                            QID = _QID,
+                            QuestionID = nowQuestionID,
+                            Question = this.txtQuestion.Text,
+                            AnswerOption = this.txtAnswer.Text,
+                            QType = Convert.ToInt32(this.ddlQtype.SelectedValue),
+                            IsRequired = this.ckbRequired.Checked,
+                            CreateDate = DateTime.Now
+                        };
+
+                    }
+                }
+            }
+            else
+            {
+                // 無: 新增問題
+                _questionList.Add(q);
+            }
             HttpContext.Current.Session["AddList"] = _questionList;
+
+            // 清空輸入框內容
+            this.hfNowQuestionID.Value = "";
+            this.txtQuestion.Text = "";
+            this.txtAnswer.Text = "";
+            this.ddlQtype.SelectedValue = "1";
 
             InitQuestionsList();
 
@@ -128,26 +173,22 @@ namespace 動態問卷.SystemAdmin
             this.page03.Visible = true;
         }
 
-        protected void ddlQtype_SelectedIndexChanged(object sender, EventArgs e)
+        protected void GridViewQuestionList_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            //// 如何立即改變??
+            this.page01.Visible = false;
+            this.page02.Visible = true;
 
-            //if (this.ddlQtype.SelectedValue == "1" || this.ddlQtype.SelectedValue == "2")
-            //    this.plcOptions.Visible = true;
-            //else
-            //    this.plcOptions.Visible = false;
-
-        }
-
-        protected void btnAddOptions_Click(object sender, EventArgs e)
-        {
-            int n = Convert.ToInt32(this.txtCtlNumber.Text);
-            for (int i = 0; i < n; i++)
+            if (e.CommandName == "EditButton")
             {
-                this.plcOptions.Controls.Add(new Literal() { ID = "ltl" + i, Text = "<br />第" + (i + 1) + "個選項" });
-                this.plcOptions.Controls.Add(new TextBox() { ID = "txtOption" + i });
+                string commentIdText = e.CommandArgument as string;
+                QuestionModel question = _questionList.Find(x => x.QuestionID.ToString().Contains(commentIdText));
+
+                // 將值帶回上方
+                this.txtQuestion.Text = question.Question;
+                this.txtAnswer.Text = question.AnswerOption;
+                this.ddlQtype.SelectedValue = question.QType.ToString();
+                this.hfNowQuestionID.Value = question.QuestionID.ToString();
             }
-            // 加入清除鈕
 
         }
     }
