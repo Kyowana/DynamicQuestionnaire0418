@@ -29,24 +29,32 @@ namespace 動態問卷.SystemAdmin
                 _questionList = new List<QuestionModel>();
 
             // !isPostback
-            if (!this.IsPostBack)
+            //if (!this.IsPostBack)
+            //{
+            if (Guid.TryParse(questionnaireIDString, out Guid questionnaireID))
             {
-                if (Guid.TryParse(questionnaireIDString, out Guid questionnaireID))
-                {
-                    // Edit mode
-                    _QID = questionnaireID;
-                    List<QuestionModel> questionList = _qMgr.GetQuestionsList(questionnaireID);
-                    if (questionList != null)
-                    {
-                        this.GridViewQuestionList.DataSource = questionList;
-                        this.GridViewQuestionList.DataBind();
-                    }
-                    else
-                    {
-                        this.plcNoQuestions.Visible = true;
-                    }
-                }
-                else
+                // Edit mode
+                _QID = questionnaireID;
+                _qs = _qMgr.GetQuestionnaireSummary(questionnaireID);
+                _questionList = _qMgr.GetQuestionsList(questionnaireID);
+                this.txtCaption.Text = _qs.Caption;
+                this.txtDescription.Text = _qs.Description;
+                this.txtStartDate.Text = _qs.StartDate.ToString("yyyy-MM-dd");
+                this.txtEndDate.Text = _qs.EndDate.ToString("yyyy-MM-dd");
+                this.ckbLimit.Checked = _qs.ViewLimit;
+                //if (_questionList != null)
+                //{
+                //    this.GridViewQuestionList.DataSource = _questionList;
+                //    this.GridViewQuestionList.DataBind();
+                //}
+                //else
+                //{
+                //    this.plcNoQuestions.Visible = true;
+                //}
+            }
+            else
+            {
+                if (!this.IsPostBack)
                 {
                     // Create mode
                     Guid newquestionnaireID = Guid.NewGuid();
@@ -56,12 +64,14 @@ namespace 動態問卷.SystemAdmin
 
             }
 
+            //}
+
             // Postback
             // 顯示在下方Grid (ajax)
             if (_questionList != null)
-            {
                 InitQuestionsList();
-            }
+            else
+                this.plcNoQuestions.Visible = true;
 
         }
 
@@ -86,6 +96,11 @@ namespace 動態問卷.SystemAdmin
                 else
                     this.lblMsg.Visible = false;
             }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(this.txtAnswer.Text))
+                    this.txtAnswer.Text = "";
+            }
 
             //_questionList = new List<QuestionModel>();
             QuestionModel q = new QuestionModel()
@@ -101,12 +116,14 @@ namespace 動態問卷.SystemAdmin
 
             // 放一個hf存現在編輯中的問題ID
             // 檢查list內是否已有此ID
-            if (string.IsNullOrWhiteSpace(this.hfNowQuestionID.Value))
+            if (!string.IsNullOrWhiteSpace(this.hfNowQuestionID.Value))
             {
                 // 有: 編輯問題
                 if (_questionList.Exists(x => x.QuestionID.ToString() == this.hfNowQuestionID.Value))
                 {
                     QuestionModel question = _questionList.Find(x => x.QuestionID.ToString().Contains(this.hfNowQuestionID.Value));
+                    _questionList.Remove(question);
+
                     if (Guid.TryParse(this.hfNowQuestionID.Value, out Guid nowQuestionID))
                     {
                         question = new QuestionModel()
@@ -119,7 +136,7 @@ namespace 動態問卷.SystemAdmin
                             IsRequired = this.ckbRequired.Checked,
                             CreateDate = DateTime.Now
                         };
-
+                        _questionList.Add(question);
                     }
                 }
             }
@@ -162,13 +179,29 @@ namespace 動態問卷.SystemAdmin
 
         protected void btnSubmit2_Click(object sender, EventArgs e)
         {
-            _qMgr.CreateQuestionnaire(_qs);
-
-            foreach (var item in _questionList)
+            if (_qMgr.GetQuestionnaireSummary(_qs.QID) == null)
             {
-                _qMgr.CreateQuestion(item);
+                // 若不存在此QID
+                _qMgr.CreateQuestionnaire(_qs);
+
+                foreach (var item in _questionList)
+                {
+                    _qMgr.CreateQuestion(item);
+
+                }
+            }
+            else
+            {
+                // 若存在此QID
+
+                // UPDATE Summary
+
+                // foreach→create or update
 
             }
+
+
+
             this.page02.Visible = false;
             this.page03.Visible = true;
         }

@@ -22,9 +22,9 @@ namespace 動態問卷.SystemAdmin
 
         }
 
-        protected void rptFormList_ItemCommand(object source, RepeaterCommandEventArgs e)
+        protected void btnCreate_Click(object sender, EventArgs e)
         {
-            //if ()
+            Response.Redirect("Detail.aspx");
         }
     }
 }

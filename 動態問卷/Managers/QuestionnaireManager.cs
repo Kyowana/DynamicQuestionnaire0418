@@ -58,7 +58,7 @@ namespace 動態問卷.Managers
                 $@"  SELECT *
                      FROM [Questions]
                      WHERE QID = @QID
-                     ORDER BY CreateTime ";
+                     ORDER BY CreateDate ";
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
@@ -66,15 +66,18 @@ namespace 動態問卷.Managers
                     using (SqlCommand command = new SqlCommand(commandText, conn))
                     {
                         conn.Open();
+                        command.Parameters.AddWithValue("@QID", questionnaireID);
                         SqlDataReader reader = command.ExecuteReader();
 
                         List<QuestionModel> questionsList = new List<QuestionModel>();
                         while (reader.Read())
                         {
+
                             QuestionModel question = new QuestionModel()
                             {
                                 QID = (Guid)reader["QID"],
                                 QuestionID = (Guid)reader["QuestionID"],
+                                //QuestionNumber = (int)reader["QuestionNumber"],
                                 Question = reader["Question"] as string,
                                 AnswerOption = reader["AnswerOption"] as string,
                                 QType = (int)reader["QType"],
@@ -90,6 +93,46 @@ namespace 動態問卷.Managers
             catch (Exception ex)
             {
                 Logger.WriteLog("QuestionnaireManager.GetQuestionsList", ex);
+                throw;
+            }
+        }
+        public SummaryModel GetQuestionnaireSummary(Guid questionnaireID)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                $@"  SELECT *
+                     FROM [QSummarys]
+                     WHERE QID = @QID ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        conn.Open();
+                        command.Parameters.AddWithValue("@QID", questionnaireID);
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        SummaryModel summary = new SummaryModel();
+                        if(reader.Read())
+                        {
+                            summary = new SummaryModel()
+                            {
+                                QID = (Guid)reader["QID"],
+                                Caption = reader["Caption"] as string,
+                                Description = reader["Description"] as string,
+                                StartDate = (DateTime)reader["StartDate"],
+                                EndDate = (DateTime)reader["EndDate"],
+                                ViewLimit = (bool)reader["ViewLimit"]
+                            };
+                        }
+                        return summary;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnaireManager.GetQuestionnaireSummary", ex);
                 throw;
             }
         }
@@ -113,8 +156,8 @@ namespace 動態問卷.Managers
                         command.Parameters.AddWithValue("@QID", qSummary.QID);
                         command.Parameters.AddWithValue("@Caption", qSummary.Caption);
                         command.Parameters.AddWithValue("@Description", qSummary.Description);
-                        command.Parameters.AddWithValue("@StartDate", qSummary.StartDate);
-                        command.Parameters.AddWithValue("@EndDate", qSummary.EndDate);
+                        command.Parameters.AddWithValue("@StartDate", qSummary.StartDate.ToString("yyyy/MM/dd"));
+                        command.Parameters.AddWithValue("@EndDate", qSummary.EndDate.ToString("yyyy/MM/dd"));
                         command.Parameters.AddWithValue("@ViewLimit", qSummary.ViewLimit);
 
                         command.ExecuteNonQuery();

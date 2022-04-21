@@ -16,7 +16,7 @@
     </div>
     <div>
         <asp:Button ID="btnDelete" runat="server" Text="刪除" />
-        <asp:Button ID="btnCreate" runat="server" Text="新增" />
+        <asp:Button ID="btnCreate" runat="server" Text="新增" OnClick="btnCreate_Click" />
 
         <asp:GridView ID="GridQList" runat="server" AutoGenerateColumns="False">
                 <Columns>
