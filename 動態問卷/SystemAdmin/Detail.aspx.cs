@@ -15,6 +15,7 @@ namespace 動態問卷.SystemAdmin
         private Guid _QID;
         private List<QuestionModel> _questionList = new List<QuestionModel>();
         private SummaryModel _qs;
+        private static bool _isEditMode;
         protected void Page_Load(object sender, EventArgs e)
         {
             string questionnaireIDString = Request.QueryString["ID"];
@@ -34,6 +35,7 @@ namespace 動態問卷.SystemAdmin
             if (Guid.TryParse(questionnaireIDString, out Guid questionnaireID))
             {
                 // Edit mode
+                _isEditMode = true;
                 _QID = questionnaireID;
                 _qs = _qMgr.GetQuestionnaireSummary(questionnaireID);
                 _questionList = _qMgr.GetQuestionsList(questionnaireID);
@@ -54,6 +56,8 @@ namespace 動態問卷.SystemAdmin
             }
             else
             {
+                _isEditMode = false;
+
                 if (!this.IsPostBack)
                 {
                     // Create mode
@@ -179,9 +183,9 @@ namespace 動態問卷.SystemAdmin
 
         protected void btnSubmit2_Click(object sender, EventArgs e)
         {
-            if (_qMgr.GetQuestionnaireSummary(_qs.QID) == null)
+            if (!_isEditMode)
             {
-                // 若不存在此QID
+                // 若為新增問卷模式，直接新增問卷
                 _qMgr.CreateQuestionnaire(_qs);
 
                 foreach (var item in _questionList)
@@ -192,11 +196,20 @@ namespace 動態問卷.SystemAdmin
             }
             else
             {
-                // 若存在此QID
+                // 若為編輯模式
 
                 // UPDATE Summary
-
+                _qMgr.UpdateSummary(_qs);
                 // foreach→create or update
+                foreach (var item in _questionList)
+                {
+                    if (_qMgr.GetQuestions(item.QuestionID) != null)
+                    {
+                        _qMgr.UpdateQuestion(item);
+                    }
+                    else
+                        _qMgr.CreateQuestion(item);
+                }
 
             }
 

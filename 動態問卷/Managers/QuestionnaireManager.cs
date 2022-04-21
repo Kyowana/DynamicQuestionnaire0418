@@ -137,6 +137,42 @@ namespace 動態問卷.Managers
             }
         }
 
+        public QuestionModel GetQuestions(Guid questionID)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                $@"  SELECT *
+                     FROM [Questions]
+                     WHERE QuestionID = @QuestionID ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        conn.Open();
+                        command.Parameters.AddWithValue("@QuestionID", questionID);
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        QuestionModel question = new QuestionModel();
+                        if (reader.Read())
+                        {
+                            question = new QuestionModel()
+                            {
+                                QuestionID = (Guid)reader["QuestionID"],
+                            };
+                        }
+                        return question;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnaireManager.GetQuestionnaireSummary", ex);
+                throw;
+            }
+        }
+
         public void CreateQuestionnaire(SummaryModel qSummary)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -170,6 +206,40 @@ namespace 動態問卷.Managers
                 throw;
             }
         }
+        public void UpdateSummary(SummaryModel qSummary)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                @"  UPDATE [QSummarys] 
+                    SET Caption = @Caption, 
+                        Description = @Description,
+                        StartDate = @StartDate,
+                        EndDate = @EndDate,
+                        ViewLimit = @ViewLimit, 
+                    WHERE QID = @QID ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        conn.Open();
+                        command.Parameters.AddWithValue("@QID", qSummary.QID);
+                        command.Parameters.AddWithValue("@Caption", qSummary.Caption);
+                        command.Parameters.AddWithValue("@Description", qSummary.Description);
+                        command.Parameters.AddWithValue("@StartDate", qSummary.StartDate.ToString("yyyy/MM/dd"));
+                        command.Parameters.AddWithValue("@EndDate", qSummary.EndDate.ToString("yyyy/MM/dd"));
+                        command.Parameters.AddWithValue("@ViewLimit", qSummary.ViewLimit);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnaireManager.UpdateSummary", ex);
+                throw;
+            }
+        }
         public void CreateQuestion(QuestionModel q)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -200,6 +270,38 @@ namespace 動態問卷.Managers
             catch (Exception ex)
             {
                 Logger.WriteLog("QuestionnaireManager.CreateQuestion", ex);
+                throw;
+            }
+        }
+        public void UpdateQuestion(QuestionModel q)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                @"  UPDATE [Questions] 
+                    SET Question = @Question, 
+                        AnswerOption = @AnswerOption,
+                        QType = @QType,
+                        IsRequired = @IsRequired,
+                    WHERE QuestionID = @QuestionID ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        conn.Open();
+                        command.Parameters.AddWithValue("@QuestionID", q.QuestionID);
+                        command.Parameters.AddWithValue("@Question", q.Question);
+                        command.Parameters.AddWithValue("@AnswerOption", q.AnswerOption);
+                        command.Parameters.AddWithValue("@QType", q.QType);
+                        command.Parameters.AddWithValue("@IsRequired", q.IsRequired);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnaireManager.UpdateQuestion", ex);
                 throw;
             }
         }
