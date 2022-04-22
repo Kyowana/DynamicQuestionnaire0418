@@ -14,6 +14,7 @@ namespace 動態問卷.SystemAdmin
         private QuestionnaireManager _qMgr = new QuestionnaireManager();
         private Guid _QID;
         private List<QuestionModel> _questionList = new List<QuestionModel>();
+        private List<Guid> _delIdList = new List<Guid>();
         private SummaryModel _qs;
         private static bool _isEditMode;
         protected void Page_Load(object sender, EventArgs e)
@@ -23,6 +24,9 @@ namespace 動態問卷.SystemAdmin
                 _QID = (Guid)HttpContext.Current.Session["ID"];
 
             _qs = HttpContext.Current.Session["Summary"] as SummaryModel;
+
+            if (HttpContext.Current.Session["DeleteList"] != null)
+                _delIdList = HttpContext.Current.Session["DeleteList"] as List<Guid>;
 
             if (HttpContext.Current.Session["AddList"] != null)
                 _questionList = HttpContext.Current.Session["AddList"] as List<QuestionModel>;
@@ -43,6 +47,13 @@ namespace 動態問卷.SystemAdmin
                 else
                     _qs = _qMgr.GetQuestionnaireSummary(questionnaireID);
 
+                if (HttpContext.Current.Session["AddList"] != null)
+                    _questionList = HttpContext.Current.Session["AddList"] as List<QuestionModel>;
+                else
+                {
+                    _questionList = _qMgr.GetQuestionsList(questionnaireID);
+                    HttpContext.Current.Session["AddList"] = _questionList;
+                }
                 if (!IsPostBack)
                 {
                     this.txtCaption.Text = _qs.Caption;
@@ -50,12 +61,13 @@ namespace 動態問卷.SystemAdmin
                     this.txtStartDate.Text = _qs.StartDate.ToString("yyyy-MM-dd");
                     this.txtEndDate.Text = _qs.EndDate.ToString("yyyy-MM-dd");
                     this.ckbLimit.Checked = _qs.ViewLimit;
+
+                    if (_questionList.Count > 0)
+                        InitQuestionsList();
+                    else
+                        this.plcNoQuestions.Visible = true;
                 }
 
-                if (HttpContext.Current.Session["AddList"] != null)
-                    _questionList = HttpContext.Current.Session["AddList"] as List<QuestionModel>;
-                else
-                    _questionList = _qMgr.GetQuestionsList(questionnaireID);
 
                 //if (_questionList != null)
                 //{
@@ -77,6 +89,10 @@ namespace 動態問卷.SystemAdmin
                     Guid newquestionnaireID = Guid.NewGuid();
                     HttpContext.Current.Session["ID"] = newquestionnaireID;
 
+                    if (_questionList.Count > 0)
+                        InitQuestionsList();
+                    else
+                        this.plcNoQuestions.Visible = true;
                 }
 
             }
@@ -85,10 +101,10 @@ namespace 動態問卷.SystemAdmin
 
             // Postback
             // 顯示在下方Grid (ajax)
-            if (_questionList != null)
-                InitQuestionsList();
-            else
-                this.plcNoQuestions.Visible = true;
+            //if (_questionList.Count > 0)
+            //    InitQuestionsList();
+            //else
+            //    this.plcNoQuestions.Visible = true;
 
         }
 
@@ -201,26 +217,43 @@ namespace 動態問卷.SystemAdmin
             {
                 // 若為新增問卷模式，直接新增問卷
                 _qMgr.CreateQuestionnaire(_qs);
-
-                foreach (var item in _questionList)
+                if (_questionList.Count > 0)
                 {
-                    _qMgr.CreateQuestion(item);
-
+                    foreach (var item in _questionList)
+                    {
+                        _qMgr.CreateQuestion(item);
+                    }
                 }
             }
             else
             {
                 // 若為編輯模式
                 _qMgr.UpdateSummary(_qs);
-
-                foreach (var item in _questionList)
+                
+                if (_delIdList.Count > 0)
                 {
-                    if (_qMgr.GetQuestions(item.QuestionID) != null)
+                    foreach (var item in _delIdList)
                     {
-                        _qMgr.UpdateQuestion(item);
+                        if (_qMgr.GetQuestions(item) != null)
+                        {
+                            _qMgr.DeleteQuestion(item);
+                        }
                     }
-                    else
-                        _qMgr.CreateQuestion(item);
+
+                }
+
+                if (_questionList.Count > 0)
+                {
+                    foreach (var item in _questionList)
+                    {
+                        if (_qMgr.GetQuestions(item.QuestionID) != null)
+                        {
+                            _qMgr.UpdateQuestion(item);
+                        }
+                        else
+                            _qMgr.CreateQuestion(item);
+                    }
+
                 }
             }
 
@@ -246,6 +279,37 @@ namespace 動態問卷.SystemAdmin
                 this.hfNowQuestionID.Value = question.QuestionID.ToString();
             }
 
+        }
+
+        protected void btnDeleteQuestion_Click(object sender, EventArgs e)
+        {
+            List<Guid> deleteQuestionIdList = new List<Guid>();
+            foreach (GridViewRow gRow in this.GridViewQuestionList.Rows)
+            {
+                CheckBox ckbDel = gRow.FindControl("ckbDel") as CheckBox;
+                HiddenField hfID = gRow.FindControl("hfQuestionID") as HiddenField;
+
+                if (ckbDel != null && hfID != null)
+                {
+                    if (ckbDel.Checked)
+                    {
+                        if (Guid.TryParse(hfID.Value, out Guid id))
+                            deleteQuestionIdList.Add(id);
+                    }
+                }
+            }
+
+            if (deleteQuestionIdList.Count > 0)
+            {
+                foreach (var item in deleteQuestionIdList)
+                {
+                    QuestionModel question = _questionList.Find(x => x.QuestionID.ToString().Contains(item.ToString()));
+                    _questionList.Remove(question);
+                    _delIdList.Add(item);
+                }
+                HttpContext.Current.Session["DeleteList"] = _delIdList;
+            }
+            InitQuestionsList();
         }
     }
 }

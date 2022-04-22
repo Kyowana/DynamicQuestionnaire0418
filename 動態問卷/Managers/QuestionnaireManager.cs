@@ -241,6 +241,33 @@ namespace 動態問卷.Managers
                 throw;
             }
         }
+        public void DeleteSummary(Guid qID)
+        {
+            DeleteQuestionOfQuestionnaire(qID);
+
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                @"  DELETE FROM [QSummarys] 
+                    WHERE QID = @QID ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        conn.Open();
+                        command.Parameters.AddWithValue("@QID", qID);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnaireManager.DeleteSummary", ex);
+                throw;
+            }
+        }
+
         public void CreateQuestion(QuestionModel q)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -303,6 +330,56 @@ namespace 動態問卷.Managers
             catch (Exception ex)
             {
                 Logger.WriteLog("QuestionnaireManager.UpdateQuestion", ex);
+                throw;
+            }
+        }
+        public void DeleteQuestionOfQuestionnaire(Guid qID)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                @"  DELETE FROM [Questions] 
+                    WHERE
+                        QID = @QID ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        conn.Open();
+                        command.Parameters.AddWithValue("@QID", qID);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnaireManager.DeleteQuestionOfQuestionnaire", ex);
+                throw;
+            }
+        }
+        public void DeleteQuestion(Guid questionID)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                @"  DELETE FROM [Questions] 
+                    WHERE
+                        QuestionID = @QuestionID ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        conn.Open();
+                        command.Parameters.AddWithValue("@QuestionID", questionID);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnaireManager.DeleteQuestion", ex);
                 throw;
             }
         }

@@ -37,13 +37,21 @@
             <asp:Button ID="btnAdd" runat="server" Text="加入" OnClick="btnAdd_Click" /><br />
             <asp:Label ID="lblMsg" runat="server" Text="請輸入回答選項" ForeColor="Red" Visible="false"></asp:Label>
             <br />
+            <br />
+            <asp:Button ID="btnDeleteQuestion" runat="server" Text="刪除" OnClick="btnDeleteQuestion_Click" /><br />
 
             <asp:GridView ID="GridViewQuestionList" runat="server" AutoGenerateColumns="False" OnRowCommand="GridViewQuestionList_RowCommand">
                 <Columns>
+                    <asp:TemplateField>
+                        <ItemTemplate>
+                            <asp:CheckBox ID="ckbDel" runat="server" />
+                            <asp:HiddenField ID="hfQuestionID" runat="server" Value='<%# Eval("QuestionID") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
                     <asp:BoundField DataField="QuestionNumber" HeaderText="#" />
                     <asp:BoundField DataField="Question" HeaderText="問題" />
                     <asp:BoundField DataField="QType" HeaderText="種類" />
-                    <asp:BoundField DataField="IsRequired" HeaderText="必填" />
+                    <asp:CheckBoxField DataField="IsRequired" HeaderText="必填" />
                     <asp:TemplateField>
                         <ItemTemplate>
                             <div>
@@ -59,7 +67,7 @@
                     尚未新增問題
                 </asp:Literal>
             </asp:PlaceHolder>
-
+            <br />
             <asp:Button ID="btnCancel2" runat="server" Text="取消" />
             <asp:Button ID="btnSubmit2" runat="server" Text="送出" OnClick="btnSubmit2_Click" />
 
