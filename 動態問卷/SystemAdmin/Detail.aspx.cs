@@ -37,13 +37,26 @@ namespace 動態問卷.SystemAdmin
                 // Edit mode
                 _isEditMode = true;
                 _QID = questionnaireID;
-                _qs = _qMgr.GetQuestionnaireSummary(questionnaireID);
-                _questionList = _qMgr.GetQuestionsList(questionnaireID);
-                this.txtCaption.Text = _qs.Caption;
-                this.txtDescription.Text = _qs.Description;
-                this.txtStartDate.Text = _qs.StartDate.ToString("yyyy-MM-dd");
-                this.txtEndDate.Text = _qs.EndDate.ToString("yyyy-MM-dd");
-                this.ckbLimit.Checked = _qs.ViewLimit;
+
+                if (HttpContext.Current.Session["Summary"] != null)
+                    _qs = HttpContext.Current.Session["Summary"] as SummaryModel;
+                else
+                    _qs = _qMgr.GetQuestionnaireSummary(questionnaireID);
+
+                if (!IsPostBack)
+                {
+                    this.txtCaption.Text = _qs.Caption;
+                    this.txtDescription.Text = _qs.Description;
+                    this.txtStartDate.Text = _qs.StartDate.ToString("yyyy-MM-dd");
+                    this.txtEndDate.Text = _qs.EndDate.ToString("yyyy-MM-dd");
+                    this.ckbLimit.Checked = _qs.ViewLimit;
+                }
+
+                if (HttpContext.Current.Session["AddList"] != null)
+                    _questionList = HttpContext.Current.Session["AddList"] as List<QuestionModel>;
+                else
+                    _questionList = _qMgr.GetQuestionsList(questionnaireID);
+
                 //if (_questionList != null)
                 //{
                 //    this.GridViewQuestionList.DataSource = _questionList;
@@ -155,6 +168,7 @@ namespace 動態問卷.SystemAdmin
             this.hfNowQuestionID.Value = "";
             this.txtQuestion.Text = "";
             this.txtAnswer.Text = "";
+            this.ckbRequired.Checked = false;
             this.ddlQtype.SelectedValue = "1";
 
             InitQuestionsList();
@@ -197,10 +211,8 @@ namespace 動態問卷.SystemAdmin
             else
             {
                 // 若為編輯模式
-
-                // UPDATE Summary
                 _qMgr.UpdateSummary(_qs);
-                // foreach→create or update
+
                 foreach (var item in _questionList)
                 {
                     if (_qMgr.GetQuestions(item.QuestionID) != null)
@@ -210,10 +222,7 @@ namespace 動態問卷.SystemAdmin
                     else
                         _qMgr.CreateQuestion(item);
                 }
-
             }
-
-
 
             this.page02.Visible = false;
             this.page03.Visible = true;
@@ -232,6 +241,7 @@ namespace 動態問卷.SystemAdmin
                 // 將值帶回上方
                 this.txtQuestion.Text = question.Question;
                 this.txtAnswer.Text = question.AnswerOption;
+                this.ckbRequired.Checked = question.IsRequired;
                 this.ddlQtype.SelectedValue = question.QType.ToString();
                 this.hfNowQuestionID.Value = question.QuestionID.ToString();
             }

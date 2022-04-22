@@ -114,7 +114,7 @@ namespace 動態問卷.Managers
                         SqlDataReader reader = command.ExecuteReader();
 
                         SummaryModel summary = new SummaryModel();
-                        if(reader.Read())
+                        if (reader.Read())
                         {
                             summary = new SummaryModel()
                             {
@@ -161,8 +161,9 @@ namespace 動態問卷.Managers
                             {
                                 QuestionID = (Guid)reader["QuestionID"],
                             };
+                            return question;
                         }
-                        return question;
+                        return null;
                     }
                 }
             }
@@ -192,8 +193,8 @@ namespace 動態問卷.Managers
                         command.Parameters.AddWithValue("@QID", qSummary.QID);
                         command.Parameters.AddWithValue("@Caption", qSummary.Caption);
                         command.Parameters.AddWithValue("@Description", qSummary.Description);
-                        command.Parameters.AddWithValue("@StartDate", qSummary.StartDate.ToString("yyyy/MM/dd"));
-                        command.Parameters.AddWithValue("@EndDate", qSummary.EndDate.ToString("yyyy/MM/dd"));
+                        command.Parameters.AddWithValue("@StartDate", qSummary.StartDate);
+                        command.Parameters.AddWithValue("@EndDate", qSummary.EndDate);
                         command.Parameters.AddWithValue("@ViewLimit", qSummary.ViewLimit);
 
                         command.ExecuteNonQuery();
@@ -215,7 +216,7 @@ namespace 動態問卷.Managers
                         Description = @Description,
                         StartDate = @StartDate,
                         EndDate = @EndDate,
-                        ViewLimit = @ViewLimit, 
+                        ViewLimit = @ViewLimit
                     WHERE QID = @QID ";
             try
             {
@@ -281,7 +282,7 @@ namespace 動態問卷.Managers
                     SET Question = @Question, 
                         AnswerOption = @AnswerOption,
                         QType = @QType,
-                        IsRequired = @IsRequired,
+                        IsRequired = @IsRequired
                     WHERE QuestionID = @QuestionID ";
             try
             {
