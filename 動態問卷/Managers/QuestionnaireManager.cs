@@ -137,7 +137,7 @@ namespace 動態問卷.Managers
             }
         }
 
-        public QuestionModel GetQuestions(Guid questionID)
+        public QuestionModel FindQuestion(Guid questionID)
         {
             string connStr = ConfigHelper.GetConnectionString();
             string commandText =
@@ -160,6 +160,7 @@ namespace 動態問卷.Managers
                             question = new QuestionModel()
                             {
                                 QuestionID = (Guid)reader["QuestionID"],
+
                             };
                             return question;
                         }
@@ -169,10 +170,53 @@ namespace 動態問卷.Managers
             }
             catch (Exception ex)
             {
-                Logger.WriteLog("QuestionnaireManager.GetQuestionnaireSummary", ex);
+                Logger.WriteLog("QuestionnaireManager.FindQuestion", ex);
                 throw;
             }
         }
+        //public QuestionModel GetQuestions(Guid qID)
+        //{
+        //    string connStr = ConfigHelper.GetConnectionString();
+        //    string commandText =
+        //        $@"  SELECT *
+        //             FROM [Questions]
+        //             WHERE QID = @QID ";
+        //    try
+        //    {
+        //        using (SqlConnection conn = new SqlConnection(connStr))
+        //        {
+        //            using (SqlCommand command = new SqlCommand(commandText, conn))
+        //            {
+        //                conn.Open();
+        //                command.Parameters.AddWithValue("@QID", qID);
+        //                SqlDataReader reader = command.ExecuteReader();
+
+        //                QuestionModel question = new QuestionModel();
+        //                while (reader.Read())
+        //                {
+        //                    question = new QuestionModel()
+        //                    {
+        //                        QID = (Guid)reader["QID"],
+        //                        QuestionID = (Guid)reader["QuestionID"],
+        //                        //QuestionNumber = (int)reader["QuestionNumber"],
+        //                        Question = reader["Question"] as string,
+        //                        AnswerOption = reader["AnswerOption"] as string,
+        //                        QType = (int)reader["QType"],
+        //                        IsRequired = (bool)reader["IsRequired"],
+        //                        CreateDate = (DateTime)reader["CreateDate"]
+        //                    };
+        //                    return question;
+        //                }
+        //                return null;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logger.WriteLog("QuestionnaireManager.GetQuestions", ex);
+        //        throw;
+        //    }
+        //}
 
         public void CreateQuestionnaire(SummaryModel qSummary)
         {

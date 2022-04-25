@@ -234,7 +234,7 @@ namespace 動態問卷.SystemAdmin
                 {
                     foreach (var item in _delIdList)
                     {
-                        if (_qMgr.GetQuestions(item) != null)
+                        if (_qMgr.FindQuestion(item) != null)
                         {
                             _qMgr.DeleteQuestion(item);
                         }
@@ -246,7 +246,7 @@ namespace 動態問卷.SystemAdmin
                 {
                     foreach (var item in _questionList)
                     {
-                        if (_qMgr.GetQuestions(item.QuestionID) != null)
+                        if (_qMgr.FindQuestion(item.QuestionID) != null)
                         {
                             _qMgr.UpdateQuestion(item);
                         }
