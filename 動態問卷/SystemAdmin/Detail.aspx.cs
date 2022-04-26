@@ -119,7 +119,7 @@ namespace 動態問卷.SystemAdmin
             this.page01.Visible = false;
             this.page02.Visible = true;
 
-            if (this.ddlQtype.SelectedValue == "1" || this.ddlQtype.SelectedValue == "2" || this.ddlQtype.SelectedValue == "5")
+            if (this.ddlQtype.SelectedValue == "1" || this.ddlQtype.SelectedValue == "2")
             {
                 if (string.IsNullOrWhiteSpace(this.txtAnswer.Text))
                 {
@@ -310,6 +310,11 @@ namespace 動態問卷.SystemAdmin
                 HttpContext.Current.Session["DeleteList"] = _delIdList;
             }
             InitQuestionsList();
+        }
+
+        protected void btnCancel1_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("List.aspx");
         }
     }
 }

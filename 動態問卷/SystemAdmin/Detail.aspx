@@ -16,7 +16,7 @@
             開始時間<asp:TextBox ID="txtStartDate" runat="server" TextMode="Date" /><br />
             結束時間<asp:TextBox ID="txtEndDate" runat="server" TextMode="Date" /><br />
             已啟用<asp:CheckBox ID="ckbLimit" runat="server" /><br />
-            <asp:Button ID="btnCancel1" runat="server" Text="取消" />
+            <asp:Button ID="btnCancel1" runat="server" Text="取消" OnClick="btnCancel1_Click" />
             <asp:Button ID="btnSubmit1" runat="server" Text="送出" OnClick="btnSubmit1_Click" />
         </asp:PlaceHolder>
 
@@ -28,8 +28,6 @@
                 <asp:ListItem Value="2">核取方塊</asp:ListItem>
                 <asp:ListItem Value="3">單行輸入</asp:ListItem>
                 <asp:ListItem Value="4">多行輸入</asp:ListItem>
-                <asp:ListItem Value="5">下拉式選單</asp:ListItem>
-                <asp:ListItem Value="6">日期</asp:ListItem>
             </asp:DropDownList>
             <asp:CheckBox ID="ckbRequired" runat="server" Text="必填" /><br />
             
