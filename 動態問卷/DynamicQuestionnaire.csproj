@@ -104,6 +104,8 @@
     </Compile>
     <Compile Include="Managers\QuestionnaireManager.cs" />
     <Compile Include="Managers\QuestionsManager.cs" />
+    <Compile Include="Models\AnswerContentModel.cs" />
+    <Compile Include="Models\AnswerSummaryModel.cs" />
     <Compile Include="Models\QuestionModel.cs" />
     <Compile Include="Models\SummaryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
