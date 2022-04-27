@@ -78,7 +78,26 @@
 
         </asp:PlaceHolder>
 
-        <asp:PlaceHolder ID="page03" runat="server" Visible="false"></asp:PlaceHolder>
+        <asp:PlaceHolder ID="page03" runat="server" Visible="false">
+            <asp:PlaceHolder ID="plcPage03_1" runat="server">
+                <asp:GridView ID="GridAnswerList" runat="server" AutoGenerateColumns="False" OnRowCommand="GridAnswerList_RowCommand">
+                    <Columns>
+                        <%--<asp:BoundField DataField="SerialNumber" HeaderText="#" />--%>
+                        <asp:BoundField DataField="Name" HeaderText="姓名" />
+                        <asp:CheckBoxField DataField="SubmitDate" HeaderText="填寫時間" />
+                        <asp:TemplateField HeaderText="觀看細節">
+                            <ItemTemplate>
+                                <asp:LinkButton ID="lkbtGo" runat="server" CommandName="GoLbtn" CommandArgument='<%# Eval("AnswerID") %>'>前往</asp:LinkButton>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                    </Columns>
+                </asp:GridView>
+            </asp:PlaceHolder>
+
+            <asp:PlaceHolder ID="plcPage03_2" runat="server">
+
+            </asp:PlaceHolder>
+        </asp:PlaceHolder>
 
         <asp:PlaceHolder ID="page04" runat="server" Visible="false"></asp:PlaceHolder>
     </div>

@@ -132,6 +132,7 @@
     <Compile Include="List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Managers\AnswerManager.cs" />
     <Compile Include="Managers\QuestionnaireManager.cs" />
     <Compile Include="Managers\QuestionsManager.cs" />
     <Compile Include="Models\AnswerContentModel.cs" />

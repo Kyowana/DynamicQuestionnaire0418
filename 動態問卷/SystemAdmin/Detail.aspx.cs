@@ -121,6 +121,12 @@ namespace 動態問卷.SystemAdmin
             this.GridViewQuestionList.DataBind();
         }
 
+        private void InitAnswerList()
+        {
+            //this.GridAnswerList.DataSource = ;
+            this.GridAnswerList.DataBind();
+        }
+
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             this.page01.Visible = false;
@@ -358,6 +364,17 @@ namespace 動態問卷.SystemAdmin
         protected void lbtnPage04_Click(object sender, EventArgs e)
         {
             this.ChangeStatus(PageStatus.Page04);
+        }
+
+        protected void GridAnswerList_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "GoLbtn")
+            {
+                string commentIdText = e.CommandArgument as string;
+                this.plcPage03_1.Visible = false;
+                this.plcPage03_2.Visible = true;
+                // 讀出作答內容
+            }
         }
     }
 }
