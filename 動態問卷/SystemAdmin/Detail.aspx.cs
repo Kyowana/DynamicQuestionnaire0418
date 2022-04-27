@@ -17,6 +17,13 @@ namespace 動態問卷.SystemAdmin
         private List<Guid> _delIdList = new List<Guid>();
         private SummaryModel _qs;
         private static bool _isEditMode;
+        private enum PageStatus
+        {
+            Page01,
+            Page02,
+            Page03,
+            Page04
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             string questionnaireIDString = Request.QueryString["ID"];
@@ -209,6 +216,11 @@ namespace 動態問卷.SystemAdmin
 
             this.page01.Visible = false;
             this.page02.Visible = true;
+
+            if (!_isEditMode)
+                _qMgr.CreateQuestionnaire(_qs);
+            else
+                _qMgr.UpdateSummary(_qs);
         }
 
         protected void btnSubmit2_Click(object sender, EventArgs e)
@@ -216,7 +228,7 @@ namespace 動態問卷.SystemAdmin
             if (!_isEditMode)
             {
                 // 若為新增問卷模式，直接新增問卷
-                _qMgr.CreateQuestionnaire(_qs);
+                //_qMgr.CreateQuestionnaire(_qs);
                 if (_questionList.Count > 0)
                 {
                     foreach (var item in _questionList)
@@ -228,7 +240,7 @@ namespace 動態問卷.SystemAdmin
             else
             {
                 // 若為編輯模式
-                _qMgr.UpdateSummary(_qs);
+                //_qMgr.UpdateSummary(_qs);
                 
                 if (_delIdList.Count > 0)
                 {
@@ -315,6 +327,37 @@ namespace 動態問卷.SystemAdmin
         protected void btnCancel1_Click(object sender, EventArgs e)
         {
             Response.Redirect("List.aspx");
+        }
+
+        private void ChangeStatus(PageStatus status)
+        {
+            this.lbtnPage01.Enabled = (status != PageStatus.Page01);   // 當括弧內為true/false
+            this.lbtnPage02.Enabled = (status != PageStatus.Page02);
+            this.lbtnPage03.Enabled = (status != PageStatus.Page03);
+
+            this.page01.Visible = (status == PageStatus.Page01);
+            this.page02.Visible = (status == PageStatus.Page02);
+            this.page03.Visible = (status == PageStatus.Page03);
+        }
+
+        protected void lbtnPage01_Click(object sender, EventArgs e)
+        {
+            this.ChangeStatus(PageStatus.Page01);
+        }
+
+        protected void lbtnPage02_Click(object sender, EventArgs e)
+        {
+            this.ChangeStatus(PageStatus.Page02);
+        }
+
+        protected void lbtnPage03_Click(object sender, EventArgs e)
+        {
+            this.ChangeStatus(PageStatus.Page03);
+        }
+
+        protected void lbtnPage04_Click(object sender, EventArgs e)
+        {
+            this.ChangeStatus(PageStatus.Page04);
         }
     }
 }

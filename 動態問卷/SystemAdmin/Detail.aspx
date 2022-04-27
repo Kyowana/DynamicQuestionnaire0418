@@ -9,6 +9,13 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <div>
+            <asp:LinkButton ID="lbtnPage01" runat="server" Enabled="false" OnClick="lbtnPage01_Click">問卷</asp:LinkButton>
+            <asp:LinkButton ID="lbtnPage02" runat="server" OnClick="lbtnPage02_Click">問題</asp:LinkButton>
+            <asp:LinkButton ID="lbtnPage03" runat="server" OnClick="lbtnPage03_Click">填寫資料</asp:LinkButton>
+            <asp:LinkButton ID="lbtnPage04" runat="server" OnClick="lbtnPage04_Click">統計</asp:LinkButton>
+        </div>
+
     <div>
         <asp:PlaceHolder ID="page01" runat="server">
             問卷名稱<asp:TextBox ID="txtCaption" runat="server" /><br />
