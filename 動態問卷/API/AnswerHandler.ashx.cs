@@ -26,6 +26,8 @@ namespace 動態問卷.API
                 string answerContents = context.Request.Form["AnswerContents"];
                 string[] arrAnswer = answerContents.Trim().Split(',');
 
+                Guid answerID = Guid.NewGuid();
+
                 string qIDString = context.Request.Form["QID"]; ;
                 if (Guid.TryParse(qIDString, out Guid qID))
                 {
@@ -44,6 +46,7 @@ namespace 動態問卷.API
                     {
                         AnswerContentModel ac = new AnswerContentModel()
                         {
+                            AnswerID = answerID,
                             QuestionID = arrQuestionID[i],
                             Answer = arrAnswer[i],
                         };
@@ -54,6 +57,7 @@ namespace 動態問卷.API
 
                     AnswerSummaryModel asModel = new AnswerSummaryModel()
                     {
+                        AnswerID = answerID,
                         QID = qID,
                         Name = name,
                         Phone = phone,

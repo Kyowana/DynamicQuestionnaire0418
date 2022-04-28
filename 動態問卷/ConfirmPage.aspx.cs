@@ -26,6 +26,7 @@ namespace 動態問卷
             _acList = HttpContext.Current.Session["AnswerList"] as List<AnswerContentModel>;
 
             string questionnaireIDString = Request.QueryString["ID"];
+
             if (Guid.TryParse(questionnaireIDString, out Guid questionnaireID))
             {
                 _qID = questionnaireID;
@@ -104,6 +105,11 @@ namespace 動態問卷
         {
             // 寫進資料庫!!
             _aMgr.CreateAnswerSummary(_asModel);
+            foreach (var item in _acList)
+            {
+                _aMgr.CreateAnswerContent(item);
+
+            }
             Response.Redirect($"List.aspx");
 
         }

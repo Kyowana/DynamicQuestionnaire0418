@@ -26,7 +26,7 @@ namespace 動態問卷.Managers
                     {
                         conn.Open();
 
-                        command.Parameters.AddWithValue("@AnswerID", Guid.NewGuid());
+                        command.Parameters.AddWithValue("@AnswerID", aSummary.AnswerID);
                         command.Parameters.AddWithValue("@QID", aSummary.QID);
                         command.Parameters.AddWithValue("@Name", aSummary.Name);
                         command.Parameters.AddWithValue("@Phone", aSummary.Phone);
@@ -41,6 +41,37 @@ namespace 動態問卷.Managers
             catch (Exception ex)
             {
                 Logger.WriteLog("AnswerManager.CreateAnswerSummary", ex);
+                throw;
+            }
+        }
+        public void CreateAnswerContent(AnswerContentModel aContent)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                @"  INSERT INTO [AnsContents] 
+                        (ID, AnswerID, QuestionID, Answer, Email, Age, SubmitDate)
+                    VALUES  
+                        (@ID, @AnswerID, @QuestionID, @Answer, @Email, @Age, @SubmitDate) ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        conn.Open();
+
+                        command.Parameters.AddWithValue("@ID", Guid.NewGuid());
+                        command.Parameters.AddWithValue("@AnswerID", aContent.AnswerID);
+                        command.Parameters.AddWithValue("@Name", aContent.QuestionID);
+                        command.Parameters.AddWithValue("@Phone", aContent.Answer);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("AnswerManager.CreateAnswerContent", ex);
                 throw;
             }
         }
