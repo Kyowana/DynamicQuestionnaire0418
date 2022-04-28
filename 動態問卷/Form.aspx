@@ -77,12 +77,15 @@
 
                     for (var item of answersList) {
                         var aaa = $(`input[name='op${ret}']`);
-                        if ($(`input[name='op${ret}']`).length > 0) {
-                            var method = $(`input[name='op${ret}']:checked`).val();
-                            if (typeof (method) == "undefined") {
-                                answer += " ;";
-                            }
-                        }
+                        //if ($(`input[name='op${ret}']`).length > 0) {
+                        //    var method = $(`input[name='op${ret}']:checked`).val();
+                        //    if (typeof (method) == "undefined") {
+                        //        answer += " ;";
+                        //    }
+                        //}
+                        //else if ($("input[id^='AnsCkbOption']", question).length > 0) {
+
+                        //}
 
                         if (item.type == "radio" && item.checked) {
                             answer += item.id + ";";

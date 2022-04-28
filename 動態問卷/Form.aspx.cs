@@ -46,7 +46,7 @@ namespace 動態問卷
                             case 1:
                                 string[] arrContent = item.AnswerOption.Trim().Split(';');
                                 //string contentWithBr = string.Join("<br/>", arrContent);
-                                FindControl($"panel{item.QuestionID}").Controls.Add(new RadioButtonList() { ID = $"AnsRbl_{item.QuestionID}" });
+                                //FindControl($"panel{item.QuestionID}").Controls.Add(new RadioButtonList() { ID = $"AnsRbl_{item.QuestionID}" });
                                 //RadioButtonList rbl = FindControl($"AnsRbl_{item.QuestionID}") as RadioButtonList;
                                 //foreach (var content in arrContent)
                                 //{
