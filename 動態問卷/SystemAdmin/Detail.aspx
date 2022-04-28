@@ -80,6 +80,8 @@
 
         <asp:PlaceHolder ID="page03" runat="server" Visible="false">
             <asp:PlaceHolder ID="plcPage03_1" runat="server">
+                <asp:Button ID="btnExport" runat="server" Text="匯出" OnClick="btnExport_Click" /><br />
+                <br />
                 <asp:GridView ID="GridAnswerList" runat="server" AutoGenerateColumns="False" OnRowCommand="GridAnswerList_RowCommand">
                     <Columns>
                         <%--<asp:BoundField DataField="SerialNumber" HeaderText="#" />--%>

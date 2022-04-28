@@ -69,31 +69,32 @@
                 var questionContainer = $("div[id^='panel']");
                 var allQuestionContainer = questionContainer.get();
 
+                var allAnswer = "";
                 for (var question of allQuestionContainer) {
-                    var allAnswer;
                     var answersList = $("input[id^='Ans']", question).get();
                     var ret = question.id.slice(-36);
+                    var answer = "";
 
                     for (var item of answersList) {
-                        var answer;
-
-                        if ($(`input[name='${ret}']`) != null) {
-                            if ($(`input[name='${ret}']:checked`).val().length == 0) {
-                                answer += "";
+                        var aaa = $(`input[name='op${ret}']`);
+                        if ($(`input[name='op${ret}']`).length > 0) {
+                            var method = $(`input[name='op${ret}']:checked`).val();
+                            if (typeof (method) == "undefined") {
+                                answer += " ;";
                             }
                         }
 
                         if (item.type == "radio" && item.checked) {
-                            answer += item.id + ",";
+                            answer += item.id + ";";
                         }
                         if (item.type == "checkbox" && item.checked) {
-                            answer += item.id + ",";
+                            answer += item.id + ";";
                         }
                         if (item.type == "text") {
                             answer += item.value;
                         }
                     }
-                    allAnswer += answer + ";";
+                    allAnswer += answer + ",";
                 }
 
 

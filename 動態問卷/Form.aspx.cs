@@ -56,7 +56,7 @@ namespace 動態問卷
                                 int rdbCount = 0;
                                 foreach (var content in arrContent)
                                 {
-                                    FindControl($"panel{item.QuestionID}").Controls.Add(new RadioButton() { ID = $"AnsRdbOption{rdbCount}", Text = content + "<br />", GroupName = $"{item.QuestionID}" });
+                                    FindControl($"panel{item.QuestionID}").Controls.Add(new RadioButton() { ID = $"AnsRdbOption{rdbCount}", Text = content + "<br />", GroupName = $"op{item.QuestionID}" });
                                     //FindControl($"panel{item.QuestionID}").Controls.Add(new HiddenField() { Value = item.QuestionID.ToString() });
                                     rdbCount++;
                                 }

@@ -46,7 +46,7 @@ namespace 動態問卷.API
                         acList.Add(ac);
                     }
 
-
+                    HttpContext.Current.Session["AnswerList"] = acList;
 
 
 
