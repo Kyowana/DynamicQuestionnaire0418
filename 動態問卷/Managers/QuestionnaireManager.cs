@@ -427,5 +427,58 @@ namespace 動態問卷.Managers
                 throw;
             }
         }
+
+        public List<SummaryModel> GetSearchedList(string keyword)
+        {
+            string whereCondition = string.Empty;
+            if (!string.IsNullOrWhiteSpace(keyword))
+                whereCondition = " WHERE Caption LIKE '%'+@keyword+'%' ";
+
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                $@" SELECT *
+                    FROM QSummarys
+                    {whereCondition}
+                    ORDER BY SerialNumber DESC ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        if (!string.IsNullOrWhiteSpace(keyword))
+                        {
+                            command.Parameters.AddWithValue("@keyword", keyword);
+                        }
+
+                        conn.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        List<SummaryModel> qList = new List<SummaryModel>();    // 將資料庫內容轉為自定義型別清單
+                        while (reader.Read())
+                        {
+                            SummaryModel qSummary = new SummaryModel()
+                            {
+                                QID = (Guid)reader["QID"],
+                                SerialNumber = (int)reader["SerialNumber"],
+                                ViewLimit = (bool)reader["ViewLimit"],
+                                Caption = reader["Caption"] as string,
+                                Description = reader["Description"] as string,
+                                StartDate = (DateTime)reader["StartDate"],
+                                EndDate = (DateTime)reader["EndDate"]
+                            };
+                            qList.Add(qSummary);
+                        }
+
+                        return qList;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnaireManager.GetSearchedList", ex);
+                throw;
+            }
+        }
     }
 }
