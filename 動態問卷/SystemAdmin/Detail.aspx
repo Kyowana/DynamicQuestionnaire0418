@@ -34,7 +34,6 @@
                 <asp:ListItem Value="1">單選方塊</asp:ListItem>
                 <asp:ListItem Value="2">核取方塊</asp:ListItem>
                 <asp:ListItem Value="3">單行輸入</asp:ListItem>
-                <asp:ListItem Value="4">多行輸入</asp:ListItem>
             </asp:DropDownList>
             <asp:CheckBox ID="ckbRequired" runat="server" Text="必填" /><br />
             

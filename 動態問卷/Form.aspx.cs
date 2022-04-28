@@ -77,10 +77,10 @@ namespace 動態問卷
                                 FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = "<br />" });
                                 break;
 
-                            case 4:
-                                FindControl($"panel{item.QuestionID}").Controls.Add(new TextBox() { ID = $"AnsTxtMultiline_{item.QuestionID}", TextMode = TextBoxMode.MultiLine });
-                                FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = "<br />" });
-                                break;
+                            //case 4:
+                            //    FindControl($"panel{item.QuestionID}").Controls.Add(new TextBox() { ID = $"AnsTxtMultiline_{item.QuestionID}", TextMode = TextBoxMode.MultiLine });
+                            //    FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = "<br />" });
+                            //    break;
 
                             default:
                                 break;

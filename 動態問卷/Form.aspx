@@ -103,8 +103,13 @@
 
                 var answerData = {
                     "QID": $("#hfQID").val(),
+                    "Name": $("#<%= this.txtName.ClientID %>").val(),
+                    "Phone": $("#<%= this.txtPhone.ClientID %>").val(),
+                    "Email": $("#<%= this.txtEmail.ClientID %>").val(),
+                    "Age": $("#<%= this.txtAge.ClientID %>").val(),
                     "AnswerContents": allAnswer
                 };
+
 
                 $.ajax({
                     url: "/API/AnswerHandler.ashx?Action=SendAnswer",

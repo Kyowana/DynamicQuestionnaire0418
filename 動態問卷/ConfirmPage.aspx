@@ -17,8 +17,33 @@
             <asp:Label ID="lblCaption" runat="server" Text=""></asp:Label>
         </div>
         <div>
-            <asp:Label ID="lblAnswer" runat="server" Text=""></asp:Label>
+            <table>
+                <tr>
+                    <td>姓名</td>
+                    <td>
+                        <asp:Label ID="lblName" runat="server" Text="Label"></asp:Label></td>
+                    
+                </tr>
+                <tr>
+                    <td>手機</td>
+                    <td>
+                        <asp:Label ID="lblPhone" runat="server" Text="Label"></asp:Label></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>
+                        <asp:Label ID="lblEmail" runat="server" Text="Label"></asp:Label></td>
+                </tr>
+                <tr>
+                    <td>年齡</td>
+                    <td>
+                        <asp:Label ID="lblAge" runat="server" Text="Label"></asp:Label></td>
+                </tr>
+            </table>
         </div>
+        <br />
+        <br />
+        <asp:PlaceHolder ID="plcQuestions" runat="server"></asp:PlaceHolder>
 
         <div>
             <asp:Button ID="btnRevise" runat="server" Text="修改" />

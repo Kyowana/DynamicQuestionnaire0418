@@ -15,10 +15,14 @@ namespace 動態問卷.API
         private QuestionnaireManager _qMgr = new QuestionnaireManager();
         public void ProcessRequest(HttpContext context)
         {
-            // 回答者資料
+            // 回答者資料+內容
             if (string.Compare("POST", context.Request.HttpMethod, true) == 0 && string.Compare("SendAnswer", context.Request.QueryString["Action"], true) == 0)
             {
-                // 回答內容
+                string name = context.Request.Form["Name"];
+                string phone = context.Request.Form["Phone"];
+                string email = context.Request.Form["Email"];
+                string age = context.Request.Form["Age"];
+
                 string answerContents = context.Request.Form["AnswerContents"];
                 string[] arrAnswer = answerContents.Trim().Split(',');
 
@@ -48,23 +52,24 @@ namespace 動態問卷.API
 
                     HttpContext.Current.Session["AnswerList"] = acList;
 
+                    AnswerSummaryModel asModel = new AnswerSummaryModel()
+                    {
+                        QID = qID,
+                        Name = name,
+                        Phone = phone,
+                        Email = email,
+                        Age = Convert.ToInt32(age)
+                    };
 
+                    HttpContext.Current.Session["UserInfo"] = asModel;
 
-                    //AnswerSummaryModel asModel = new AnswerSummaryModel()
-                    //{
-                    //    QID = qID,
-                    //    Name = name,
-                    //    Phone = phone,
-                    //    Email = email,
-                    //    Age = Convert.ToInt32(age)
-                    //};
-                    // Manager 存入session
                     context.Response.ContentType = "text/plain";
                     context.Response.Write("OK");
                 }
                 else
                     return;
             }
+
         }
 
         public bool IsReusable
