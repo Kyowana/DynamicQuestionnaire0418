@@ -15,10 +15,18 @@ namespace 動態問卷
         private List<QuestionModel> _questionList = new List<QuestionModel>();
         private int _questionNumber = 1;
         //private int _optionCount = 0;
+        private AnswerSummaryModel _asModel = new AnswerSummaryModel();
+        private List<AnswerContentModel> _acList = new List<AnswerContentModel>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
             string questionnaireIDString = Request.QueryString["ID"];
+
+            if (HttpContext.Current.Session["UserInfo"] != null)
+                _asModel = HttpContext.Current.Session["UserInfo"] as AnswerSummaryModel;
+            if (HttpContext.Current.Session["AnswerList"] != null)
+                _acList = HttpContext.Current.Session["AnswerList"] as List<AnswerContentModel>;
+
             if (Guid.TryParse(questionnaireIDString, out Guid questionnaireID))
             {
                 if (!IsPostBack)
@@ -45,19 +53,10 @@ namespace 動態問卷
                         {
                             case 1:
                                 string[] arrContent = item.AnswerOption.Trim().Split(';');
-                                //string contentWithBr = string.Join("<br/>", arrContent);
-                                //FindControl($"panel{item.QuestionID}").Controls.Add(new RadioButtonList() { ID = $"AnsRbl_{item.QuestionID}" });
-                                //RadioButtonList rbl = FindControl($"AnsRbl_{item.QuestionID}") as RadioButtonList;
-                                //foreach (var content in arrContent)
-                                //{
-                                //    rbl.Items.Add(content);
-                                //}
-                                //FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = "<br />" });
                                 int rdbCount = 0;
                                 foreach (var content in arrContent)
                                 {
                                     FindControl($"panel{item.QuestionID}").Controls.Add(new RadioButton() { ID = $"AnsRdbOption{rdbCount}", Text = content + "<br />", GroupName = $"op{item.QuestionID}" });
-                                    //FindControl($"panel{item.QuestionID}").Controls.Add(new HiddenField() { Value = item.QuestionID.ToString() });
                                     rdbCount++;
                                 }
                                 break;
@@ -76,11 +75,6 @@ namespace 動態問卷
                                 FindControl($"panel{item.QuestionID}").Controls.Add(new TextBox() { ID = $"AnsTxt_{item.QuestionID}" });
                                 FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = "<br />" });
                                 break;
-
-                            //case 4:
-                            //    FindControl($"panel{item.QuestionID}").Controls.Add(new TextBox() { ID = $"AnsTxtMultiline_{item.QuestionID}", TextMode = TextBoxMode.MultiLine });
-                            //    FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = "<br />" });
-                            //    break;
 
                             default:
                                 break;

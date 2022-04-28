@@ -14,7 +14,7 @@ namespace 動態問卷
         private QuestionnaireManager _qMgr = new QuestionnaireManager();
         private List<QuestionModel> _questionList = new List<QuestionModel>();
         private int _questionNumber = 1;
-
+        private Guid _qID;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -24,6 +24,8 @@ namespace 動態問卷
             string questionnaireIDString = Request.QueryString["ID"];
             if (Guid.TryParse(questionnaireIDString, out Guid questionnaireID))
             {
+                _qID = questionnaireID; 
+
                 if (!IsPostBack)
                 {
                     SummaryModel qs = _qMgr.GetQuestionnaireSummary(questionnaireID);
@@ -89,6 +91,11 @@ namespace 動態問卷
             }
             else
                 Response.Redirect("List.aspx");
+        }
+
+        protected void btnRevise_Click(object sender, EventArgs e)
+        {
+            Response.Redirect($"Form.aspx?ID={_qID}");
         }
     }
 }

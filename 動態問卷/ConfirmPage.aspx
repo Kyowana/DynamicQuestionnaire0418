@@ -46,7 +46,7 @@
         <asp:PlaceHolder ID="plcQuestions" runat="server"></asp:PlaceHolder>
 
         <div>
-            <asp:Button ID="btnRevise" runat="server" Text="修改" />
+            <asp:Button ID="btnRevise" runat="server" Text="修改" OnClick="btnRevise_Click" />
             <asp:Button ID="btnSubmit" runat="server" Text="送出" />
         </div>
     </form>
