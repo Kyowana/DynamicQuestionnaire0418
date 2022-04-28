@@ -12,19 +12,23 @@ namespace 動態問卷
     public partial class ConfirmPage : System.Web.UI.Page
     {
         private QuestionnaireManager _qMgr = new QuestionnaireManager();
+        private AnswerManager _aMgr = new AnswerManager();
         private List<QuestionModel> _questionList = new List<QuestionModel>();
         private int _questionNumber = 1;
         private Guid _qID;
+        AnswerSummaryModel _asModel = new AnswerSummaryModel();
+        List<AnswerContentModel> _acList = new List<AnswerContentModel>();
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            AnswerSummaryModel asModel = HttpContext.Current.Session["UserInfo"] as AnswerSummaryModel;
-            List<AnswerContentModel> acList = HttpContext.Current.Session["AnswerList"] as List<AnswerContentModel>;
+            _asModel = HttpContext.Current.Session["UserInfo"] as AnswerSummaryModel;
+            _acList = HttpContext.Current.Session["AnswerList"] as List<AnswerContentModel>;
 
             string questionnaireIDString = Request.QueryString["ID"];
             if (Guid.TryParse(questionnaireIDString, out Guid questionnaireID))
             {
-                _qID = questionnaireID; 
+                _qID = questionnaireID;
 
                 if (!IsPostBack)
                 {
@@ -35,58 +39,56 @@ namespace 動態問卷
                     this.lblLimit.Text = qs.ViewLimit.ToString();
                     this.lblDate.Text = qs.StartDate.ToString() + "～" + qs.EndDate.ToString();
 
-                    this.lblName.Text = asModel.Name;
-                    this.lblPhone.Text = asModel.Phone;
-                    this.lblEmail.Text = asModel.Email;
-                    this.lblAge.Text = asModel.Age.ToString();
+                    this.lblName.Text = _asModel.Name;
+                    this.lblPhone.Text = _asModel.Phone;
+                    this.lblEmail.Text = _asModel.Email;
+                    this.lblAge.Text = _asModel.Age.ToString();
 
-                    foreach (var item in _questionList)
+
+                    for (int i = 0; i < _questionList.Count; i++)
                     {
-                        for (int i = 0; i < _questionList.Count; i++)
+                        if (_questionList.Exists(x => x.QuestionID == _acList[i].QuestionID))
                         {
-                            if (_questionList.Exists(x => x.QuestionID == acList[i].QuestionID))
+                            QuestionModel question = _questionList.Find(x => x.QuestionID.ToString().Contains(_acList[i].QuestionID.ToString()));
+
+
+                            this.plcQuestions.Controls.Add(new Panel() { ID = $"panel{question.QuestionID}" });
+
+                            FindControl($"panel{question.QuestionID}").Controls.Add(new Literal() { Text = _questionNumber + ". " + question.Question + "<br />" });
+                            _questionNumber++;
+
+                            switch (question.QType)
                             {
-                                QuestionModel question = _questionList.Find(x => x.QuestionID.ToString().Contains(acList[i].QuestionID.ToString()));
-
-
-                                this.plcQuestions.Controls.Add(new Panel() { ID = $"panel{question.QuestionID}" });
-
-                                FindControl($"panel{question.QuestionID}").Controls.Add(new Literal() { Text = _questionNumber + ". " + question.Question + "<br />" });
-                                _questionNumber++;
-
-                                switch (question.QType)
-                                {
-                                    case 1:
-                                    case 2:
-                                        string[] arrContent1 = question.AnswerOption.Trim().Split(';');
-                                        string[] arrOption1 = acList[i].Answer.Trim().Split(';');
-                                        for (int k = 0; k < (arrOption1.Length - 1) ; k++)
+                                case 1:
+                                case 2:
+                                    string[] arrContent1 = question.AnswerOption.Trim().Split(';');
+                                    string[] arrOption1 = _acList[i].Answer.Trim().Split(';');
+                                    for (int k = 0; k < (arrOption1.Length - 1); k++)
+                                    {
+                                        string number = arrOption1[k].Remove(0, 12);
+                                        for (int j = 0; j < arrContent1.Length; j++)
                                         {
-                                            string number = arrOption1[k].Remove(0, 12);
-                                            for (int j = 0; j < arrContent1.Length; j++)
+                                            if (number == j.ToString())
                                             {
-                                                if (number == j.ToString())
-                                                {
-                                                    FindControl($"panel{question.QuestionID}").Controls.Add(new Literal() { Text = arrContent1[j] + "<br />" });
-                                                }
+                                                FindControl($"panel{question.QuestionID}").Controls.Add(new Literal() { Text = arrContent1[j] + "<br />" });
                                             }
-                                            
                                         }
-                                        break;
 
-                                    case 3:
-                                        FindControl($"panel{question.QuestionID}").Controls.Add(new Literal() { Text = acList[i].Answer + "<br />" });
-                                        break;
+                                    }
+                                    break;
 
-                                    default:
-                                        break;
-                                }
+                                case 3:
+                                    FindControl($"panel{question.QuestionID}").Controls.Add(new Literal() { Text = _acList[i].Answer + "<br />" });
+                                    break;
+
+                                default:
+                                    break;
                             }
-
                         }
 
-                        return;
                     }
+
+
                 }
             }
             else
@@ -96,6 +98,14 @@ namespace 動態問卷
         protected void btnRevise_Click(object sender, EventArgs e)
         {
             Response.Redirect($"Form.aspx?ID={_qID}");
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            // 寫進資料庫!!
+            _aMgr.CreateAnswerSummary(_asModel);
+            Response.Redirect($"List.aspx");
+
         }
     }
 }
