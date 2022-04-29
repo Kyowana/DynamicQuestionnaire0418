@@ -480,5 +480,86 @@ namespace 動態問卷.Managers
                 throw;
             }
         }
+        public List<SummaryModel> GetQList(string keyword, int pageSize, int pageIndex, out int totalRows)
+        {
+            int skip = pageSize * (pageIndex - 1);
+            if (skip < 0)
+                skip = 0;
+
+            string whereCondition = string.Empty;
+            string whereCondition1 = string.Empty;
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                whereCondition = "WHERE Caption LIKE '%'+@keyword+'%'";
+                whereCondition1 = "AND Caption LIKE '%'+@keyword+'%'";
+            }
+
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                $@"SELECT TOP {pageSize} *
+                   FROM QSummarys
+                   WHERE
+                        QID NOT IN
+                        (
+                            SELECT TOP {skip} QID
+                            FROM QSummarys
+                                {whereCondition}
+                            ORDER BY SerialNumber DESC
+                        )
+                        {whereCondition1}
+                   ORDER BY SerialNumber DESC";
+
+            string commandCountText =
+                @" SELECT COUNT(QID)
+                   FROM QSummarys ";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        if (!string.IsNullOrWhiteSpace(keyword))
+                            command.Parameters.AddWithValue("@keyword", keyword);
+
+                        conn.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        List<SummaryModel> retList = new List<SummaryModel>();
+                        while (reader.Read())
+                        {
+                            SummaryModel qSummary = new SummaryModel()
+                            {
+                                QID = (Guid)reader["QID"],
+                                SerialNumber = (int)reader["SerialNumber"],
+                                ViewLimit = (bool)reader["ViewLimit"],
+                                Caption = reader["Caption"] as string,
+                                Description = reader["Description"] as string,
+                                StartDate = (DateTime)reader["StartDate"],
+                                EndDate = (DateTime)reader["EndDate"]
+                            };
+                            retList.Add(qSummary);
+                        }
+                        reader.Close();
+
+                        command.CommandText = commandCountText;
+                        if (!string.IsNullOrWhiteSpace(keyword))
+                        {
+                            command.Parameters.Clear();
+                            command.Parameters.AddWithValue("@keyword", keyword);
+                        }
+                        totalRows = (int)command.ExecuteScalar();
+
+                        return retList;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // 丟出前先記錄
+                Logger.WriteLog("QuestionnaireManager.GetQList", ex); // 使用類別名稱+方法名稱
+                throw;
+            }
+        }
     }
 }
