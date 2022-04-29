@@ -28,22 +28,18 @@ namespace 動態問卷
                 var list = this._qMgr.GetQList(keyword, _pageSize, pageIndex, out int totalRows);
                 this.ProcessPager(keyword, pageIndex, totalRows);
 
-                //List<SummaryModel> sList = this._qMgr.GetSearchedList(keyword);
-                    this.GridQList.DataSource = list;
-                    this.GridQList.DataBind();
-
+                this.GridQList.DataSource = list;
+                this.GridQList.DataBind();
 
             }
         }
 
         private void ProcessPager(string keyword, int pageIndex, int totalRows)
         {
-            // 5 / 10 = 0, 所以要+1頁
             int pageCount = (totalRows / _pageSize);
             if ((totalRows % _pageSize) > 0)
                 pageCount += 1;
 
-            // LocalPath: MapList.aspx
             string url = Request.Url.LocalPath;
             string paramKeyword = string.Empty;
             if (!string.IsNullOrWhiteSpace(keyword))
