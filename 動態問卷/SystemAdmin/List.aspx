@@ -11,7 +11,7 @@
     <form id="form1" runat="server">
         <div>
             問卷標題<asp:TextBox ID="txtTitle" runat="server"></asp:TextBox><br />
-            開始 / 結束日期<asp:TextBox ID="txtStartDate" runat="server"></asp:TextBox><asp:TextBox ID="txtFinDate" runat="server"></asp:TextBox>&emsp;
+            開始 / 結束日期<asp:TextBox ID="txtStartDate" runat="server"></asp:TextBox><asp:TextBox ID="txtEndDate" runat="server"></asp:TextBox>&emsp;
         <asp:Button ID="btnSearch" runat="server" Text="搜尋" OnClick="btnSearch_Click" />
         </div>
         <div>

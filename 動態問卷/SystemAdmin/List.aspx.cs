@@ -24,8 +24,15 @@ namespace 動態問卷.SystemAdmin
                 string keyword = this.Request.QueryString["keyword"];
                 if (!string.IsNullOrWhiteSpace(keyword))
                     this.txtTitle.Text = keyword;
+                string startDate = this.Request.QueryString["since"];
+                if (!string.IsNullOrWhiteSpace(startDate))
+                    this.txtStartDate.Text = startDate;
 
-                var list = this._qMgr.GetQList(keyword, _pageSize, pageIndex, out int totalRows);
+                string endDate = this.Request.QueryString["until"];
+                if (!string.IsNullOrWhiteSpace(endDate))
+                    this.txtEndDate.Text = endDate;
+
+                var list = this._qMgr.GetQList(keyword, startDate, endDate, _pageSize, pageIndex, out int totalRows);
                 this.ProcessPager(keyword, pageIndex, totalRows);
 
                 this.GridQList.DataSource = list;
@@ -121,11 +128,44 @@ namespace 動態問卷.SystemAdmin
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             string keyword = this.txtTitle.Text.Trim();
+            string startDate = this.txtStartDate.Text.Replace("/", "-");
+            string endDate = this.txtEndDate.Text.Replace("/", "-");
 
-            if (string.IsNullOrWhiteSpace(this.txtTitle.Text))
-                this.Response.Redirect("List.aspx");
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                if (string.IsNullOrWhiteSpace(startDate))
+                {
+                    if (string.IsNullOrWhiteSpace(endDate))
+                        this.Response.Redirect("List.aspx");
+                    else
+                        this.Response.Redirect("List.aspx?until=" + endDate);
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(endDate))
+                        this.Response.Redirect("List.aspx?since=" + startDate);
+                    else
+                        this.Response.Redirect($"List.aspx?since={startDate}&until={endDate}");
+                }
+
+            }
             else
-                Response.Redirect("List.aspx?keyword=" + keyword);
+            {
+                if (string.IsNullOrWhiteSpace(startDate))
+                {
+                    if (string.IsNullOrWhiteSpace(endDate))
+                        Response.Redirect("List.aspx?keyword=" + keyword);
+                    else
+                        this.Response.Redirect($"List.aspx?keyword={keyword}&until={endDate}");
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(endDate))
+                        Response.Redirect($"List.aspx?keyword={keyword}&since={startDate}");
+                    else
+                        this.Response.Redirect($"List.aspx?keyword={keyword}&since={startDate}&until={endDate}");
+                }
+            }
         }
     }
 }

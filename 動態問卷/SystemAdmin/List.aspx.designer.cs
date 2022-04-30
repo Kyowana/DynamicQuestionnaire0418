@@ -42,13 +42,13 @@ namespace 動態問卷.SystemAdmin
         protected global::System.Web.UI.WebControls.TextBox txtStartDate;
 
         /// <summary>
-        /// txtFinDate 控制項。
+        /// txtEndDate 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFinDate;
+        protected global::System.Web.UI.WebControls.TextBox txtEndDate;
 
         /// <summary>
         /// btnSearch 控制項。

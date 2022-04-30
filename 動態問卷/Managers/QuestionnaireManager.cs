@@ -480,7 +480,7 @@ namespace 動態問卷.Managers
                 throw;
             }
         }
-        public List<SummaryModel> GetQList(string keyword, int pageSize, int pageIndex, out int totalRows)
+        public List<SummaryModel> GetQList(string keyword, string startDate, string endDate, int pageSize, int pageIndex, out int totalRows)
         {
             int skip = pageSize * (pageIndex - 1);
             if (skip < 0)
@@ -488,10 +488,70 @@ namespace 動態問卷.Managers
 
             string whereCondition = string.Empty;
             string whereCondition1 = string.Empty;
-            if (!string.IsNullOrWhiteSpace(keyword))
+            //if (!string.IsNullOrWhiteSpace(keyword))
+            //{
+            //    whereCondition = "WHERE Caption LIKE '%'+@keyword+'%'";
+            //    whereCondition1 = "AND Caption LIKE '%'+@keyword+'%'";
+            //}
+
+            if (string.IsNullOrWhiteSpace(keyword))
             {
-                whereCondition = "WHERE Caption LIKE '%'+@keyword+'%'";
-                whereCondition1 = "AND Caption LIKE '%'+@keyword+'%'";
+                if (string.IsNullOrWhiteSpace(startDate))
+                {
+                    if (string.IsNullOrWhiteSpace(endDate))
+                    {
+                        whereCondition = string.Empty;
+                        whereCondition1 = string.Empty;
+                    }
+                    else
+                    {
+                        whereCondition = "WHERE StartDate <= @end ";
+                        whereCondition1 = "AND StartDate <= @end ";
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(endDate))
+                    {
+                        whereCondition = "WHERE EndDate >= @start ";
+                        whereCondition1 = "AND EndDate >= @start ";
+                    }
+                    else
+                    {
+                        whereCondition = "WHERE EndDate >= @start AND StartDate <= @end ";
+                        whereCondition1 = "AND EndDate >= @start AND StartDate <= @end ";
+                    }
+                }
+
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(startDate))
+                {
+                    if (string.IsNullOrWhiteSpace(endDate))
+                    {
+                        whereCondition = "WHERE Caption LIKE '%'+@keyword+'%'";
+                        whereCondition1 = "AND Caption LIKE '%'+@keyword+'%'";
+                    }
+                    else
+                    {
+                        whereCondition = "WHERE Caption LIKE '%'+@keyword+'%' AND StartDate <= @end ";
+                        whereCondition1 = "AND Caption LIKE '%'+@keyword+'%' AND StartDate <= @end ";
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(endDate))
+                    {
+                        whereCondition = "WHERE Caption LIKE '%'+@keyword+'%' AND EndDate >= @start ";
+                        whereCondition1 = "AND Caption LIKE '%'+@keyword+'%' AND EndDate >= @start ";
+                    }
+                    else
+                    {
+                        whereCondition = "WHERE Caption LIKE '%'+@keyword+'%' AND EndDate >= @start AND StartDate <= @end ";
+                        whereCondition1 = "AND Caption LIKE '%'+@keyword+'%' AND EndDate >= @start AND StartDate <= @end ";
+                    }
+                }
             }
 
             string connStr = ConfigHelper.GetConnectionString();
@@ -521,6 +581,10 @@ namespace 動態問卷.Managers
                     {
                         if (!string.IsNullOrWhiteSpace(keyword))
                             command.Parameters.AddWithValue("@keyword", keyword);
+                        if (!string.IsNullOrWhiteSpace(startDate))
+                            command.Parameters.AddWithValue("@start", startDate.Replace("-", "/"));
+                        if (!string.IsNullOrWhiteSpace(endDate))
+                            command.Parameters.AddWithValue("@end", endDate.Replace("-", "/"));
 
                         conn.Open();
                         SqlDataReader reader = command.ExecuteReader();

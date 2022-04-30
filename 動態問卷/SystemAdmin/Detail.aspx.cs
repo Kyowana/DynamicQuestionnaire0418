@@ -96,6 +96,8 @@ namespace 動態問卷.SystemAdmin
                     Guid newquestionnaireID = Guid.NewGuid();
                     HttpContext.Current.Session["ID"] = newquestionnaireID;
 
+                    this.ckbLimit.Checked = true;
+
                     if (_questionList.Count > 0)
                         InitQuestionsList();
                     else
