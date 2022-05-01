@@ -23,7 +23,13 @@ namespace 動態問卷
             string questionnaireIDString = Request.QueryString["ID"];
 
             if (HttpContext.Current.Session["UserInfo"] != null)
+            {
                 _asModel = HttpContext.Current.Session["UserInfo"] as AnswerSummaryModel;
+                this.txtName.Text = _asModel.Name;
+                this.txtPhone.Text = _asModel.Phone;
+                this.txtEmail.Text = _asModel.Email;
+                this.txtAge.Text = _asModel.Age.ToString();
+            }
             if (HttpContext.Current.Session["AnswerList"] != null)
                 _acList = HttpContext.Current.Session["AnswerList"] as List<AnswerContentModel>;
 
