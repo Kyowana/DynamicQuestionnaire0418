@@ -56,7 +56,16 @@ namespace 動態問卷
                                 int rdbCount = 0;
                                 foreach (var content in arrContent)
                                 {
-                                    FindControl($"panel{item.QuestionID}").Controls.Add(new RadioButton() { ID = $"AnsRdbOption{rdbCount}", Text = content + "<br />", GroupName = $"op{item.QuestionID}" });
+                                    RadioButton rdb = new RadioButton() { ID = $"AnsRdbOption{rdbCount}", Text = content + "<br />", GroupName = $"op{item.QuestionID}" };
+                                    FindControl($"panel{item.QuestionID}").Controls.Add(rdb);
+
+                                    AnswerContentModel answer1 = _acList.Find(x => x.QuestionID == item.QuestionID);
+                                    if (answer1 != null)
+                                    {
+                                        string[] arrOption1 = answer1.Answer.Trim().Split(';');
+                                        if (arrOption1.Contains(rdb.ID))
+                                            rdb.Checked = true;
+                                    }
                                     rdbCount++;
                                 }
                                 break;
@@ -66,15 +75,30 @@ namespace 動態問卷
                                 int ckbCount = 0;
                                 foreach (var content in arrContent2)
                                 {
-                                    FindControl($"panel{item.QuestionID}").Controls.Add(new CheckBox() { ID = $"AnsCkbOption{ckbCount}", Text = content + "<br />" });
+                                    CheckBox ckb = new CheckBox() { ID = $"AnsCkbOption{ckbCount}", Text = content + "<br />" };
+                                    FindControl($"panel{item.QuestionID}").Controls.Add(ckb);
+                                    AnswerContentModel answer2 = _acList.Find(x => x.QuestionID == item.QuestionID);
+                                    if (answer2 != null)
+                                    {
+                                        string[] arrOption1 = answer2.Answer.Trim().Split(';');
+                                        if (arrOption1.Contains(ckb.ID))
+                                            ckb.Checked = true;
+                                    }
                                     ckbCount++;
                                 }
                                 break;
 
                             case 3:
-                                FindControl($"panel{item.QuestionID}").Controls.Add(new TextBox() { ID = $"AnsTxt_{item.QuestionID}" });
+                                TextBox txb = new TextBox() { ID = $"AnsTxt_{item.QuestionID}" };
+                                FindControl($"panel{item.QuestionID}").Controls.Add(txb);
                                 FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = "<br />" });
-                                break;
+
+                                AnswerContentModel answer3 = _acList.Find(x => x.QuestionID == item.QuestionID);
+                                if (answer3 != null)
+                                {
+                                    txb.Text = answer3.Answer;
+                                }
+                                    break;
 
                             default:
                                 break;
