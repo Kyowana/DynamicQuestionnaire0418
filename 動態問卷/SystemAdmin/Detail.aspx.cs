@@ -277,6 +277,10 @@ namespace 動態問卷.SystemAdmin
                 }
             }
 
+            Session.Remove("Summary");
+            Session.Remove("AddList");
+            Session.Remove("DeleteList");
+
             this.page02.Visible = false;
             this.page03.Visible = true;
         }

@@ -110,6 +110,9 @@ namespace 動態問卷
                 _aMgr.CreateAnswerContent(item);
 
             }
+            Session.Remove("UserInfo");
+            Session.Remove("AnswerList");
+
             Response.Redirect($"List.aspx");
 
         }
