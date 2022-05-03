@@ -39,6 +39,15 @@ namespace 動態問卷
                 this.GridQList.DataSource = list;
                 this.GridQList.DataBind();
 
+                for (int i = 0; i < list.Count; i++)
+                {
+                    CheckBox cb = (CheckBox)GridQList.Rows[i].Cells[2].Controls[0];
+                    if (!cb.Checked)
+                    {
+                        GridQList.Rows[i].Cells[1].Text = list[i].Caption;
+                    }
+
+                }
             }
         }
 

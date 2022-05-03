@@ -38,6 +38,15 @@ namespace 動態問卷.SystemAdmin
                 this.GridQList.DataSource = list;
                 this.GridQList.DataBind();
 
+                for (int i = 0; i < list.Count; i++)
+                {
+                    CheckBox cb = (CheckBox)GridQList.Rows[i].Cells[3].Controls[0];
+                    if (!cb.Checked)
+                    {
+                        GridQList.Rows[i].Cells[2].Text = list[i].Caption;
+                    }
+
+                }
             }
 
         }
