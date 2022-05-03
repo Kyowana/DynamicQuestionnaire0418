@@ -49,9 +49,9 @@ namespace 動態問卷.Managers
             string connStr = ConfigHelper.GetConnectionString();
             string commandText =
                 @"  INSERT INTO [AnsContents] 
-                        (ID, AnswerID, QuestionID, Answer, Email, Age, SubmitDate)
+                        (ID, AnswerID, QuestionID, Answer)
                     VALUES  
-                        (@ID, @AnswerID, @QuestionID, @Answer, @Email, @Age, @SubmitDate) ";
+                        (@ID, @AnswerID, @QuestionID, @Answer) ";
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
@@ -62,8 +62,8 @@ namespace 動態問卷.Managers
 
                         command.Parameters.AddWithValue("@ID", Guid.NewGuid());
                         command.Parameters.AddWithValue("@AnswerID", aContent.AnswerID);
-                        command.Parameters.AddWithValue("@Name", aContent.QuestionID);
-                        command.Parameters.AddWithValue("@Phone", aContent.Answer);
+                        command.Parameters.AddWithValue("@QuestionID", aContent.QuestionID);
+                        command.Parameters.AddWithValue("@Answer", aContent.Answer);
 
                         command.ExecuteNonQuery();
                     }
