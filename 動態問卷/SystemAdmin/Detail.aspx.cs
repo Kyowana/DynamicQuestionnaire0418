@@ -12,11 +12,13 @@ namespace 動態問卷.SystemAdmin
     public partial class Detail : System.Web.UI.Page
     {
         private QuestionnaireManager _qMgr = new QuestionnaireManager();
+        private AnswerManager _aMgr = new AnswerManager();
         private Guid _QID;
         private List<QuestionModel> _questionList = new List<QuestionModel>();
         private List<Guid> _delIdList = new List<Guid>();
         private SummaryModel _qs;
         private static bool _isEditMode;
+        private List<AnswerSummaryModel> _asList = new List<AnswerSummaryModel>();
         private enum PageStatus
         {
             Page01,
@@ -61,6 +63,10 @@ namespace 動態問卷.SystemAdmin
                     _questionList = _qMgr.GetQuestionsList(questionnaireID);
                     HttpContext.Current.Session["AddList"] = _questionList;
                 }
+
+                _asList = _aMgr.GetAList(questionnaireID);
+                InitAnswerList();
+
                 if (!IsPostBack)
                 {
                     this.txtCaption.Text = _qs.Caption;
@@ -125,7 +131,7 @@ namespace 動態問卷.SystemAdmin
 
         private void InitAnswerList()
         {
-            //this.GridAnswerList.DataSource = ;
+            this.GridAnswerList.DataSource = _asList;
             this.GridAnswerList.DataBind();
         }
 

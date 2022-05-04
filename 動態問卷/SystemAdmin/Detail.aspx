@@ -85,7 +85,7 @@
                     <Columns>
                         <%--<asp:BoundField DataField="SerialNumber" HeaderText="#" />--%>
                         <asp:BoundField DataField="Name" HeaderText="姓名" />
-                        <asp:CheckBoxField DataField="SubmitDate" HeaderText="填寫時間" />
+                        <asp:BoundField DataField="SubmitDate" HeaderText="填寫時間" DataFormatString="{0:g}" />
                         <asp:TemplateField HeaderText="觀看細節">
                             <ItemTemplate>
                                 <asp:LinkButton ID="lkbtGo" runat="server" CommandName="GoLbtn" CommandArgument='<%# Eval("AnswerID") %>'>前往</asp:LinkButton>
@@ -95,7 +95,7 @@
                 </asp:GridView>
             </asp:PlaceHolder>
 
-            <asp:PlaceHolder ID="plcPage03_2" runat="server">
+            <asp:PlaceHolder ID="plcPage03_2" runat="server" Visible ="false">
 
             </asp:PlaceHolder>
         </asp:PlaceHolder>

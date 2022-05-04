@@ -75,5 +75,50 @@ namespace 動態問卷.Managers
                 throw;
             }
         }
+
+        public List<AnswerSummaryModel> GetAList(Guid qID)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                $@"  SELECT *
+                     FROM [AnsSummarys]
+                     WHERE QID = @QID 
+                     ORDER BY SubmitDate DESC ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        command.Parameters.AddWithValue("@QID", qID);
+                        conn.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        List<AnswerSummaryModel> asList = new List<AnswerSummaryModel>();
+                        while (reader.Read())
+                        {
+                            AnswerSummaryModel aSummary = new AnswerSummaryModel()
+                            {
+                                AnswerID = (Guid)reader["AnswerID"],
+                                QID = (Guid)reader["QID"],
+                                //SerialNumber = (Guid)reader["SerialNumber"],
+                                Name = reader["Name"] as string,
+                                Phone = reader["Phone"] as string,
+                                Email = reader["Email"] as string,
+                                Age = (int)reader["Age"],
+                                SubmitDate = (DateTime)reader["SubmitDate"]
+                            };
+                            asList.Add(aSummary);
+                        }
+                        return asList;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("AnswerManager.GetAList", ex);
+                throw;
+            }
+        }
     }
 }
