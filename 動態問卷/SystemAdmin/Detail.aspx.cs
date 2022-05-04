@@ -18,6 +18,7 @@ namespace 動態問卷.SystemAdmin
         private List<Guid> _delIdList = new List<Guid>();
         private SummaryModel _qs;
         private static bool _isEditMode;
+        private int _questionNumber = 1;
         private List<AnswerSummaryModel> _asList = new List<AnswerSummaryModel>();
         private enum PageStatus
         {
@@ -255,7 +256,7 @@ namespace 動態問卷.SystemAdmin
             {
                 // 若為編輯模式
                 //_qMgr.UpdateSummary(_qs);
-                
+
                 if (_delIdList.Count > 0)
                 {
                     foreach (var item in _delIdList)
@@ -383,6 +384,78 @@ namespace 動態問卷.SystemAdmin
             if (e.CommandName == "GoLbtn")
             {
                 string commentIdText = e.CommandArgument as string;
+                AnswerSummaryModel asModel = _asList.Find(x => x.AnswerID.ToString().Contains(commentIdText));
+                this.txtName.Text = asModel.Name;
+                this.txtPhone.Text = asModel.Phone;
+                this.txtEmail.Text = asModel.Email;
+                this.txtAge.Text = asModel.Age.ToString();
+                this.lblSubmitDate.Text = "填寫時間" + asModel.SubmitDate.ToString("yyyy/MM/dd HH:mm:ss");
+
+                _questionList = _qMgr.GetQuestionsList(_QID);
+
+                foreach (var item in _questionList)
+                {
+                    AnswerContentModel acModel = _aMgr.GetAnswerContent(item.QuestionID, asModel.AnswerID);
+
+                    this.plcPage03_2.Controls.Add(new Panel() { ID = $"panel{item.QuestionID}" });
+
+                    FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" });
+                    _questionNumber++;
+
+                    switch (item.QType)
+                    {
+                        case 1:
+                            string[] arrContent = item.AnswerOption.Trim().Split(';');
+                            int rdbCount = 0;
+                            foreach (var content in arrContent)
+                            {
+                                RadioButton rdb = new RadioButton() { ID = $"AnsRdbOption{rdbCount}", Text = content + "<br />", GroupName = $"op{item.QuestionID}", Enabled = false };
+                                FindControl($"panel{item.QuestionID}").Controls.Add(rdb);
+
+                                if (acModel != null)
+                                {
+                                    string[] arrOption1 = acModel.Answer.Trim().Split(';');
+                                    if (arrOption1.Contains(rdb.ID))
+                                        rdb.Checked = true;
+                                }
+                                rdbCount++;
+                            }
+                            break;
+
+                        case 2:
+                            string[] arrContent2 = item.AnswerOption.Trim().Split(';');
+                            int ckbCount = 0;
+                            foreach (var content in arrContent2)
+                            {
+                                CheckBox ckb = new CheckBox() { ID = $"AnsCkbOption{ckbCount}", Text = content + "<br />", Enabled = false };
+                                FindControl($"panel{item.QuestionID}").Controls.Add(ckb);
+
+                                if (acModel != null)
+                                {
+                                    string[] arrOption1 = acModel.Answer.Trim().Split(';');
+                                    if (arrOption1.Contains(ckb.ID))
+                                        ckb.Checked = true;
+                                }
+                                ckbCount++;
+                            }
+                            break;
+
+                        case 3:
+                            TextBox txb = new TextBox() { ID = $"AnsTxt_{item.QuestionID}", Enabled = false };
+                            FindControl($"panel{item.QuestionID}").Controls.Add(txb);
+                            FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = "<br />" });
+
+                            if (acModel != null)
+                            {
+                                txb.Text = acModel.Answer;
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+
                 this.plcPage03_1.Visible = false;
                 this.plcPage03_2.Visible = true;
                 // 讀出作答內容

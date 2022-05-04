@@ -96,7 +96,12 @@
             </asp:PlaceHolder>
 
             <asp:PlaceHolder ID="plcPage03_2" runat="server" Visible ="false">
-
+                姓名&emsp;<asp:TextBox ID="txtName" runat="server" Enabled="false" />&emsp;
+                手機&emsp;<asp:TextBox ID="txtPhone" runat="server" Enabled="false" />&emsp;<br />
+                Email&emsp;<asp:TextBox ID="txtEmail" runat="server" Enabled="false" />&emsp;
+                年齡&emsp;<asp:TextBox ID="txtAge" runat="server" Enabled="false" />&emsp;<br />
+                <asp:Label ID="lblSubmitDate" runat="server" Text="Label"></asp:Label><br />
+                <br />
             </asp:PlaceHolder>
         </asp:PlaceHolder>
 

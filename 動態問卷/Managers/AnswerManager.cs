@@ -120,5 +120,44 @@ namespace 動態問卷.Managers
                 throw;
             }
         }
+        public AnswerContentModel GetAnswerContent(Guid questionID, Guid answerID)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                $@"  SELECT *
+                     FROM [AnsContents]
+                     WHERE QuestionID = @QuestionID AND AnswerID = @AnswerID ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        command.Parameters.AddWithValue("@QuestionID", questionID);
+                        command.Parameters.AddWithValue("@AnswerID", answerID);
+                        conn.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        AnswerContentModel aContent = new AnswerContentModel();
+                        if (reader.Read())
+                        {
+                            aContent = new AnswerContentModel()
+                            {
+                                AnswerID = (Guid)reader["AnswerID"],
+                                QuestionID = (Guid)reader["QuestionID"],
+                                Answer = reader["Answer"] as string,
+
+                            };
+                        }
+                        return aContent;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("AnswerManager.GetAnswerContent", ex);
+                throw;
+            }
+        }
     }
 }
