@@ -561,11 +561,7 @@ namespace 動態問卷.SystemAdmin
 
                 for (int m = 0; m < _questionList.Count; m++)  // 第 m 題
                 {
-                    //foreach (var item in asList)
-                    //{
-                        AnswerContentModel ac = _aMgr.GetAnswerContent(_questionList[m].QuestionID, asList[i].AnswerID);
-                        //acList.Add(ac);
-                    //}
+                    AnswerContentModel ac = _aMgr.GetAnswerContent(_questionList[m].QuestionID, asList[i].AnswerID);
 
                     dr[5 + m] = ac.Answer;
 
@@ -596,47 +592,8 @@ namespace 動態問卷.SystemAdmin
                         dr[5 + m] = stringOptionContent;
                     }
 
-                    //CSVModel csv = new CSVModel()
-                    //{
-                    //    Name = asList[i].Name,
-                    //    Phone = asList[i].Phone,
-                    //    Email = asList[i].Email,
-                    //    Age = asList[i].Age,
-                    //    SubmitDate = asList[i].SubmitDate,
-                    //    Question = _qMgr.FindQuestion(acList[i].QuestionID).Question,
-                    //    AnswerOption = acList[i].Answer,
-                    //};
-                    //if (_qMgr.FindQuestion(acList[i].QuestionID).QType != 3)
-                    //{
-                    //    string[] arrAnswer = _qMgr.FindQuestion(acList[i].QuestionID).AnswerOption.Trim().Split(';');
-                    //    string[] arrAnswerOptionID = acList[i].Answer.Trim().Split(';');
-                    //    List<string> listOptionNumber = new List<string>();
-                    //    List<string> listOptionContent = new List<string>();
-
-                    //    for (int k = 0; k < (arrAnswerOptionID.Length - 1); i++)
-                    //    {
-                    //        listOptionNumber.Add(arrAnswerOptionID[k].Remove(0, 12));
-                    //    }
-                    //    for (int j = 0; j < arrAnswer.Length; j++)
-                    //    {
-                    //        if (listOptionNumber[j] == j.ToString())
-                    //        {                           
-                    //            listOptionContent.Add(arrAnswer[j]);
-                    //        }
-                    //    }
-                    //    string stringOptionContent = string.Join(";", listOptionContent);
-                    //    csv.AnswerOption = stringOptionContent;
                 }
-                //csvList.Add(csv);
             }
-
-            //foreach (var item2 in group)
-            //{
-            //    sb.AppendLine(string.Join(",", propInfos.Select(i => i.GetValue(item2))));
-            //}
-
-            ////此段為直接寫入檔案
-            //File.WriteAllText(filename, sb.ToString(), Encoding.Default);
 
             SaveCsv(dt, filePath);
         }
@@ -648,7 +605,7 @@ namespace 動態問卷.SystemAdmin
             try
             {
                 fs = new FileStream(filePath + dt.TableName + ".csv", FileMode.Create, FileAccess.Write);
-                sw = new StreamWriter(fs, Encoding.Default);
+                sw = new StreamWriter(fs, Encoding.UTF8);
                 var data = string.Empty;
                 //寫出列名稱
                 for (var i = 0; i < dt.Columns.Count; i++)
