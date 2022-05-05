@@ -19,6 +19,7 @@ namespace 動態問卷.SystemAdmin
         private SummaryModel _qs;
         private static bool _isEditMode;
         private int _questionNumber = 1;
+        private const int _pageSize = 10;
         private List<AnswerSummaryModel> _asList = new List<AnswerSummaryModel>();
         private enum PageStatus
         {
@@ -29,6 +30,14 @@ namespace 動態問卷.SystemAdmin
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            string pageIndexText = this.Request.QueryString["page"];
+            int pageIndex = (string.IsNullOrWhiteSpace(pageIndexText)) ? 1 : Convert.ToInt32(pageIndexText);
+            if (!string.IsNullOrWhiteSpace(pageIndexText))
+            {
+                this.page01.Visible = false;
+                this.page03.Visible = true;
+            }
+
             string questionnaireIDString = Request.QueryString["ID"];
             if (HttpContext.Current.Session["ID"] != null)
                 _QID = (Guid)HttpContext.Current.Session["ID"];
@@ -64,9 +73,7 @@ namespace 動態問卷.SystemAdmin
                     _questionList = _qMgr.GetQuestionsList(questionnaireID);
                     HttpContext.Current.Session["AddList"] = _questionList;
                 }
-
-                _asList = _aMgr.GetAList(questionnaireID);
-                InitAnswerList();
+           
 
                 if (!IsPostBack)
                 {
@@ -80,6 +87,10 @@ namespace 動態問卷.SystemAdmin
                         InitQuestionsList();
                     else
                         this.plcNoQuestions.Visible = true;
+
+                    _asList = _aMgr.GetAList(questionnaireID, _pageSize, pageIndex, out int totalRows);
+                    this.ProcessPager(pageIndex, totalRows);
+                    InitAnswerList();
                 }
 
 
@@ -460,6 +471,52 @@ namespace 動態問卷.SystemAdmin
                 this.plcPage03_2.Visible = true;
                 // 讀出作答內容
             }
+        }
+
+        private void ProcessPager(int pageIndex, int totalRows)
+        {
+            int pageCount = (totalRows / _pageSize);
+            if ((totalRows % _pageSize) > 0)
+                pageCount += 1;
+
+            string url = Request.Url.LocalPath;
+
+
+            this.aLinkFirst.HRef = url + "?ID=" + _QID + "&page=1";
+            this.aLinkPrev.HRef = url + "?ID=" + _QID + "&page=" + (pageIndex - 1);
+            if (pageIndex <= pageCount)
+                this.aLinkPrev.Visible = false;
+
+            this.aLinkNext.HRef = url + "?ID=" + _QID + "&page=" + (pageIndex + 1);
+            if (pageIndex >= pageCount)
+                this.aLinkNext.Visible = false;
+
+
+            this.aLinkPage1.HRef = url + "?ID=" + _QID + "&page=" + (pageIndex - 2);
+            this.aLinkPage1.InnerText = (pageIndex - 2).ToString();
+            if (pageIndex <= 2)
+                this.aLinkPage1.Visible = false;
+
+            this.aLinkPage2.HRef = url + "?ID=" + _QID + "&page=" + (pageIndex - 1);
+            this.aLinkPage2.InnerText = (pageIndex - 1).ToString();
+            if (pageIndex <= 1)
+                this.aLinkPage2.Visible = false;
+
+            this.aLinkPage3.HRef = "";
+            this.aLinkPage3.InnerText = pageIndex.ToString();
+
+            this.aLinkPage4.HRef = url + "?ID=" + _QID + "&page=" + (pageIndex + 1);
+            this.aLinkPage4.InnerText = (pageIndex + 1).ToString();
+            if ((pageIndex + 1) > pageCount)
+                this.aLinkPage4.Visible = false;
+
+            this.aLinkPage5.HRef = url + "?ID=" + _QID + "&page=" + (pageIndex + 2);
+            this.aLinkPage5.InnerText = (pageIndex + 2).ToString();
+            if ((pageIndex + 2) > pageCount)
+                this.aLinkPage5.Visible = false;
+
+            this.aLinkLast.HRef = url + "?ID=" + _QID + "&page=" + pageCount;
+
         }
 
         protected void btnExport_Click(object sender, EventArgs e)
