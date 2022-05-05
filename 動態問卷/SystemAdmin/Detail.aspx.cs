@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -73,7 +76,7 @@ namespace 動態問卷.SystemAdmin
                     _questionList = _qMgr.GetQuestionsList(questionnaireID);
                     HttpContext.Current.Session["AddList"] = _questionList;
                 }
-           
+
 
                 if (!IsPostBack)
                 {
@@ -88,11 +91,11 @@ namespace 動態問卷.SystemAdmin
                     else
                         this.plcNoQuestions.Visible = true;
 
-                    _asList = _aMgr.GetAList(questionnaireID, _pageSize, pageIndex, out int totalRows);
-                    this.ProcessPager(pageIndex, totalRows);
-                    InitAnswerList();
                 }
 
+                _asList = _aMgr.GetAList(questionnaireID, _pageSize, pageIndex, out int totalRows);
+                this.ProcessPager(pageIndex, totalRows);
+                InitAnswerList();
 
                 //if (_questionList != null)
                 //{
@@ -383,6 +386,8 @@ namespace 動態問卷.SystemAdmin
         protected void lbtnPage03_Click(object sender, EventArgs e)
         {
             this.ChangeStatus(PageStatus.Page03);
+            this.plcPage03_1.Visible = true;
+            this.plcPage03_2.Visible = false;
         }
 
         protected void lbtnPage04_Click(object sender, EventArgs e)
@@ -522,6 +527,163 @@ namespace 動態問卷.SystemAdmin
         protected void btnExport_Click(object sender, EventArgs e)
         {
 
+            //存檔到指定目錄       
+            string filePath = $"D:\\CSharpClass\\{_qs.Caption}{DateTime.Now.ToString("yyyyMMddHHmmss")}.csv";
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add("姓名", typeof(string));
+            dt.Columns.Add("電話", typeof(string));
+            dt.Columns.Add("Email", typeof(string));
+            dt.Columns.Add("年齡", typeof(string));
+            dt.Columns.Add("送出時間", typeof(string));
+
+            foreach (var question in _questionList)
+            {
+                dt.Columns.Add(question.Question, typeof(string));
+            }
+
+            //產csv檔直接儲存到server
+            List<AnswerSummaryModel> asList = _aMgr.GetAList(_QID);
+            List<AnswerContentModel> acList = new List<AnswerContentModel>();
+
+
+            //List<CSVModel> csvList = new List<CSVModel>();
+            for (int i = 0; i < asList.Count; i++)  //第 i 人的答案
+            {
+                DataRow dr = dt.NewRow();
+                dt.Rows.Add(dr);
+
+                dr[0] = asList[i].Name;
+                dr[1] = asList[i].Phone;
+                dr[2] = asList[i].Email;
+                dr[3] = asList[i].Age;
+                dr[4] = asList[i].SubmitDate;
+
+                for (int m = 0; m < _questionList.Count; m++)  // 第 m 題
+                {
+                    //foreach (var item in asList)
+                    //{
+                        AnswerContentModel ac = _aMgr.GetAnswerContent(_questionList[m].QuestionID, asList[i].AnswerID);
+                        //acList.Add(ac);
+                    //}
+
+                    dr[5 + m] = ac.Answer;
+
+                    int qType = _qMgr.FindQuestion(ac.QuestionID).QType;
+                    if (qType != 3)
+                    {
+                        string[] arrAnswer = _qMgr.FindQuestion(ac.QuestionID).AnswerOption.Trim().Split(';');
+                        string[] arrAnswerOptionID = ac.Answer.Trim().Split(';');
+                        List<string> listOptionNumber = new List<string>();
+                        List<string> listOptionContent = new List<string>();
+
+                        for (int k = 0; k < (arrAnswerOptionID.Length - 1); k++)
+                        {
+                            listOptionNumber.Add(arrAnswerOptionID[k].Remove(0, 12));
+                        }
+                        for (int j = 0; j < arrAnswer.Length; j++)
+                        {
+                            if (Convert.ToInt32(listOptionNumber.Count) > j)
+                            {
+                                if ((Convert.ToInt32(listOptionNumber[j]) - 1) == j)
+                                {
+                                    listOptionContent.Add(arrAnswer[j]);
+                                }
+
+                            }
+                        }
+                        string stringOptionContent = string.Join(";", listOptionContent);
+                        dr[5 + m] = stringOptionContent;
+                    }
+
+                    //CSVModel csv = new CSVModel()
+                    //{
+                    //    Name = asList[i].Name,
+                    //    Phone = asList[i].Phone,
+                    //    Email = asList[i].Email,
+                    //    Age = asList[i].Age,
+                    //    SubmitDate = asList[i].SubmitDate,
+                    //    Question = _qMgr.FindQuestion(acList[i].QuestionID).Question,
+                    //    AnswerOption = acList[i].Answer,
+                    //};
+                    //if (_qMgr.FindQuestion(acList[i].QuestionID).QType != 3)
+                    //{
+                    //    string[] arrAnswer = _qMgr.FindQuestion(acList[i].QuestionID).AnswerOption.Trim().Split(';');
+                    //    string[] arrAnswerOptionID = acList[i].Answer.Trim().Split(';');
+                    //    List<string> listOptionNumber = new List<string>();
+                    //    List<string> listOptionContent = new List<string>();
+
+                    //    for (int k = 0; k < (arrAnswerOptionID.Length - 1); i++)
+                    //    {
+                    //        listOptionNumber.Add(arrAnswerOptionID[k].Remove(0, 12));
+                    //    }
+                    //    for (int j = 0; j < arrAnswer.Length; j++)
+                    //    {
+                    //        if (listOptionNumber[j] == j.ToString())
+                    //        {                           
+                    //            listOptionContent.Add(arrAnswer[j]);
+                    //        }
+                    //    }
+                    //    string stringOptionContent = string.Join(";", listOptionContent);
+                    //    csv.AnswerOption = stringOptionContent;
+                }
+                //csvList.Add(csv);
+            }
+
+            //foreach (var item2 in group)
+            //{
+            //    sb.AppendLine(string.Join(",", propInfos.Select(i => i.GetValue(item2))));
+            //}
+
+            ////此段為直接寫入檔案
+            //File.WriteAllText(filename, sb.ToString(), Encoding.Default);
+
+            SaveCsv(dt, filePath);
+        }
+
+        public static void SaveCsv(DataTable dt, string filePath)
+        {
+            FileStream fs = null;
+            StreamWriter sw = null;
+            try
+            {
+                fs = new FileStream(filePath + dt.TableName + ".csv", FileMode.Create, FileAccess.Write);
+                sw = new StreamWriter(fs, Encoding.Default);
+                var data = string.Empty;
+                //寫出列名稱
+                for (var i = 0; i < dt.Columns.Count; i++)
+                {
+                    data += dt.Columns[i].ColumnName;
+                    if (i < dt.Columns.Count - 1)
+                    {
+                        data += ",";
+                    }
+                }
+                sw.WriteLine(data);
+                //寫出各行資料
+                for (var i = 0; i < dt.Rows.Count; i++)
+                {
+                    data = string.Empty;
+                    for (var j = 0; j < dt.Columns.Count; j++)
+                    {
+                        data += dt.Rows[i][j].ToString();
+                        if (j < dt.Columns.Count - 1)
+                        {
+                            data += ",";
+                        }
+                    }
+                    sw.WriteLine(data);
+                }
+            }
+            catch (IOException ex)
+            {
+                throw new IOException(ex.Message, ex);
+            }
+            finally
+            {
+                if (sw != null) sw.Close();
+                if (fs != null) fs.Close();
+            }
         }
     }
 }

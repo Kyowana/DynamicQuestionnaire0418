@@ -160,7 +160,9 @@ namespace 動態問卷.Managers
                             question = new QuestionModel()
                             {
                                 QuestionID = (Guid)reader["QuestionID"],
-
+                                Question = reader["Question"] as string,
+                                AnswerOption = reader["AnswerOption"] as string,
+                                QType = (int)reader["QType"]
                             };
                             return question;
                         }
