@@ -36,16 +36,33 @@ namespace 動態問卷
                 var list = this._qMgr.GetQList(keyword, startDate, endDate, _pageSize, pageIndex, out int totalRows);
                 this.ProcessPager(keyword, pageIndex, totalRows);
 
+                foreach (var item in list)
+                {
+                    if (item.ViewLimit)
+                    {
+                        if (item.StartDate > DateTime.Now || item.EndDate.AddDays(1) < DateTime.Now)
+                            item.ViewLimit = false;
+                    }
+                }
+
                 this.GridQList.DataSource = list;
                 this.GridQList.DataBind();
 
                 for (int i = 0; i < list.Count; i++)
                 {
-                    CheckBox cb = (CheckBox)GridQList.Rows[i].Cells[2].Controls[0];
-                    if (!cb.Checked)
+                    if (GridQList.Rows[i].Cells[2].Text == "False")
                     {
                         GridQList.Rows[i].Cells[1].Text = list[i].Caption;
+                        GridQList.Rows[i].Cells[2].Text = "已完結";
                     }
+                    else
+                        GridQList.Rows[i].Cells[2].Text = "投票中";
+
+                    //CheckBox cb = (CheckBox)GridQList.Rows[i].Cells[2].Controls[0];
+                    //if (!cb.Checked)
+                    //{
+                    //    GridQList.Rows[i].Cells[1].Text = list[i].Caption;
+                    //}
 
                 }
             }
