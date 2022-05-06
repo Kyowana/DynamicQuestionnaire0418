@@ -32,7 +32,7 @@
                             <a href="Detail.aspx?ID=<%# Eval("QID") %>"><%# Eval("Caption") %></a>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:CheckBoxField DataField="ViewLimit" HeaderText="狀態" />
+                    <asp:BoundField DataField="ViewLimit" HeaderText="狀態" />
                     <asp:BoundField DataField="StartDate" HeaderText="開始時間" DataFormatString="{0:d}" />
                     <asp:BoundField DataField="EndDate" HeaderText="結束時間" DataFormatString="{0:d}" />
                     <asp:TemplateField HeaderText="觀看統計">

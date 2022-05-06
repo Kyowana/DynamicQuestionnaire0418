@@ -35,18 +35,32 @@ namespace 動態問卷.SystemAdmin
                 var list = this._qMgr.GetQList(keyword, startDate, endDate, _pageSize, pageIndex, out int totalRows);
                 this.ProcessPager(keyword, pageIndex, totalRows);
 
+                foreach (var item in list)
+                {
+                    if (item.ViewLimit)
+                    {
+                        if (item.StartDate > DateTime.Now || item.EndDate.AddDays(1) < DateTime.Now)
+                            item.ViewLimit = false;
+                    }
+                }
+
                 this.GridQList.DataSource = list;
                 this.GridQList.DataBind();
 
-                //for (int i = 0; i < list.Count; i++)
-                //{
-                //    CheckBox cb = (CheckBox)GridQList.Rows[i].Cells[3].Controls[0];
-                //    if (!cb.Checked)
-                //    {
-                //        GridQList.Rows[i].Cells[2].Text = list[i].Caption;
-                //    }
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (GridQList.Rows[i].Cells[3].Text == "False")
+                        GridQList.Rows[i].Cells[3].Text = "已關閉";
+                    else
+                        GridQList.Rows[i].Cells[3].Text = "開放";
 
-                //}
+                    //CheckBox cb = (CheckBox)GridQList.Rows[i].Cells[2].Controls[0];
+                    //if (!cb.Checked)
+                    //{
+                    //    GridQList.Rows[i].Cells[1].Text = list[i].Caption;
+                    //}
+
+                }
             }
 
         }
