@@ -28,7 +28,7 @@
                     <asp:BoundField DataField="EndDate" HeaderText="結束時間" DataFormatString="{0:d}" />
                     <asp:TemplateField HeaderText="觀看統計">
                         <ItemTemplate>
-                            <a href="Form.aspx?ID=<%# Eval("QID") %>">前往</a>
+                            <a href="Stastic.aspx?ID=<%# Eval("QID") %>">前往</a>
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>

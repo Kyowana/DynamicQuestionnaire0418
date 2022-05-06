@@ -226,5 +226,43 @@ namespace 動態問卷.Managers
                 throw;
             }
         }
+        public List<AnswerContentModel> GetAnswerListIn1Question(Guid questionID)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                $@"  SELECT *
+                     FROM [AnsContents]
+                     WHERE QuestionID = @QuestionID ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        command.Parameters.AddWithValue("@QuestionID", questionID);
+                        conn.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        List<AnswerContentModel> acList = new List<AnswerContentModel>();
+                        while (reader.Read())
+                        {
+                            AnswerContentModel acModel = new AnswerContentModel()
+                            {
+                                QuestionID = (Guid)reader["QuestionID"],
+                                Answer = reader["Answer"] as string,
+
+                            };
+                            acList.Add(acModel);
+                        }
+                        return acList;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("AnswerManager.GetAnswerListIn1Question", ex);
+                throw;
+            }
+        }
     }
 }
