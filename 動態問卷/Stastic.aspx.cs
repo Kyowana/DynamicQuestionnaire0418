@@ -65,7 +65,7 @@ namespace 動態問卷
                                 decimal ratio = Math.Round((decimal)c / ttl,2);
                                 pnl.Style["width"] = $"{ratio * 100}%";
                                 FindControl($"rdb{rbdCount}").Controls.Add(pnl);
-                                FindControl($"pnl{item.QuestionID}_AnsRdbOption{rbdCount}").Controls.Add(new Literal() { Text = $"{ratio*100} %" });
+                                FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = $"{ratio*100} % ({c}) <br /><br />" });
 
                                 rbdCount++;
                             }

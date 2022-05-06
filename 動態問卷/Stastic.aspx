@@ -10,11 +10,13 @@
         .frame {
             width: 50%;
             border: 1px solid black;
+            float:left;
+            height: 20px;
         }
         .strip {
             border: 1px solid red;
             background-color: red;
-            color: white;
+            height: 20px;
             font-weight: 700;
         }
     </style>
