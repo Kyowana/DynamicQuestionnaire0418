@@ -542,12 +542,8 @@ namespace 動態問卷.SystemAdmin
                 dt.Columns.Add(question.Question, typeof(string));
             }
 
-            //產csv檔直接儲存到server
             List<AnswerSummaryModel> asList = _aMgr.GetAList(_QID);
-            List<AnswerContentModel> acList = new List<AnswerContentModel>();
 
-
-            //List<CSVModel> csvList = new List<CSVModel>();
             for (int i = 0; i < asList.Count; i++)  //第 i 人的答案
             {
                 DataRow dr = dt.NewRow();
@@ -581,7 +577,7 @@ namespace 動態問卷.SystemAdmin
                         {
                             if (Convert.ToInt32(listOptionNumber.Count) > j)
                             {
-                                if ((Convert.ToInt32(listOptionNumber[j]) - 1) == j)
+                                if (Convert.ToInt32(listOptionNumber[j]) == j)
                                 {
                                     listOptionContent.Add(arrAnswer[j]);
                                 }

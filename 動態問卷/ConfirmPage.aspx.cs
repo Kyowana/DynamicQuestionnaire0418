@@ -113,7 +113,7 @@ namespace 動態問卷
             Session.Remove("UserInfo");
             Session.Remove("AnswerList");
 
-            Response.Redirect($"List.aspx");
+            Response.Redirect($"Stastic.aspx?ID={_qID}");
 
         }
     }
