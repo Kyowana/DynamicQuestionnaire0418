@@ -91,12 +91,14 @@ namespace 動態問卷.SystemAdmin
                     else
                         this.plcNoQuestions.Visible = true;
 
+                    
                 }
 
                 _asList = _aMgr.GetAList(questionnaireID, _pageSize, pageIndex, out int totalRows);
                 this.ProcessPager(pageIndex, totalRows);
                 InitAnswerList();
 
+                InitStasticPage();
                 //if (_questionList != null)
                 //{
                 //    this.GridViewQuestionList.DataSource = _questionList;
@@ -136,6 +138,89 @@ namespace 動態問卷.SystemAdmin
             //else
             //    this.plcNoQuestions.Visible = true;
 
+        }
+
+        private void InitStasticPage()
+        {
+            foreach (var item in _questionList)
+            {
+                this.plcQuestions.Controls.Add(new Panel() { ID = $"panel{item.QuestionID}" });
+
+                List<AnswerContentModel> acList = _aMgr.GetAnswerListIn1Question(item.QuestionID);
+
+                switch (item.QType)
+                {
+                    case 1:
+                        FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" });
+                        _questionNumber++;
+
+                        string[] arrContent1 = item.AnswerOption.Trim().Split(';');
+                        int rbdCount = 0;
+                        foreach (var content in arrContent1)
+                        {
+                            Literal ltlRdbOption = new Literal() { Text = content + "<br />" };
+                            FindControl($"panel{item.QuestionID}").Controls.Add(ltlRdbOption);
+
+                            FindControl($"panel{item.QuestionID}").Controls.Add(new Panel() { ID = $"rdb{rbdCount}", CssClass = "frame" });
+
+                            int c = acList.Count(x => x.Answer.ToString().Contains($"AnsRdbOption{rbdCount}"));
+                            int ttl = 0;
+                            foreach (var ac in acList)
+                            {
+                                if (!string.IsNullOrEmpty(ac.Answer))
+                                    ttl++;
+                            }
+
+                            Panel pnl = new Panel() { CssClass = "strip", ID = $"pnl{item.QuestionID}_AnsRdbOption{rbdCount}" };
+                            decimal ratio = Math.Round((decimal)c / ttl, 2);
+                            pnl.Style["width"] = $"{ratio * 100}%";
+                            FindControl($"rdb{rbdCount}").Controls.Add(pnl);
+                            FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = $"{ratio * 100} % ({c}) <br /><br />" });
+
+                            rbdCount++;
+                        }
+
+                        break;
+
+                    case 2:
+                        FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" });
+                        _questionNumber++;
+
+                        string[] arrContent2 = item.AnswerOption.Trim().Split(';');
+                        int ckbCount = 0;
+                        foreach (var content in arrContent2)
+                        {
+                            Literal ltlRdbOption = new Literal() { Text = content + "<br />" };
+                            FindControl($"panel{item.QuestionID}").Controls.Add(ltlRdbOption);
+
+                            FindControl($"panel{item.QuestionID}").Controls.Add(new Panel() { ID = $"rdb{ckbCount}", CssClass = "frame" });
+
+                            int c = acList.Count(x => x.Answer.ToString().Contains($"AnsCkbOption{ckbCount}"));
+                            int ttl = 0;
+                            foreach (var ac in acList)
+                            {
+                                if (!string.IsNullOrEmpty(ac.Answer))
+                                    ttl++;
+                            }
+
+                            Panel pnl = new Panel() { CssClass = "strip", ID = $"pnl{item.QuestionID}_AnsCkbOption{ckbCount}" };
+                            decimal ratio = Math.Round((decimal)c / ttl, 2);
+                            pnl.Style["width"] = $"{ratio * 100}%";
+                            FindControl($"rdb{ckbCount}").Controls.Add(pnl);
+                            FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = $"{ratio * 100} % ({c}) <br /><br />" });
+
+                            ckbCount++;
+                        }
+                        break;
+
+                    case 3:
+                        _questionNumber++;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         }
 
         private void InitQuestionsList()
@@ -367,10 +452,12 @@ namespace 動態問卷.SystemAdmin
             this.lbtnPage01.Enabled = (status != PageStatus.Page01);   // 當括弧內為true/false
             this.lbtnPage02.Enabled = (status != PageStatus.Page02);
             this.lbtnPage03.Enabled = (status != PageStatus.Page03);
+            this.lbtnPage04.Enabled = (status != PageStatus.Page04);
 
             this.page01.Visible = (status == PageStatus.Page01);
             this.page02.Visible = (status == PageStatus.Page02);
             this.page03.Visible = (status == PageStatus.Page03);
+            this.page04.Visible = (status == PageStatus.Page04);
         }
 
         protected void lbtnPage01_Click(object sender, EventArgs e)

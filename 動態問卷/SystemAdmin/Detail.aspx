@@ -5,7 +5,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title></title>
+    <title>後台 - 問卷管理</title>
+    <style>
+        .frame {
+            width: 50%;
+            border: 1px solid black;
+            float:left;
+            height: 20px;
+        }
+        .strip {
+            border: 1px solid red;
+            background-color: red;
+            height: 20px;
+            font-weight: 700;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -118,7 +132,9 @@
             </asp:PlaceHolder>
         </asp:PlaceHolder>
 
-        <asp:PlaceHolder ID="page04" runat="server" Visible="false"></asp:PlaceHolder>
+        <asp:PlaceHolder ID="page04" runat="server" Visible="false">
+            <asp:PlaceHolder ID="plcQuestions" runat="server"></asp:PlaceHolder>
+        </asp:PlaceHolder>
     </div>
 
 

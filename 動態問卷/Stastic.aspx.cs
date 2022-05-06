@@ -73,25 +73,35 @@ namespace 動態問卷
                             break;
 
                         case 2:
-                            //FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" });
-                            //_questionNumber++;
+                            FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" });
+                            _questionNumber++;
 
-                            //string[] arrContent2 = item.AnswerOption.Trim().Split(';');
-                            //int ckbCount = 0;
-                            //foreach (var content in arrContent2)
-                            //{
-                            //    CheckBox ckb = new CheckBox() { ID = $"AnsCkbOption{ckbCount}", Text = content + "<br />" };
-                            //    FindControl($"panel{item.QuestionID}").Controls.Add(ckb);
-                            //    AnswerContentModel answer2 = _acList.Find(x => x.QuestionID == item.QuestionID);
-                            //    if (answer2 != null)
-                            //    {
-                            //        string[] arrOption1 = answer2.Answer.Trim().Split(';');
-                            //        if (arrOption1.Contains(ckb.ID))
-                            //            ckb.Checked = true;
-                            //    }
-                            //    ckbCount++;
-                            //}
-                            break;
+                            string[] arrContent2 = item.AnswerOption.Trim().Split(';');
+                            int ckbCount = 0;
+                            foreach (var content in arrContent2)
+                            {
+                                Literal ltlRdbOption = new Literal() { Text = content + "<br />" };
+                                FindControl($"panel{item.QuestionID}").Controls.Add(ltlRdbOption);
+
+                                FindControl($"panel{item.QuestionID}").Controls.Add(new Panel() { ID = $"rdb{ckbCount}", CssClass = "frame" });
+
+                                int c = acList.Count(x => x.Answer.ToString().Contains($"AnsCkbOption{ckbCount}"));
+                                int ttl = 0;
+                                foreach (var ac in acList)
+                                {
+                                    if (!string.IsNullOrEmpty(ac.Answer))
+                                        ttl++;
+                                }
+
+                                Panel pnl = new Panel() { CssClass = "strip", ID = $"pnl{item.QuestionID}_AnsCkbOption{ckbCount}" };
+                                decimal ratio = Math.Round((decimal)c / ttl, 2);
+                                pnl.Style["width"] = $"{ratio * 100}%";
+                                FindControl($"rdb{ckbCount}").Controls.Add(pnl);
+                                FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = $"{ratio * 100} % ({c}) <br /><br />" });
+
+                                ckbCount++;
+                            }
+                                break;
 
                         case 3:
                             _questionNumber++;
