@@ -91,7 +91,7 @@ namespace 動態問卷.SystemAdmin
                     else
                         this.plcNoQuestions.Visible = true;
 
-                    
+
                 }
 
                 _asList = _aMgr.GetAList(questionnaireID, _pageSize, pageIndex, out int totalRows);
@@ -674,14 +674,18 @@ namespace 動態問卷.SystemAdmin
                         }
                         for (int j = 0; j < arrAnswer.Length; j++)
                         {
-                            if (Convert.ToInt32(listOptionNumber.Count) > j)
-                            {
-                                if (Convert.ToInt32(listOptionNumber[j]) == j)
+                            //if (Convert.ToInt32(listOptionNumber.Count) > j)
+                            //{
+                                for (int n = 0; n < listOptionNumber.Count; n++)
                                 {
-                                    listOptionContent.Add(arrAnswer[j]);
+                                    if (Convert.ToInt32(listOptionNumber[n]) == j)
+                                    {
+                                        listOptionContent.Add(arrAnswer[j]);
+                                    }
+
                                 }
 
-                            }
+                            //}
                         }
                         string stringOptionContent = string.Join(";", listOptionContent);
                         dr[5 + m] = stringOptionContent;
