@@ -339,14 +339,19 @@ namespace 動態問卷.SystemAdmin
             this.page01.Visible = false;
             this.page02.Visible = true;
 
-            if (!_isEditMode)
-                _qMgr.CreateQuestionnaire(_qs);
-            else
-                _qMgr.UpdateSummary(_qs);
+            //if (!_isEditMode)
+            //    _qMgr.CreateQuestionnaire(_qs);
+            //else
+            //    _qMgr.UpdateSummary(_qs);
         }
 
         protected void btnSubmit2_Click(object sender, EventArgs e)
         {
+            if (!_isEditMode)
+                _qMgr.CreateQuestionnaire(_qs);
+            else
+                _qMgr.UpdateSummary(_qs);
+
             if (!_isEditMode)
             {
                 // 若為新增問卷模式，直接新增問卷

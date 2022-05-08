@@ -69,10 +69,37 @@
                 var questionContainer = $("div[id^='panel']");
                 var allQuestionContainer = questionContainer.get();
 
+                if ($("#txtName").val() == "" || $("#txtPhone").val() == "" || $("#txtEmail").val() == "" || $("#txtAge").val() == "") {
+                    alert('填寫者個人資料部分為必填');
+                    return;
+                }
+
                 var allAnswer = "";
                 for (var question of allQuestionContainer) {
                     var answersList = $("input[id*='Ans']", question).get();
                     var ret = question.id.slice(-36);
+
+                    if ($(`input[name='op${ret}']`).length > 0 && $(`span[class='required']`, question).length > 0) {
+                        var method = $(`input[name='op${ret}']:checked`).val();
+                        if (typeof (method) == "undefined") {
+                            alert('請確認必填問題是否已填寫');
+                            return;
+                        }
+                    }
+                    else if ($("input[id*='AnsCkbOption']", question).length > 0 && $(`span[class='required']`, question).length > 0) {
+                        if ($(`input[id^='${ret}_AnsCkbOption']:checked`).length == 0) {
+                            alert('請確認必填問題是否已填寫');
+                            return;
+                        }
+                    }
+                    else if ($("input[id^='AnsTxt']", question).val() == "") {
+                        if ($("input[class='required']"), question) {
+                            alert('請確認必填問題是否已填寫');
+                            return;
+
+                        }
+                    }
+
                     var answer = "";
 
                     for (var item of answersList) {
