@@ -71,7 +71,7 @@
 
                 var allAnswer = "";
                 for (var question of allQuestionContainer) {
-                    var answersList = $("input[id^='Ans']", question).get();
+                    var answersList = $("input[id*='Ans']", question).get();
                     var ret = question.id.slice(-36);
                     var answer = "";
 

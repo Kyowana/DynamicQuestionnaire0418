@@ -66,7 +66,7 @@ namespace 動態問卷
                                     string[] arrOption1 = _acList[i].Answer.Trim().Split(';');
                                     for (int k = 0; k < (arrOption1.Length - 1); k++)
                                     {
-                                        string number = arrOption1[k].Remove(0, 12);
+                                        string number = arrOption1[k].Remove(0, 49);
                                         for (int j = 0; j < arrContent1.Length; j++)
                                         {
                                             if (number == j.ToString())

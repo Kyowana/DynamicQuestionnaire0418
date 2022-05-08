@@ -51,9 +51,9 @@ namespace 動態問卷
                                 Literal ltlRdbOption = new Literal() { Text = content + "<br />" };
                                 FindControl($"panel{item.QuestionID}").Controls.Add(ltlRdbOption);
 
-                                FindControl($"panel{item.QuestionID}").Controls.Add(new Panel() { ID = $"rdb{rbdCount}", CssClass = "frame" });
+                                FindControl($"panel{item.QuestionID}").Controls.Add(new Panel() { ID = $"{item.QuestionID}_rdb{rbdCount}", CssClass = "frame" });
 
-                                int c = acList.Count(x => x.Answer.ToString().Contains($"AnsRdbOption{rbdCount}"));
+                                int c = acList.Count(x => x.Answer.ToString().Contains($"{item.QuestionID}_AnsRdbOption{rbdCount}"));
                                 int ttl = 0;
                                 foreach (var ac in acList)
                                 {
@@ -64,7 +64,7 @@ namespace 動態問卷
                                 Panel pnl = new Panel() { CssClass = "strip", ID = $"pnl{item.QuestionID}_AnsRdbOption{rbdCount}" };
                                 decimal ratio = Math.Round((decimal)c / ttl,2);
                                 pnl.Style["width"] = $"{ratio * 100}%";
-                                FindControl($"rdb{rbdCount}").Controls.Add(pnl);
+                                FindControl($"{item.QuestionID}_rdb{rbdCount}").Controls.Add(pnl);
                                 FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = $"{ratio*100} % ({c}) <br /><br />" });
 
                                 rbdCount++;
@@ -83,9 +83,9 @@ namespace 動態問卷
                                 Literal ltlRdbOption = new Literal() { Text = content + "<br />" };
                                 FindControl($"panel{item.QuestionID}").Controls.Add(ltlRdbOption);
 
-                                FindControl($"panel{item.QuestionID}").Controls.Add(new Panel() { ID = $"rdb{ckbCount}", CssClass = "frame" });
+                                FindControl($"panel{item.QuestionID}").Controls.Add(new Panel() { ID = $"{item.QuestionID}_ckb{ckbCount}", CssClass = "frame" });
 
-                                int c = acList.Count(x => x.Answer.ToString().Contains($"AnsCkbOption{ckbCount}"));
+                                int c = acList.Count(x => x.Answer.ToString().Contains($"{item.QuestionID}_AnsCkbOption{ckbCount}"));
                                 int ttl = 0;
                                 foreach (var ac in acList)
                                 {
@@ -96,7 +96,7 @@ namespace 動態問卷
                                 Panel pnl = new Panel() { CssClass = "strip", ID = $"pnl{item.QuestionID}_AnsCkbOption{ckbCount}" };
                                 decimal ratio = Math.Round((decimal)c / ttl, 2);
                                 pnl.Style["width"] = $"{ratio * 100}%";
-                                FindControl($"rdb{ckbCount}").Controls.Add(pnl);
+                                FindControl($"{item.QuestionID}_ckb{ckbCount}").Controls.Add(pnl);
                                 FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = $"{ratio * 100} % ({c}) <br /><br />" });
 
                                 ckbCount++;

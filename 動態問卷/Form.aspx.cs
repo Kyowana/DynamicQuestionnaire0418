@@ -62,7 +62,7 @@ namespace 動態問卷
                                 int rdbCount = 0;
                                 foreach (var content in arrContent)
                                 {
-                                    RadioButton rdb = new RadioButton() { ID = $"AnsRdbOption{rdbCount}", Text = content + "<br />", GroupName = $"op{item.QuestionID}" };
+                                    RadioButton rdb = new RadioButton() { ID = $"{item.QuestionID}_AnsRdbOption{rdbCount}", Text = content + "<br />", GroupName = $"op{item.QuestionID}" };
                                     FindControl($"panel{item.QuestionID}").Controls.Add(rdb);
 
                                     AnswerContentModel answer1 = _acList.Find(x => x.QuestionID == item.QuestionID);
@@ -81,7 +81,7 @@ namespace 動態問卷
                                 int ckbCount = 0;
                                 foreach (var content in arrContent2)
                                 {
-                                    CheckBox ckb = new CheckBox() { ID = $"AnsCkbOption{ckbCount}", Text = content + "<br />" };
+                                    CheckBox ckb = new CheckBox() { ID = $"{item.QuestionID}_AnsCkbOption{ckbCount}", Text = content + "<br />" };
                                     FindControl($"panel{item.QuestionID}").Controls.Add(ckb);
                                     AnswerContentModel answer2 = _acList.Find(x => x.QuestionID == item.QuestionID);
                                     if (answer2 != null)

@@ -161,9 +161,9 @@ namespace 動態問卷.SystemAdmin
                             Literal ltlRdbOption = new Literal() { Text = content + "<br />" };
                             FindControl($"panel{item.QuestionID}").Controls.Add(ltlRdbOption);
 
-                            FindControl($"panel{item.QuestionID}").Controls.Add(new Panel() { ID = $"rdb{rbdCount}", CssClass = "frame" });
+                            FindControl($"panel{item.QuestionID}").Controls.Add(new Panel() { ID = $"{item.QuestionID}_rdb{rbdCount}", CssClass = "frame" });
 
-                            int c = acList.Count(x => x.Answer.ToString().Contains($"AnsRdbOption{rbdCount}"));
+                            int c = acList.Count(x => x.Answer.ToString().Contains($"{item.QuestionID}_AnsRdbOption{rbdCount}"));
                             int ttl = 0;
                             foreach (var ac in acList)
                             {
@@ -174,7 +174,7 @@ namespace 動態問卷.SystemAdmin
                             Panel pnl = new Panel() { CssClass = "strip", ID = $"pnl{item.QuestionID}_AnsRdbOption{rbdCount}" };
                             decimal ratio = Math.Round((decimal)c / ttl, 2);
                             pnl.Style["width"] = $"{ratio * 100}%";
-                            FindControl($"rdb{rbdCount}").Controls.Add(pnl);
+                            FindControl($"{item.QuestionID}_rdb{rbdCount}").Controls.Add(pnl);
                             FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = $"{ratio * 100} % ({c}) <br /><br />" });
 
                             rbdCount++;
@@ -193,9 +193,9 @@ namespace 動態問卷.SystemAdmin
                             Literal ltlRdbOption = new Literal() { Text = content + "<br />" };
                             FindControl($"panel{item.QuestionID}").Controls.Add(ltlRdbOption);
 
-                            FindControl($"panel{item.QuestionID}").Controls.Add(new Panel() { ID = $"rdb{ckbCount}", CssClass = "frame" });
+                            FindControl($"panel{item.QuestionID}").Controls.Add(new Panel() { ID = $"{item.QuestionID}_ckb{ckbCount}", CssClass = "frame" });
 
-                            int c = acList.Count(x => x.Answer.ToString().Contains($"AnsCkbOption{ckbCount}"));
+                            int c = acList.Count(x => x.Answer.ToString().Contains($"{item.QuestionID}_AnsCkbOption{ckbCount}"));
                             int ttl = 0;
                             foreach (var ac in acList)
                             {
@@ -206,7 +206,7 @@ namespace 動態問卷.SystemAdmin
                             Panel pnl = new Panel() { CssClass = "strip", ID = $"pnl{item.QuestionID}_AnsCkbOption{ckbCount}" };
                             decimal ratio = Math.Round((decimal)c / ttl, 2);
                             pnl.Style["width"] = $"{ratio * 100}%";
-                            FindControl($"rdb{ckbCount}").Controls.Add(pnl);
+                            FindControl($"{item.QuestionID}_ckb{ckbCount}").Controls.Add(pnl);
                             FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = $"{ratio * 100} % ({c}) <br /><br />" });
 
                             ckbCount++;
@@ -500,9 +500,9 @@ namespace 動態問卷.SystemAdmin
                 {
                     AnswerContentModel acModel = _aMgr.GetAnswerContent(item.QuestionID, asModel.AnswerID);
 
-                    this.plcPage03_2.Controls.Add(new Panel() { ID = $"panel{item.QuestionID}" });
+                    this.plcPage03_2.Controls.Add(new Panel() { ID = $"panelPage3{item.QuestionID}" });
 
-                    FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" });
+                    FindControl($"panelPage3{item.QuestionID}").Controls.Add(new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" });
                     _questionNumber++;
 
                     switch (item.QType)
@@ -512,8 +512,8 @@ namespace 動態問卷.SystemAdmin
                             int rdbCount = 0;
                             foreach (var content in arrContent)
                             {
-                                RadioButton rdb = new RadioButton() { ID = $"AnsRdbOption{rdbCount}", Text = content + "<br />", GroupName = $"op{item.QuestionID}", Enabled = false };
-                                FindControl($"panel{item.QuestionID}").Controls.Add(rdb);
+                                RadioButton rdb = new RadioButton() { ID = $"{item.QuestionID}_AnsRdbOption{rdbCount}", Text = content + "<br />", GroupName = $"op{item.QuestionID}", Enabled = false };
+                                FindControl($"panelPage3{item.QuestionID}").Controls.Add(rdb);
 
                                 if (acModel != null)
                                 {
@@ -530,8 +530,8 @@ namespace 動態問卷.SystemAdmin
                             int ckbCount = 0;
                             foreach (var content in arrContent2)
                             {
-                                CheckBox ckb = new CheckBox() { ID = $"AnsCkbOption{ckbCount}", Text = content + "<br />", Enabled = false };
-                                FindControl($"panel{item.QuestionID}").Controls.Add(ckb);
+                                CheckBox ckb = new CheckBox() { ID = $"{item.QuestionID}_AnsCkbOption{ckbCount}", Text = content + "<br />", Enabled = false };
+                                FindControl($"panelPage3{item.QuestionID}").Controls.Add(ckb);
 
                                 if (acModel != null)
                                 {
@@ -545,8 +545,8 @@ namespace 動態問卷.SystemAdmin
 
                         case 3:
                             TextBox txb = new TextBox() { ID = $"AnsTxt_{item.QuestionID}", Enabled = false };
-                            FindControl($"panel{item.QuestionID}").Controls.Add(txb);
-                            FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = "<br />" });
+                            FindControl($"panelPage3{item.QuestionID}").Controls.Add(txb);
+                            FindControl($"panelPage3{item.QuestionID}").Controls.Add(new Literal() { Text = "<br />" });
 
                             if (acModel != null)
                             {
