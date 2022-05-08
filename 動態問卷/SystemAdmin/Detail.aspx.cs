@@ -151,7 +151,11 @@ namespace 動態問卷.SystemAdmin
                 switch (item.QType)
                 {
                     case 1:
-                        FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" });
+                        Literal ltlQuestion1 = new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" };
+                        if (item.IsRequired)
+                            ltlQuestion1.Text = _questionNumber + ". " + item.Question + " (必填) <br />";
+
+                        FindControl($"panel{item.QuestionID}").Controls.Add(ltlQuestion1);
                         _questionNumber++;
 
                         string[] arrContent1 = item.AnswerOption.Trim().Split(';');
@@ -183,7 +187,11 @@ namespace 動態問卷.SystemAdmin
                         break;
 
                     case 2:
-                        FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" });
+                        Literal ltlQuestion2 = new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" };
+                        if (item.IsRequired)
+                            ltlQuestion2.Text = _questionNumber + ". " + item.Question + " (必填) <br />";
+
+                        FindControl($"panel{item.QuestionID}").Controls.Add(ltlQuestion2);
                         _questionNumber++;
 
                         string[] arrContent2 = item.AnswerOption.Trim().Split(';');
@@ -502,7 +510,11 @@ namespace 動態問卷.SystemAdmin
 
                     this.plcPage03_2.Controls.Add(new Panel() { ID = $"panelPage3{item.QuestionID}" });
 
-                    FindControl($"panelPage3{item.QuestionID}").Controls.Add(new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" });
+                    Literal ltlQuestion = new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" };
+                    if (item.IsRequired)
+                        ltlQuestion.Text = _questionNumber + ". " + item.Question + " (必填) <br />";
+
+                    FindControl($"panelPage3{item.QuestionID}").Controls.Add(ltlQuestion);
                     _questionNumber++;
 
                     switch (item.QType)
@@ -658,7 +670,7 @@ namespace 動態問卷.SystemAdmin
 
                         for (int k = 0; k < (arrAnswerOptionID.Length - 1); k++)
                         {
-                            listOptionNumber.Add(arrAnswerOptionID[k].Remove(0, 12));
+                            listOptionNumber.Add(arrAnswerOptionID[k].Remove(0, 49));
                         }
                         for (int j = 0; j < arrAnswer.Length; j++)
                         {

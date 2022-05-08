@@ -55,7 +55,11 @@ namespace 動態問卷
 
                             this.plcQuestions.Controls.Add(new Panel() { ID = $"panel{question.QuestionID}" });
 
-                            FindControl($"panel{question.QuestionID}").Controls.Add(new Literal() { Text = _questionNumber + ". " + question.Question + "<br />" });
+                            Literal ltlQuestion = new Literal() { Text = _questionNumber + ". " + question.Question + "<br />" };
+                            if (question.IsRequired)
+                                ltlQuestion.Text = _questionNumber + ". " + question.Question + " (必填) <br />";
+
+                            FindControl($"panel{question.QuestionID}").Controls.Add(ltlQuestion);
                             _questionNumber++;
 
                             switch (question.QType)

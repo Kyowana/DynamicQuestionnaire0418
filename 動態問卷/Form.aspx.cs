@@ -50,9 +50,12 @@ namespace 動態問卷
                     foreach (var item in _questionList)
                     {
                         this.plcQuestions.Controls.Add(new Panel() { ID = $"panel{item.QuestionID}" });
-                        // 加入必填
 
-                        FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" });
+                        Literal ltlQuestion = new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" };
+                        if (item.IsRequired)
+                            ltlQuestion.Text = _questionNumber + ". " + item.Question + " (必填) <br />";
+
+                        FindControl($"panel{item.QuestionID}").Controls.Add(ltlQuestion);
                         _questionNumber++;
 
                         switch (item.QType)
@@ -63,8 +66,10 @@ namespace 動態問卷
                                 foreach (var content in arrContent)
                                 {
                                     RadioButton rdb = new RadioButton() { ID = $"{item.QuestionID}_AnsRdbOption{rdbCount}", Text = content + "<br />", GroupName = $"op{item.QuestionID}" };
-                                    FindControl($"panel{item.QuestionID}").Controls.Add(rdb);
+                                    if (item.IsRequired)
+                                        rdb.CssClass = "required";
 
+                                    FindControl($"panel{item.QuestionID}").Controls.Add(rdb);
                                     AnswerContentModel answer1 = _acList.Find(x => x.QuestionID == item.QuestionID);
                                     if (answer1 != null)
                                     {
@@ -82,6 +87,9 @@ namespace 動態問卷
                                 foreach (var content in arrContent2)
                                 {
                                     CheckBox ckb = new CheckBox() { ID = $"{item.QuestionID}_AnsCkbOption{ckbCount}", Text = content + "<br />" };
+                                    if (item.IsRequired)
+                                        ckb.CssClass = "required";
+
                                     FindControl($"panel{item.QuestionID}").Controls.Add(ckb);
                                     AnswerContentModel answer2 = _acList.Find(x => x.QuestionID == item.QuestionID);
                                     if (answer2 != null)
@@ -96,6 +104,9 @@ namespace 動態問卷
 
                             case 3:
                                 TextBox txb = new TextBox() { ID = $"AnsTxt_{item.QuestionID}" };
+                                if (item.IsRequired)
+                                    txb.CssClass = "required";
+
                                 FindControl($"panel{item.QuestionID}").Controls.Add(txb);
                                 FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = "<br />" });
 
