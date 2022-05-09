@@ -100,6 +100,7 @@
     <Content Include="Scripts\jquery-3.6.0.slim.min.js" />
     <Content Include="Stastic.aspx" />
     <Content Include="SystemAdmin\Detail.aspx" />
+    <Content Include="SystemAdmin\FaqList.aspx" />
     <Content Include="SystemAdmin\List.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -134,11 +135,12 @@
       <DependentUpon>List.aspx</DependentUpon>
     </Compile>
     <Compile Include="Managers\AnswerManager.cs" />
+    <Compile Include="Managers\FaqManager.cs" />
     <Compile Include="Managers\QuestionnaireManager.cs" />
     <Compile Include="Managers\QuestionsManager.cs" />
     <Compile Include="Models\AnswerContentModel.cs" />
     <Compile Include="Models\AnswerSummaryModel.cs" />
-    <Compile Include="Models\CSVModel.cs" />
+    <Compile Include="Models\FaqModel.cs" />
     <Compile Include="Models\QuestionModel.cs" />
     <Compile Include="Models\SummaryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -155,6 +157,13 @@
     </Compile>
     <Compile Include="SystemAdmin\Detail.aspx.designer.cs">
       <DependentUpon>Detail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SystemAdmin\FaqList.aspx.cs">
+      <DependentUpon>FaqList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SystemAdmin\FaqList.aspx.designer.cs">
+      <DependentUpon>FaqList.aspx</DependentUpon>
     </Compile>
     <Compile Include="SystemAdmin\List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>
