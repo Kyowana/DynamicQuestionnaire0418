@@ -42,6 +42,11 @@
         </asp:PlaceHolder>
 
         <asp:PlaceHolder ID="page02" runat="server" Visible="false">
+            <div>
+                種類<asp:DropDownList ID="ddlFaq" runat="server">
+                    <asp:ListItem Value="0">自訂問題</asp:ListItem>
+                  </asp:DropDownList>
+            </div>
             <asp:HiddenField ID="hfNowQuestionID" runat="server" Value="" />
             問題<asp:TextBox ID="txtQuestion" runat="server"></asp:TextBox>                
             <asp:DropDownList ID="ddlQtype" runat="server">

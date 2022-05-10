@@ -31,6 +31,7 @@ namespace 動態問卷.Managers
                             FaqModel faq = new FaqModel()
                             {
                                 FaqID = (Guid)reader["FaqID"],
+                                QuestionNumber = (int)reader["QuestionNumber"],
                                 Question = reader["Question"] as string,
                                 AnswerOption = reader["AnswerOption"] as string,
                                 QType = (int)reader["QType"],

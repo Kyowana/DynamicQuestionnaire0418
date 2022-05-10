@@ -24,6 +24,9 @@ namespace 動態問卷.SystemAdmin
         private int _questionNumber = 1;
         private const int _pageSize = 10;
         private List<AnswerSummaryModel> _asList = new List<AnswerSummaryModel>();
+
+        private FaqManager _fMgr = new FaqManager();
+        private List<FaqModel> _faqList = new List<FaqModel>();
         private enum PageStatus
         {
             Page01,
@@ -129,6 +132,12 @@ namespace 動態問卷.SystemAdmin
 
             }
 
+            _faqList = _fMgr.GetFaqList();
+            foreach(var item in _faqList)
+            {
+                ListItem listItem = new ListItem() { Value = $"{item.QuestionNumber}" };
+                this.ddlFaq.Items.Add(item.Question);
+            }
             //}
 
             // Postback

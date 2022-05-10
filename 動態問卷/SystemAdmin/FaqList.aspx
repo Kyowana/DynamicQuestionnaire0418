@@ -35,7 +35,7 @@
                             <asp:HiddenField ID="hfFaqID" runat="server" Value='<%# Eval("FaqID") %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <%--<asp:BoundField DataField="QuestionNumber" HeaderText="#" />--%>
+                    <asp:BoundField DataField="QuestionNumber" HeaderText="#" />
                     <asp:BoundField DataField="Question" HeaderText="問題" />
                     <asp:BoundField DataField="QType" HeaderText="種類" />
                     <asp:CheckBoxField DataField="IsRequired" HeaderText="必填" />
