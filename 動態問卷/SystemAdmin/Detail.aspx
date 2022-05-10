@@ -91,7 +91,7 @@
                 </asp:Literal>
             </asp:PlaceHolder>
             <br />
-            <asp:Button ID="btnCancel2" runat="server" Text="取消" />
+            <asp:Button ID="btnCancel2" runat="server" Text="取消" OnClick="btnCancel2_Click" />
             <asp:Button ID="btnSubmit2" runat="server" Text="送出" OnClick="btnSubmit2_Click" />
 
         </asp:PlaceHolder>

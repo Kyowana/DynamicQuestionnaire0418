@@ -334,16 +334,22 @@ namespace 動態問卷.SystemAdmin
             HttpContext.Current.Session["AddList"] = _questionList;
 
             // 清空輸入框內容
-            this.hfNowQuestionID.Value = "";
-            this.txtQuestion.Text = "";
-            this.txtAnswer.Text = "";
-            this.ckbRequired.Checked = false;
-            this.ddlQtype.SelectedValue = "1";
+            this.ddlFaq.SelectedValue = "0";
+            ClearInput();
 
             InitQuestionsList();
 
 
 
+        }
+
+        private void ClearInput()
+        {
+            this.hfNowQuestionID.Value = "";
+            this.txtQuestion.Text = "";
+            this.txtAnswer.Text = "";
+            this.ckbRequired.Checked = false;
+            this.ddlQtype.SelectedValue = "1";
         }
 
         protected void btnSubmit1_Click(object sender, EventArgs e)
@@ -773,18 +779,34 @@ namespace 動態問卷.SystemAdmin
 
         protected void ddlFaq_SelectedIndexChanged(object sender, EventArgs e)
         {
-            for (int i = 0; i < _faqList.Count; i++)
+            if (this.ddlFaq.SelectedValue == "0")
             {
-                if (this.ddlFaq.SelectedValue == _faqList[i].QuestionNumber.ToString())
-                {
-                    this.txtQuestion.Text = _faqList[i].Question;
-                    this.txtAnswer.Text = _faqList[i].AnswerOption;
-                    this.ddlQtype.SelectedValue = _faqList[i].QType.ToString();
-                    this.ckbRequired.Checked = _faqList[i].IsRequired;
-
-                }
+                ClearInput();
             }
-            
+            else
+            {
+                for (int i = 0; i < _faqList.Count; i++)
+                {
+                    if (this.ddlFaq.SelectedValue == _faqList[i].QuestionNumber.ToString())
+                    {
+                        this.txtQuestion.Text = _faqList[i].Question;
+                        this.txtAnswer.Text = _faqList[i].AnswerOption;
+                        this.ddlQtype.SelectedValue = _faqList[i].QType.ToString();
+                        this.ckbRequired.Checked = _faqList[i].IsRequired;
+
+                    }
+                }
+
+            }
+
+        }
+
+        protected void btnCancel2_Click(object sender, EventArgs e)
+        {
+            Session.Remove("Summary");
+            Session.Remove("AddList");
+            Session.Remove("DeleteList");
+            ClearInput();
         }
     }
 }
