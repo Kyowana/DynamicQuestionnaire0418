@@ -58,6 +58,8 @@ namespace 動態問卷.SystemAdmin
             else
                 _questionList = new List<QuestionModel>();
 
+            _faqList = _fMgr.GetFaqList();
+
             // !isPostback
             //if (!this.IsPostBack)
             //{
@@ -94,7 +96,7 @@ namespace 動態問卷.SystemAdmin
                     else
                         this.plcNoQuestions.Visible = true;
 
-
+                    InitFaqList();
                 }
 
                 _asList = _aMgr.GetAList(questionnaireID, _pageSize, pageIndex, out int totalRows);
@@ -128,16 +130,14 @@ namespace 動態問卷.SystemAdmin
                         InitQuestionsList();
                     else
                         this.plcNoQuestions.Visible = true;
+
+                    InitFaqList();
                 }
 
             }
 
-            _faqList = _fMgr.GetFaqList();
-            foreach(var item in _faqList)
-            {
-                ListItem listItem = new ListItem() { Value = $"{item.QuestionNumber}" };
-                this.ddlFaq.Items.Add(item.Question);
-            }
+            
+            
             //}
 
             // Postback
@@ -147,6 +147,15 @@ namespace 動態問卷.SystemAdmin
             //else
             //    this.plcNoQuestions.Visible = true;
 
+        }
+
+        private void InitFaqList()
+        {
+            foreach (var item in _faqList)
+            {
+                ListItem listItem = new ListItem() { Value = $"{item.QuestionNumber}", Text = $"{item.Question}" };
+                this.ddlFaq.Items.Add(listItem);
+            }
         }
 
         private void InitStasticPage()
