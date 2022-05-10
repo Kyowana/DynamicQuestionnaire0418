@@ -42,6 +42,7 @@ namespace 動態問卷.SystemAdmin
                 this.txtQuestion.Text = faq.Question;
                 this.txtAnswer.Text = faq.AnswerOption;
                 this.ddlQtype.SelectedValue = faq.QType.ToString();
+                this.ckbRequired.Checked = faq.IsRequired;
                 this.hfNowFaqID.Value = faq.FaqID.ToString();
             }
         }
@@ -69,6 +70,7 @@ namespace 動態問卷.SystemAdmin
                 Question = this.txtQuestion.Text.Trim(),
                 AnswerOption = this.txtAnswer.Text.Trim(),
                 QType = Convert.ToInt32(this.ddlQtype.SelectedValue),
+                IsRequired = this.ckbRequired.Checked
             };
 
             if (!string.IsNullOrWhiteSpace(this.hfNowFaqID.Value))
@@ -82,6 +84,7 @@ namespace 動態問卷.SystemAdmin
             this.txtQuestion.Text = "";
             this.txtAnswer.Text = "";
             this.ddlQtype.SelectedValue = "1";
+            this.ckbRequired.Checked = false;
 
             this.Response.Redirect(this.Request.RawUrl);
         }

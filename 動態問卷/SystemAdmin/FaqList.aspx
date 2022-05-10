@@ -17,7 +17,7 @@
                 <asp:ListItem Value="2">核取方塊</asp:ListItem>
                 <asp:ListItem Value="3">單行輸入</asp:ListItem>
             </asp:DropDownList>
-            <%--<asp:CheckBox ID="ckbRequired" runat="server" Text="必填" /><br />--%>
+            <asp:CheckBox ID="ckbRequired" runat="server" Text="必填" /><br />
             <br />
             回答<asp:TextBox ID="txtAnswer" runat="server"></asp:TextBox> (多個答案以;分隔) 
             <asp:Button ID="btnAdd" runat="server" Text="加入" OnClick="btnAdd_Click" /><br />
@@ -38,6 +38,7 @@
                     <%--<asp:BoundField DataField="QuestionNumber" HeaderText="#" />--%>
                     <asp:BoundField DataField="Question" HeaderText="問題" />
                     <asp:BoundField DataField="QType" HeaderText="種類" />
+                    <asp:CheckBoxField DataField="IsRequired" HeaderText="必填" />
                     <asp:TemplateField>
                         <ItemTemplate>
                             <div>

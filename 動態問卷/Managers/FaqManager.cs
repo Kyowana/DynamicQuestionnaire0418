@@ -34,6 +34,7 @@ namespace 動態問卷.Managers
                                 Question = reader["Question"] as string,
                                 AnswerOption = reader["AnswerOption"] as string,
                                 QType = (int)reader["QType"],
+                                IsRequired = (bool)reader["IsRequired"]
                             };
                             faqList.Add(faq);
                         }
@@ -52,9 +53,9 @@ namespace 動態問卷.Managers
             string connStr = ConfigHelper.GetConnectionString();
             string commandText =
                 @"  INSERT INTO [Faqs] 
-                        (FaqID, Question, AnswerOption, QType)
+                        (FaqID, Question, AnswerOption, QType, IsRequired)
                     VALUES  
-                        (@FaqID, @Question, @AnswerOption, @QType) ";
+                        (@FaqID, @Question, @AnswerOption, @QType, @IsRequired) ";
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
@@ -67,6 +68,7 @@ namespace 動態問卷.Managers
                         command.Parameters.AddWithValue("@Question", faq.Question);
                         command.Parameters.AddWithValue("@AnswerOption", faq.AnswerOption);
                         command.Parameters.AddWithValue("@QType", faq.QType);
+                        command.Parameters.AddWithValue("@IsRequired", faq.IsRequired);
 
                         command.ExecuteNonQuery();
                     }
@@ -85,7 +87,8 @@ namespace 動態問卷.Managers
                 @"  UPDATE [Faqs] 
                     SET Question = @Question,
                         AnswerOption = @AnswerOption,
-                        QType = @QType
+                        QType = @QType,
+                        IsRequired = @IsRequired
                     WHERE FaqID = @FaqID ";
             try
             {
@@ -98,6 +101,7 @@ namespace 動態問卷.Managers
                         command.Parameters.AddWithValue("@Question", faq.Question);
                         command.Parameters.AddWithValue("@AnswerOption", faq.AnswerOption);
                         command.Parameters.AddWithValue("@QType", faq.QType);
+                        command.Parameters.AddWithValue("@IsRequired", faq.IsRequired);
                         command.ExecuteNonQuery();
                     }
                 }

@@ -11,5 +11,6 @@ namespace 動態問卷.Models
         public string Question { get; set; }
         public string AnswerOption { get; set; }
         public int QType { get; set; }
+        public bool IsRequired { get; set; }
     }
 }
