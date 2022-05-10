@@ -136,8 +136,8 @@ namespace 動態問卷.SystemAdmin
 
             }
 
-            
-            
+
+
             //}
 
             // Postback
@@ -194,7 +194,10 @@ namespace 動態問卷.SystemAdmin
                             }
 
                             Panel pnl = new Panel() { CssClass = "strip", ID = $"pnl{item.QuestionID}_AnsRdbOption{rbdCount}" };
-                            decimal ratio = Math.Round((decimal)c / ttl, 2);
+                            decimal ratio = 0;
+                            if (ttl > 0)
+                                ratio = Math.Round((decimal)c / ttl, 2);
+
                             pnl.Style["width"] = $"{ratio * 100}%";
                             FindControl($"{item.QuestionID}_rdb{rbdCount}").Controls.Add(pnl);
                             FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = $"{ratio * 100} % ({c}) <br /><br />" });
@@ -230,7 +233,10 @@ namespace 動態問卷.SystemAdmin
                             }
 
                             Panel pnl = new Panel() { CssClass = "strip", ID = $"pnl{item.QuestionID}_AnsCkbOption{ckbCount}" };
-                            decimal ratio = Math.Round((decimal)c / ttl, 2);
+                            decimal ratio = 0;
+                            if (ttl > 0)
+                                ratio = Math.Round((decimal)c / ttl, 2);
+
                             pnl.Style["width"] = $"{ratio * 100}%";
                             FindControl($"{item.QuestionID}_ckb{ckbCount}").Controls.Add(pnl);
                             FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = $"{ratio * 100} % ({c}) <br /><br />" });
@@ -699,14 +705,14 @@ namespace 動態問卷.SystemAdmin
                         {
                             //if (Convert.ToInt32(listOptionNumber.Count) > j)
                             //{
-                                for (int n = 0; n < listOptionNumber.Count; n++)
+                            for (int n = 0; n < listOptionNumber.Count; n++)
+                            {
+                                if (Convert.ToInt32(listOptionNumber[n]) == j)
                                 {
-                                    if (Convert.ToInt32(listOptionNumber[n]) == j)
-                                    {
-                                        listOptionContent.Add(arrAnswer[j]);
-                                    }
-
+                                    listOptionContent.Add(arrAnswer[j]);
                                 }
+
+                            }
 
                             //}
                         }
@@ -763,6 +769,22 @@ namespace 動態問卷.SystemAdmin
                 if (sw != null) sw.Close();
                 if (fs != null) fs.Close();
             }
+        }
+
+        protected void ddlFaq_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < _faqList.Count; i++)
+            {
+                if (this.ddlFaq.SelectedValue == _faqList[i].QuestionNumber.ToString())
+                {
+                    this.txtQuestion.Text = _faqList[i].Question;
+                    this.txtAnswer.Text = _faqList[i].AnswerOption;
+                    this.ddlQtype.SelectedValue = _faqList[i].QType.ToString();
+                    this.ckbRequired.Checked = _faqList[i].IsRequired;
+
+                }
+            }
+            
         }
     }
 }

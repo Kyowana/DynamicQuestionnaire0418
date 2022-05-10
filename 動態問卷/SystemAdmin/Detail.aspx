@@ -43,7 +43,7 @@
 
         <asp:PlaceHolder ID="page02" runat="server" Visible="false">
             <div>
-                種類<asp:DropDownList ID="ddlFaq" runat="server">
+                種類<asp:DropDownList ID="ddlFaq" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlFaq_SelectedIndexChanged">
                     <asp:ListItem Value="0">自訂問題</asp:ListItem>
                   </asp:DropDownList>
             </div>
