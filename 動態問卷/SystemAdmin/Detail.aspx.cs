@@ -354,6 +354,14 @@ namespace 動態問卷.SystemAdmin
 
         protected void btnSubmit1_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtCaption.Text) || string.IsNullOrWhiteSpace(txtStartDate.Text) || string.IsNullOrWhiteSpace(txtEndDate.Text))
+            {
+                this.lblPage1Msg.Visible = true;
+                return;
+            }
+            else
+                this.lblPage1Msg.Visible = false;
+
             SummaryModel qs = new SummaryModel()
             {
                 QID = _QID,

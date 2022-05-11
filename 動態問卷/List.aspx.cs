@@ -48,6 +48,9 @@ namespace 動態問卷
                 this.GridQList.DataSource = list;
                 this.GridQList.DataBind();
 
+                if (list.Count == 0)
+                    this.lblMsgNoList.Visible = true;
+
                 for (int i = 0; i < list.Count; i++)
                 {
                     if (GridQList.Rows[i].Cells[2].Text == "False")

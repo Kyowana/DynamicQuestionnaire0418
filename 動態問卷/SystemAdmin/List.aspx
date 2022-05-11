@@ -11,13 +11,13 @@
     <form id="form1" runat="server">
         <div>
             問卷標題<asp:TextBox ID="txtTitle" runat="server"></asp:TextBox><br />
-            開始 / 結束日期<asp:TextBox ID="txtStartDate" runat="server"></asp:TextBox><asp:TextBox ID="txtEndDate" runat="server"></asp:TextBox>&emsp;
+            開始 / 結束日期<asp:TextBox ID="txtStartDate" runat="server" TextMode="Date"></asp:TextBox><asp:TextBox ID="txtEndDate" runat="server" TextMode="Date"></asp:TextBox>&emsp;
         <asp:Button ID="btnSearch" runat="server" Text="搜尋" OnClick="btnSearch_Click" />
         </div>
         <div>
             <asp:Button ID="btnDelete" runat="server" Text="刪除" OnClick="btnDelete_Click" />
-            <asp:Button ID="btnCreate" runat="server" Text="新增" OnClick="btnCreate_Click" />
-
+            <asp:Button ID="btnCreate" runat="server" Text="新增" OnClick="btnCreate_Click" /><br />
+            <asp:Label ID="lblMsgNoList" runat="server" Text="尚未有資料" Visible="false"></asp:Label>
             <asp:GridView ID="GridQList" runat="server" AutoGenerateColumns="False">
                 <Columns>
                     <asp:TemplateField>

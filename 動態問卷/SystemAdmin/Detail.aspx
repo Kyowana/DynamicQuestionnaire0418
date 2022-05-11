@@ -37,6 +37,7 @@
             開始時間<asp:TextBox ID="txtStartDate" runat="server" TextMode="Date" /><br />
             結束時間<asp:TextBox ID="txtEndDate" runat="server" TextMode="Date" /><br />
             已啟用<asp:CheckBox ID="ckbLimit" runat="server" /><br />
+            <asp:Label ID="lblPage1Msg" runat="server" Text="問卷名稱及開始/結束時間為必填" ForeColor="Red" Visible="false"></asp:Label><br />
             <asp:Button ID="btnCancel1" runat="server" Text="取消" OnClick="btnCancel1_Click" />
             <asp:Button ID="btnSubmit1" runat="server" Text="送出" OnClick="btnSubmit1_Click" />
         </asp:PlaceHolder>
