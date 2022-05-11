@@ -56,7 +56,10 @@ namespace 動態問卷
                     if (GridQList.Rows[i].Cells[2].Text == "False")
                     {
                         GridQList.Rows[i].Cells[1].Text = list[i].Caption;
-                        GridQList.Rows[i].Cells[2].Text = "已完結";
+                        if (Convert.ToDateTime(GridQList.Rows[i].Cells[3].Text) > DateTime.Now)
+                            GridQList.Rows[i].Cells[2].Text = "尚未開始";
+                        if(Convert.ToDateTime(GridQList.Rows[i].Cells[4].Text).AddDays(1) < DateTime.Now)
+                            GridQList.Rows[i].Cells[2].Text = "已完結";
                     }
                     else
                         GridQList.Rows[i].Cells[2].Text = "投票中";

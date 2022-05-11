@@ -128,6 +128,7 @@ namespace 動態問卷.SystemAdmin
                     Guid newquestionnaireID = Guid.NewGuid();
                     HttpContext.Current.Session["ID"] = newquestionnaireID;
 
+                    this.txtStartDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
                     this.ckbLimit.Checked = true;
 
                     if (_questionList.Count > 0)
