@@ -274,6 +274,11 @@ namespace 動態問卷.SystemAdmin
 
         private void InitAnswerList()
         {
+            for (int i = 0; i < _asList.Count; i++)
+            {
+                _asList[i].SerialNumber = _asList.Count - i;
+            }
+            
             this.GridAnswerList.DataSource = _asList;
             this.GridAnswerList.DataBind();
         }

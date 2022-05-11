@@ -106,7 +106,7 @@
                 <br />
                 <asp:GridView ID="GridAnswerList" runat="server" AutoGenerateColumns="False" OnRowCommand="GridAnswerList_RowCommand">
                     <Columns>
-                        <%--<asp:BoundField DataField="SerialNumber" HeaderText="#" />--%>
+                        <asp:BoundField DataField="SerialNumber" HeaderText="#" />
                         <asp:BoundField DataField="Name" HeaderText="姓名" />
                         <asp:BoundField DataField="SubmitDate" HeaderText="填寫時間" DataFormatString="{0:g}" />
                         <asp:TemplateField HeaderText="觀看細節">

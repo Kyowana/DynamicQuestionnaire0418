@@ -64,12 +64,6 @@ namespace 動態問卷
                     else
                         GridQList.Rows[i].Cells[2].Text = "投票中";
 
-                    //CheckBox cb = (CheckBox)GridQList.Rows[i].Cells[2].Controls[0];
-                    //if (!cb.Checked)
-                    //{
-                    //    GridQList.Rows[i].Cells[1].Text = list[i].Caption;
-                    //}
-
                 }
             }
         }

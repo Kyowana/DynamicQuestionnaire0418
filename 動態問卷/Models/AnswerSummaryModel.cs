@@ -9,7 +9,7 @@ namespace 動態問卷.Models
     {
         public Guid AnswerID { get; set; }
         public Guid QID { get; set; }
-        //public int SerialNumber { get; set; }
+        public int SerialNumber { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
