@@ -680,8 +680,11 @@ namespace 動態問卷.SystemAdmin
                 return;
             }
 
-            //存檔到指定目錄       
-            string filePath = $"D:\\CSharpClass\\{_qs.Caption}{DateTime.Now.ToString("yyyyMMddHHmmss")}.csv";
+            //存檔到指定目錄
+            if(!Directory.Exists("C:\\Test"))
+                Directory.CreateDirectory("C:\\Test");
+            string filePath = $"C:\\Test\\{_qs.Caption}{DateTime.Now.ToString("yyyyMMddHHmmss")}.csv";
+            //string filePath = $"D:\\CSharpClass\\{_qs.Caption}{DateTime.Now.ToString("yyyyMMddHHmmss")}.csv";
 
             DataTable dt = new DataTable();
             dt.Columns.Add("姓名", typeof(string));
@@ -749,6 +752,9 @@ namespace 動態問卷.SystemAdmin
             }
 
             SaveCsv(dt, filePath);
+
+            this.lblCompleteExport.Text = "已將作答結果匯出至C:\\Test資料夾";
+            this.lblCompleteExport.Visible = true;
         }
 
         public static void SaveCsv(DataTable dt, string filePath)

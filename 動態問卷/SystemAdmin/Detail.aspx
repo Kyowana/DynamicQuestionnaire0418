@@ -101,6 +101,7 @@
             <asp:PlaceHolder ID="plcPage03_1" runat="server">
                 <asp:Button ID="btnExport" runat="server" Text="匯出" OnClick="btnExport_Click" /><br />
                 <asp:Label ID="lblNoData" runat="server" Text="尚無可匯出之資料" Visible="false" ForeColor="Red"></asp:Label>
+                <asp:Label ID="lblCompleteExport" runat="server" Visible="false" Text="" ></asp:Label>
                 <br />
                 <asp:GridView ID="GridAnswerList" runat="server" AutoGenerateColumns="False" OnRowCommand="GridAnswerList_RowCommand">
                     <Columns>
