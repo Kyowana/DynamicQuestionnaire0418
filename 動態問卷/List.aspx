@@ -5,10 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>前台</title>
+    <title>前台列表頁</title>
 </head>
 <body>
     <form id="form1" runat="server">
+        <h1>前台</h1>
         <div>
             問卷標題<asp:TextBox ID="txtTitle" runat="server"></asp:TextBox><br />
             開始 / 結束日期<asp:TextBox ID="txtStartDate" runat="server" TextMode="Date"></asp:TextBox><asp:TextBox ID="txtEndDate" runat="server" TextMode="Date"></asp:TextBox>&emsp;

@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>後台 - 問卷管理</title>
+    <title>後台列表頁</title>
 </head>
 <body>
     <form id="form1" runat="server">

@@ -38,6 +38,9 @@ namespace 動態問卷
                 if (!IsPostBack)
                 {
                     SummaryModel qs = _qMgr.GetQuestionnaireSummary(questionnaireID);
+                    if (qs.StartDate > DateTime.Now || qs.EndDate.AddDays(1) < DateTime.Now)
+                        Response.Redirect("List.aspx");
+
                     _questionList = _qMgr.GetQuestionsList(questionnaireID);
 
                     this.hfQID.Value = questionnaireIDString;

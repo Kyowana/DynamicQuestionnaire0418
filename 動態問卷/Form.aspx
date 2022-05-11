@@ -6,10 +6,11 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script src="Scripts/jquery-3.6.0.min.js"></script>
-    <title></title>
+    <title>前台內頁</title>
 </head>
 <body>
     <form id="form1" runat="server">
+        <h1>前台</h1>
         <asp:HiddenField ID="hfQID" runat="server" />
         <div>
             <asp:Label ID="lblLimit" runat="server" Text=""></asp:Label>
