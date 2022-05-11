@@ -104,15 +104,19 @@ namespace 動態問卷.SystemAdmin
                 InitAnswerList();
 
                 InitStasticPage();
-                //if (_questionList != null)
-                //{
-                //    this.GridViewQuestionList.DataSource = _questionList;
-                //    this.GridViewQuestionList.DataBind();
-                //}
-                //else
-                //{
-                //    this.plcNoQuestions.Visible = true;
-                //}
+
+                if (_aMgr.GetAList(_QID).Count > 0)
+                {
+                    this.ddlFaq.Enabled = false;
+                    this.txtQuestion.Enabled = false;
+                    this.ddlQtype.Enabled = false;
+                    this.ckbRequired.Enabled = false;
+                    this.txtAnswer.Enabled = false;
+                    this.btnAdd.Enabled = false;
+                    this.btnDeleteQuestion.Enabled = false;
+                    this.lblCannotEditMsg.Visible = true;                    
+                }
+
             }
             else
             {

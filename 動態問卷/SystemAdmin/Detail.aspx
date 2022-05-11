@@ -61,6 +61,7 @@
             <asp:Button ID="btnAdd" runat="server" Text="加入" OnClick="btnAdd_Click" /><br />
             <asp:Label ID="lblMsg" runat="server" Text="請輸入回答選項" ForeColor="Red" Visible="false"></asp:Label>
             <br />
+            <asp:Label ID="lblCannotEditMsg" runat="server" Text="目前已有人作答，您無法編輯問題內容" ForeColor="Red" Visible="false"></asp:Label>
             <br />
             <asp:Button ID="btnDeleteQuestion" runat="server" Text="刪除" OnClick="btnDeleteQuestion_Click" /><br />
 
