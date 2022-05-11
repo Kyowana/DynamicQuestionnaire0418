@@ -27,6 +27,7 @@
             <asp:Label ID="lblCaption" runat="server" Text=""></asp:Label>
         </div>
         <br />
+        <asp:Label ID="lblNoAnsMsg" runat="server" Text="尚未有人作答" Visible="false"></asp:Label>
         <asp:PlaceHolder ID="plcQuestions" runat="server"></asp:PlaceHolder>
 
 

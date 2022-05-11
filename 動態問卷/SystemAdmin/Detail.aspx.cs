@@ -160,6 +160,12 @@ namespace 動態問卷.SystemAdmin
 
         private void InitStasticPage()
         {
+            if (_aMgr.GetAList(_QID).Count == 0)
+            {
+                this.lblNoAnsMsg.Visible = true;
+                return;
+            }
+
             foreach (var item in _questionList)
             {
                 this.plcQuestions.Controls.Add(new Panel() { ID = $"panel{item.QuestionID}" });
@@ -668,6 +674,11 @@ namespace 動態問卷.SystemAdmin
 
         protected void btnExport_Click(object sender, EventArgs e)
         {
+            if (_aMgr.GetAList(_QID).Count == 0)
+            {
+                this.lblNoData.Visible = true;
+                return;
+            }
 
             //存檔到指定目錄       
             string filePath = $"D:\\CSharpClass\\{_qs.Caption}{DateTime.Now.ToString("yyyyMMddHHmmss")}.csv";

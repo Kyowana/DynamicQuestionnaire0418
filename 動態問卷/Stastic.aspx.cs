@@ -30,7 +30,11 @@ namespace 動態問卷
 
                 _questionList = _qMgr.GetQuestionsList(questionnaireID);
 
-
+                if (_aMgr.GetAList(questionnaireID).Count == 0)
+                {
+                    this.lblNoAnsMsg.Visible = true;
+                    return;
+                }
 
                 foreach (var item in _questionList)
                 {
@@ -62,7 +66,9 @@ namespace 動態問卷
                                 }
 
                                 Panel pnl = new Panel() { CssClass = "strip", ID = $"pnl{item.QuestionID}_AnsRdbOption{rbdCount}" };
-                                decimal ratio = Math.Round((decimal)c / ttl,2);
+                                decimal ratio = 0;
+                                if (ttl > 0)
+                                    ratio = Math.Round((decimal)c / ttl, 2);
                                 pnl.Style["width"] = $"{ratio * 100}%";
                                 FindControl($"{item.QuestionID}_rdb{rbdCount}").Controls.Add(pnl);
                                 FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = $"{ratio*100} % ({c}) <br /><br />" });
@@ -94,7 +100,9 @@ namespace 動態問卷
                                 }
 
                                 Panel pnl = new Panel() { CssClass = "strip", ID = $"pnl{item.QuestionID}_AnsCkbOption{ckbCount}" };
-                                decimal ratio = Math.Round((decimal)c / ttl, 2);
+                                decimal ratio = 0;
+                                if (ttl > 0)
+                                    ratio = Math.Round((decimal)c / ttl, 2);
                                 pnl.Style["width"] = $"{ratio * 100}%";
                                 FindControl($"{item.QuestionID}_ckb{ckbCount}").Controls.Add(pnl);
                                 FindControl($"panel{item.QuestionID}").Controls.Add(new Literal() { Text = $"{ratio * 100} % ({c}) <br /><br />" });
