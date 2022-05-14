@@ -8,11 +8,12 @@
     <title>前台</title>
     <style>
         .frame {
-            width: 50%;
+            width: 700px;
             border: 1px solid black;
-            float:left;
+            float: left;
             height: 20px;
         }
+
         .strip {
             border: 1px solid red;
             background-color: red;
@@ -23,14 +24,18 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
-            <asp:Label ID="lblCaption" runat="server" Text=""></asp:Label>
+        <div style="float: left; margin-right: 40px">
+            <a href="List.aspx">回到問卷列表</a><br />
         </div>
-        <br />
-        <asp:Label ID="lblNoAnsMsg" runat="server" Text="尚未有人作答" Visible="false"></asp:Label>
-        <asp:PlaceHolder ID="plcQuestions" runat="server"></asp:PlaceHolder>
+        <div style="float: left">
+            <div>
+                <asp:Label ID="lblCaption" runat="server" Text=""></asp:Label>
+            </div>
+            <br />
+            <asp:Label ID="lblNoAnsMsg" runat="server" Text="尚未有人作答" Visible="false"></asp:Label>
+            <asp:PlaceHolder ID="plcQuestions" runat="server"></asp:PlaceHolder>
 
-
+        </div>
 
     </form>
 </body>

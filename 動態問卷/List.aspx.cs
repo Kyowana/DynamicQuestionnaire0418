@@ -16,6 +16,9 @@ namespace 動態問卷
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (HttpContext.Current.Session["AnswerList"] != null)
+                Session.Remove("AnswerList");
+
             string pageIndexText = this.Request.QueryString["page"];
             int pageIndex = (string.IsNullOrWhiteSpace(pageIndexText)) ? 1 : Convert.ToInt32(pageIndexText);
 
