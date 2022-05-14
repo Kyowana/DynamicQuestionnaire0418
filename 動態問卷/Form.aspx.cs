@@ -133,6 +133,8 @@ namespace 動態問卷
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
+            if (HttpContext.Current.Session["AnswerList"] != null)
+                Session.Remove("AnswerList");
             Response.Redirect("List.aspx");
         }
 
