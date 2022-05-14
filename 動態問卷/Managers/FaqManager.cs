@@ -15,7 +15,8 @@ namespace 動態問卷.Managers
             string connStr = ConfigHelper.GetConnectionString();
             string commandText =
                 $@"  SELECT *
-                     FROM [Faqs] ";
+                     FROM [Faqs]
+                     ORDER BY QuestionNumber ";
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))

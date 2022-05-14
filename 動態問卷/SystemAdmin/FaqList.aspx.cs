@@ -72,6 +72,8 @@ namespace 動態問卷.SystemAdmin
                 QType = Convert.ToInt32(this.ddlQtype.SelectedValue),
                 IsRequired = this.ckbRequired.Checked
             };
+            if (Guid.TryParse(this.hfNowFaqID.Value, out Guid nowQuestionID))
+                faq.FaqID = nowQuestionID;
 
             if (!string.IsNullOrWhiteSpace(this.hfNowFaqID.Value))
                 _fMgr.UpdateFaq(faq);
