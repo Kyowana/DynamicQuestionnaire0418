@@ -22,6 +22,7 @@ namespace 動態問卷.SystemAdmin
         private SummaryModel _qs;
         private static bool _isEditMode;
         private int _questionNumber = 1;
+        private int _resultQuestionNumber = 1;
         private const int _pageSize = 10;
         private List<AnswerSummaryModel> _asList = new List<AnswerSummaryModel>();
 
@@ -180,12 +181,12 @@ namespace 動態問卷.SystemAdmin
                 switch (item.QType)
                 {
                     case 1:
-                        Literal ltlQuestion1 = new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" };
+                        Literal ltlQuestion1 = new Literal() { Text = _resultQuestionNumber + ". " + item.Question + "<br />" };
                         if (item.IsRequired)
-                            ltlQuestion1.Text = _questionNumber + ". " + item.Question + " (必填) <br />";
+                            ltlQuestion1.Text = _resultQuestionNumber + ". " + item.Question + " (必填) <br />";
 
                         FindControl($"panel{item.QuestionID}").Controls.Add(ltlQuestion1);
-                        _questionNumber++;
+                        _resultQuestionNumber++;
 
                         string[] arrContent1 = item.AnswerOption.Trim().Split(';');
                         int rbdCount = 0;
@@ -219,12 +220,12 @@ namespace 動態問卷.SystemAdmin
                         break;
 
                     case 2:
-                        Literal ltlQuestion2 = new Literal() { Text = _questionNumber + ". " + item.Question + "<br />" };
+                        Literal ltlQuestion2 = new Literal() { Text = _resultQuestionNumber + ". " + item.Question + "<br />" };
                         if (item.IsRequired)
-                            ltlQuestion2.Text = _questionNumber + ". " + item.Question + " (必填) <br />";
+                            ltlQuestion2.Text = _resultQuestionNumber + ". " + item.Question + " (必填) <br />";
 
                         FindControl($"panel{item.QuestionID}").Controls.Add(ltlQuestion2);
-                        _questionNumber++;
+                        _resultQuestionNumber++;
 
                         string[] arrContent2 = item.AnswerOption.Trim().Split(';');
                         int ckbCount = 0;
@@ -257,7 +258,7 @@ namespace 動態問卷.SystemAdmin
                         break;
 
                     case 3:
-                        _questionNumber++;
+                        _resultQuestionNumber++;
                         break;
 
                     default:
