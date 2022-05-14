@@ -193,5 +193,15 @@ namespace 動態問卷.SystemAdmin
                 }
             }
         }
+
+        protected void GridQList_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "GoP3Button")
+            {
+                HttpContext.Current.Session["Page3Visible"] = "";
+                string commentIdText = e.CommandArgument as string;
+                Response.Redirect($"Detail.aspx?ID={commentIdText}");
+            }
+        }
     }
 }

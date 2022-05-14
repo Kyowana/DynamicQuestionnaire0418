@@ -37,6 +37,13 @@ namespace 動態問卷.SystemAdmin
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (HttpContext.Current.Session["Page3Visible"] != null)
+            {
+                this.page01.Visible = false;
+                this.page03.Visible = true;
+                Session.Remove("Page3Visible");
+            }
+
             string pageIndexText = this.Request.QueryString["page"];
             int pageIndex = (string.IsNullOrWhiteSpace(pageIndexText)) ? 1 : Convert.ToInt32(pageIndexText);
             if (!string.IsNullOrWhiteSpace(pageIndexText))

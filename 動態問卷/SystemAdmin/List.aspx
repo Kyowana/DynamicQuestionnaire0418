@@ -24,7 +24,7 @@
                 <asp:Button ID="btnDelete" runat="server" Text="刪除" OnClick="btnDelete_Click" />
                 <asp:Button ID="btnCreate" runat="server" Text="新增" OnClick="btnCreate_Click" /><br />
                 <asp:Label ID="lblMsgNoList" runat="server" Text="尚未有資料" Visible="false"></asp:Label>
-                <asp:GridView ID="GridQList" runat="server" AutoGenerateColumns="False">
+                <asp:GridView ID="GridQList" runat="server" AutoGenerateColumns="False" OnRowCommand="GridQList_RowCommand">
                     <Columns>
                         <asp:TemplateField>
                             <ItemTemplate>
@@ -43,7 +43,8 @@
                         <asp:BoundField DataField="EndDate" HeaderText="結束時間" DataFormatString="{0:d}" />
                         <asp:TemplateField HeaderText="觀看統計">
                             <ItemTemplate>
-                                <a href="Detail.aspx?ID=<%# Eval("QID") %>">前往</a>
+                                <%--<a href="Detail.aspx?ID=<%# Eval("QID") %>">前往</a>--%>
+                                <asp:LinkButton ID="lbtGoPage3" runat="server" CommandName="GoP3Button" CommandArgument='<%# Eval("QID") %>' UseSubmitBehavior="False">前往</asp:LinkButton>
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
