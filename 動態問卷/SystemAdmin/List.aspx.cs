@@ -15,6 +15,14 @@ namespace 動態問卷.SystemAdmin
         private const int _pageSize = 10;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (HttpContext.Current.Session["AddList"] != null)
+                Session.Remove("AddList");
+            if (HttpContext.Current.Session["Summary"] != null)
+                Session.Remove("Summary");
+            if (HttpContext.Current.Session["DeleteList"] != null)
+                Session.Remove("DeleteList");
+            if (HttpContext.Current.Session["ID"] != null)
+                Session.Remove("ID");
 
             string pageIndexText = this.Request.QueryString["page"];
             int pageIndex = (string.IsNullOrWhiteSpace(pageIndexText)) ? 1 : Convert.ToInt32(pageIndexText);
