@@ -507,21 +507,21 @@ namespace 動態問卷.Managers
                     }
                     else
                     {
-                        whereCondition = "WHERE StartDate <= @end ";
-                        whereCondition1 = "AND StartDate <= @end ";
+                        whereCondition = "WHERE EndDate <= @end ";
+                        whereCondition1 = "AND EndDate <= @end ";
                     }
                 }
                 else
                 {
                     if (string.IsNullOrWhiteSpace(endDate))
                     {
-                        whereCondition = "WHERE EndDate >= @start ";
-                        whereCondition1 = "AND EndDate >= @start ";
+                        whereCondition = "WHERE StartDate >= @start ";
+                        whereCondition1 = "AND StartDate >= @start ";
                     }
                     else
                     {
-                        whereCondition = "WHERE EndDate >= @start AND StartDate <= @end ";
-                        whereCondition1 = "AND EndDate >= @start AND StartDate <= @end ";
+                        whereCondition = "WHERE StartDate >= @start AND EndDate <= @end ";
+                        whereCondition1 = "AND StartDate >= @start AND EndDate <= @end ";
                     }
                 }
 
@@ -537,21 +537,21 @@ namespace 動態問卷.Managers
                     }
                     else
                     {
-                        whereCondition = "WHERE Caption LIKE '%'+@keyword+'%' AND StartDate <= @end ";
-                        whereCondition1 = "AND Caption LIKE '%'+@keyword+'%' AND StartDate <= @end ";
+                        whereCondition = "WHERE Caption LIKE '%'+@keyword+'%' AND EndDate <= @end ";
+                        whereCondition1 = "AND Caption LIKE '%'+@keyword+'%' AND EndDate <= @end ";
                     }
                 }
                 else
                 {
                     if (string.IsNullOrWhiteSpace(endDate))
                     {
-                        whereCondition = "WHERE Caption LIKE '%'+@keyword+'%' AND EndDate >= @start ";
-                        whereCondition1 = "AND Caption LIKE '%'+@keyword+'%' AND EndDate >= @start ";
+                        whereCondition = "WHERE Caption LIKE '%'+@keyword+'%' AND StartDate >= @start ";
+                        whereCondition1 = "AND Caption LIKE '%'+@keyword+'%' AND StartDate >= @start ";
                     }
                     else
                     {
-                        whereCondition = "WHERE Caption LIKE '%'+@keyword+'%' AND EndDate >= @start AND StartDate <= @end ";
-                        whereCondition1 = "AND Caption LIKE '%'+@keyword+'%' AND EndDate >= @start AND StartDate <= @end ";
+                        whereCondition = "WHERE Caption LIKE '%'+@keyword+'%' AND StartDate >= @start AND EndDate <= @end ";
+                        whereCondition1 = "AND Caption LIKE '%'+@keyword+'%' AND StartDate >= @start AND EndDate <= @end ";
                     }
                 }
             }
