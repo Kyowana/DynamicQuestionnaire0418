@@ -84,7 +84,7 @@ namespace 動態問卷
 
             this.aLinkFirst.HRef = url + "?page=1" + paramKeyword;
             this.aLinkPrev.HRef = url + "?page=" + (pageIndex - 1) + paramKeyword;
-            if (pageIndex < pageCount)
+            if (pageIndex < pageCount || pageCount == 0)
                 this.aLinkPrev.Visible = false;
 
             this.aLinkNext.HRef = url + "?page=" + (pageIndex + 1) + paramKeyword;
@@ -116,7 +116,8 @@ namespace 動態問卷
                 this.aLinkPage5.Visible = false;
 
             this.aLinkLast.HRef = url + "?page=" + pageCount + paramKeyword;
-
+            if (pageCount == 0)
+                this.aLinkLast.HRef = url + "?page=" + 1 + paramKeyword;
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
