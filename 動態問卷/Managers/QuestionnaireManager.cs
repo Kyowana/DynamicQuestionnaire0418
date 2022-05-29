@@ -572,8 +572,9 @@ namespace 動態問卷.Managers
                    ORDER BY SerialNumber DESC";
 
             string commandCountText =
-                @" SELECT COUNT(QID)
-                   FROM QSummarys ";
+                $@" SELECT COUNT(QID)
+                   FROM QSummarys
+                   {whereCondition}" ;
 
             try
             {
@@ -609,12 +610,18 @@ namespace 動態問卷.Managers
                         reader.Close();
 
                         command.CommandText = commandCountText;
-                        if (!string.IsNullOrWhiteSpace(keyword))
+                        totalRows = (int)command.ExecuteScalar();
+                        if (!string.IsNullOrWhiteSpace(keyword) || !string.IsNullOrWhiteSpace(startDate) || !string.IsNullOrWhiteSpace(endDate))
                         {
                             command.Parameters.Clear();
-                            command.Parameters.AddWithValue("@keyword", keyword);
+                            if (!string.IsNullOrWhiteSpace(keyword))
+                                command.Parameters.AddWithValue("@keyword", keyword);
+                            if (!string.IsNullOrWhiteSpace(startDate))
+                                command.Parameters.AddWithValue("@start", startDate.Replace("-", "/"));
+                            if (!string.IsNullOrWhiteSpace(endDate))
+                                command.Parameters.AddWithValue("@end", endDate.Replace("-", "/"));
+                            totalRows = (int)command.ExecuteScalar();
                         }
-                        totalRows = (int)command.ExecuteScalar();
 
                         return retList;
                     }
