@@ -43,14 +43,14 @@ namespace 動態問卷.SystemAdmin
                 var list = this._qMgr.GetQList(keyword, startDate, endDate, _pageSize, pageIndex, out int totalRows);
                 this.ProcessPager(keyword, pageIndex, totalRows);
 
-                foreach (var item in list)
-                {
-                    if (item.ViewLimit)
-                    {
-                        if (item.StartDate > DateTime.Now || item.EndDate.AddDays(1) < DateTime.Now)
-                            item.ViewLimit = false;
-                    }
-                }
+                //foreach (var item in list)
+                //{
+                //    if (item.ViewLimit)
+                //    {
+                //        if (item.StartDate > DateTime.Now || item.EndDate.AddDays(1) < DateTime.Now)
+                //            item.ViewLimit = false;
+                //    }
+                //}
 
                 this.GridQList.DataSource = list;
                 this.GridQList.DataBind();

@@ -378,6 +378,8 @@ namespace 動態問卷.SystemAdmin
 
         protected void btnSubmit1_Click(object sender, EventArgs e)
         {
+            this.lblPage1Msg2.Visible = false;
+
             if (string.IsNullOrWhiteSpace(txtCaption.Text) || string.IsNullOrWhiteSpace(txtStartDate.Text) || string.IsNullOrWhiteSpace(txtEndDate.Text))
             {
                 this.lblPage1Msg.Visible = true;
@@ -395,6 +397,14 @@ namespace 動態問卷.SystemAdmin
                 EndDate = Convert.ToDateTime(this.txtEndDate.Text),
                 ViewLimit = this.ckbLimit.Checked
             };
+
+            if (qs.EndDate < qs.StartDate)
+            {
+                this.lblPage1Msg2.Visible = true;
+                return;
+            }
+            else
+                this.lblPage1Msg2.Visible = false;
 
             HttpContext.Current.Session["Summary"] = qs;
 

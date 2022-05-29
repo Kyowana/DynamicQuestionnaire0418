@@ -123,6 +123,15 @@ namespace 動態問卷.SystemAdmin
         protected global::System.Web.UI.WebControls.Label lblPage1Msg;
 
         /// <summary>
+        /// lblPage1Msg2 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPage1Msg2;
+
+        /// <summary>
         /// btnCancel1 控制項。
         /// </summary>
         /// <remarks>
